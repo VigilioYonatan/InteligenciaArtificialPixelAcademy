@@ -4,6 +4,8 @@ import curriculum from '../../data/curriculum.json';
 import { frameworkCurriculum } from '../../data/frameworks-curriculum';
 import { CodeEditorShell } from '../../shared/ui/CodeEditorShell';
 import { Button, Card, Icon, Mascot, PageHeading } from '../../shared/ui/primitives';
+import { AxonPlayer } from '../cinema/AxonPlayer';
+import { getCinemaDeck } from '../cinema/data/storyboards';
 import { AiArchitectureDiagram } from '../learning/AiArchitectureDiagram';
 import type { Locale, Module } from '../learning/types/learning.types';
 import { markModuleCompleted, prefsSignal, updateDraft } from '../progress/model/progress.signal';
@@ -140,6 +142,7 @@ export function FrameworksPage({
   }
 
   if (m) {
+    const fwDeck = getCinemaDeck(m.id);
     return (
       <div class="content-page">
         <div class="breadcrumbs">
@@ -152,6 +155,7 @@ export function FrameworksPage({
           title={m.title[locale]}
           subtitle={m.summary[locale]}
         />
+        {fwDeck && <AxonPlayer deck={fwDeck} locale={locale} compact />}
         <div class="framework-detail">
           <AiArchitectureDiagram
             moduleId={m.id}

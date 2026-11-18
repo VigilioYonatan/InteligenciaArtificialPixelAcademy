@@ -522,5 +522,21 @@
     "vite.config.ts": "25d9e7610c2a87384a57c876cbdf5054a580f84ab78e0dc0a1ad3cf1fc372e14",
     "vitest.config.ts": "a12aecea9836f4d84ea2ee9f61a44ed768de06293002798a9f8bea00380b09ec"
   },
-  "intentional_changes": []
+  "intentional_changes": [
+    "src/main.tsx",
+    "src/features/welcome/HomePage.tsx",
+    "src/features/senior/SeniorDashboard.tsx",
+    "src/features/senior/SeniorModuleHub.tsx",
+    "src/features/learning/LessonPage.tsx",
+    "src/features/frameworks/FrameworksPage.tsx",
+    "screenshots/master-e2e/gate1_preferences.png",
+    "screenshots/master-e2e/gate2_editor_b01.png",
+    "screenshots/master-e2e/gate3_quiz_minigame.png",
+    "screenshots/master-e2e/gate4_decision_lab.png",
+    "screenshots/master-e2e/gate5_evidence_lab.png",
+    "screenshots/master-e2e/gate6_operations_lab.png",
+    "screenshots/master-e2e/gate7_readiness_matrix.png",
+    "screenshots/master-e2e/gate8_ai_academy.png",
+    "src/features/games/GamesPage.tsx"
+  ]
 }

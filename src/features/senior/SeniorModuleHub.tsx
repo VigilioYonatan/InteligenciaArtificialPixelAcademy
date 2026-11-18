@@ -1,5 +1,7 @@
 import curriculum from '../../data/curriculum.json';
 import seniorChallenges from '../../content/senior/challenges.json';
+import { AxonPlayer } from '../cinema/AxonPlayer';
+import { getCinemaDeck } from '../cinema/data/storyboards';
 import { AiArchitectureDiagram } from '../learning/AiArchitectureDiagram';
 import { SeniorSimulationLab } from './SeniorSimulationLab';
 
@@ -222,6 +224,7 @@ export function SeniorModuleHub({
 
   const note = notes[moduleId] || '';
   const hasSimulator = ['S05', 'S07', 'S09', 'S10', 'S11', 'S18'].includes(moduleId);
+  const cinemaDeck = getCinemaDeck(moduleId);
 
   return (
     <div class="content-page senior-module-hub">
@@ -239,6 +242,7 @@ export function SeniorModuleHub({
 
       <div class="senior-lab-grid">
         <div class="senior-lab-main">
+          {cinemaDeck && <AxonPlayer deck={cinemaDeck} locale={locale} compact />}
           {/* Production Scenario Card */}
           <section class="card">
             <div class="panel-title">

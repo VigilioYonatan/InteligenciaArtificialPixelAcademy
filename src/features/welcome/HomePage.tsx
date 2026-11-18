@@ -1,6 +1,8 @@
 import { useState } from 'preact/hooks';
 import { routeTo } from '../../app/router';
 import { Button, Icon, Mascot } from '../../shared/ui/primitives';
+import { AxonPlayer } from '../cinema/AxonPlayer';
+import { HOME_INTRO_DECK } from '../cinema/data/storyboards';
 import { tracks, trackStyles } from '../learning/constants/learning.constants';
 import type { RouteTrack } from '../learning/types/learning.types';
 
@@ -144,6 +146,8 @@ export function HomePage({ t, trackPcts }: { t: (k: string) => string; trackPcts
           <small>MINIJUEGOS &amp; ARENA</small>
         </div>
       </section>
+
+      <AxonPlayer deck={HOME_INTRO_DECK} locale="es" />
 
       <section class="home-live-flow" aria-label="Simulador interactivo de arquitectura">
         <div class="home-live-head">

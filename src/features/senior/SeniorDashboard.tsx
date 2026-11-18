@@ -1,5 +1,7 @@
 import { useState } from 'preact/hooks';
 import curriculum from '../../data/curriculum.json';
+import { AxonPlayer } from '../cinema/AxonPlayer';
+import { SENIOR_OVERVIEW_DECK } from '../cinema/data/storyboards';
 import type { Locale } from '../learning/types/learning.types';
 import {
   categoryLabels,
@@ -253,6 +255,8 @@ export function SeniorDashboard({
           {t.capstoneBtn}
         </a>
       </div>
+
+      <AxonPlayer deck={SENIOR_OVERVIEW_DECK} locale={locale} />
 
       <output class="notice">{t.notice}</output>
 

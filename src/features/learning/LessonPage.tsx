@@ -4,6 +4,8 @@ import curriculum from '../../data/curriculum.json';
 import { aiExamples, lessonGuides } from '../../data/learning-exercises';
 import { CodeEditorShell } from '../../shared/ui/CodeEditorShell';
 import { Button, Card, Icon, Mascot, PageHeading } from '../../shared/ui/primitives';
+import { AxonPlayer } from '../cinema/AxonPlayer';
+import { getCinemaDeck } from '../cinema/data/storyboards';
 import { evaluateAiExercise } from '../editor/ai-code-checker.mjs';
 import type { Prefs } from '../progress/types/progress.types';
 import { AiArchitectureDiagram } from './AiArchitectureDiagram';
@@ -78,6 +80,7 @@ export function LessonPage({
   }
 
   const seniorId = `S${String(((Number.parseInt(m.id.slice(1), 10) - 1) % 18) + 1).padStart(2, '0')}`;
+  const cinemaDeck = getCinemaDeck(m.id);
   const mascotPose =
     feedback === 'correct'
       ? 'celebrate'
@@ -99,6 +102,7 @@ export function LessonPage({
       <PageHeading eyebrow={`${t('lesson')} ${m.id} · ${spec?.stack || 'AI Architecture'}`} title={m.title[locale]} subtitle={m.summary[locale]} />
       <div class="lesson-layout">
         <div class="lesson-main">
+          {cinemaDeck && <AxonPlayer deck={cinemaDeck} locale={locale} compact />}
           <Card className="lesson-intro">
             <div class="lesson-intro-head">
               <div>

@@ -151,15 +151,15 @@ Un error clásico en cursos de IA es enviar términos como `pgvector`, `<=>`, `R
 ## 8. Roadmap Ejecutable por Fases (Listo para Implementar)
 
 ### Fase 0 · Infraestructura, Skills y Reproductor `<AxonPlayer />`
-- [ ] **0.1** Portar y adaptar las 2 skills canónicas en `.agents/skills/ux-interactive-cinema/SKILL.md` y `.agents/skills/axon-pixel-cinema/SKILL.md`.
-- [ ] **0.2** Crear motor puro `src/features/cinema/engine/clock.mjs` (`.d.mts`) con sincronización `cues[]` y `fallbackClock` determinista para CI headless (`stalledTicks >= 6`).
-- [ ] **0.3** Implementar `<AxonPlayer />` (`16:9` cuadro único, 5 pizarras IA, subtítulos `WebVTT`, controles de teclado/velocidad/CC, `prefers-reduced-motion` y `data-motion="reduced"`).
+- [x] **0.1** Portar y adaptar las 2 skills canónicas en `.agents/skills/ux-interactive-cinema/SKILL.md` y `.agents/skills/axon-pixel-cinema/SKILL.md`.
+- [x] **0.2** Crear motor puro `src/features/cinema/engine/clock.mjs` (`.d.mts`) con sincronización `cues[]` y `fallbackClock` determinista para CI headless (`stalledTicks >= 6`).
+- [x] **0.3** Implementar `<AxonPlayer />` (`16:9` cuadro único, 5 pizarras IA, subtítulos `WebVTT`, controles de teclado/velocidad/CC, `prefers-reduced-motion` y `data-motion="reduced"`).
 
-### Fase 1 · Lote Táctico de Alto Impacto (30 Videos HD — `~10.2 MB`)
-- [ ] **1.1** Crear `scripts/generate-cinema-audio.py` con diccionario fonético `clean_for_speech` de IA y mastering `ffmpeg`.
-- [ ] **1.2** Generar y masterizar las **3 intros** (`home-intro`, `senior-overview`, `arena3d-intro`) + clase insignia **`B01`**.
-- [ ] **1.3** Generar y masterizar los **18 briefings Senior (`S01`–`S18`)** y los **8 briefings de Frameworks (`F01`–`F08`)**.
-- [ ] **1.4** Integrar `<AxonPlayer />` en `HomePage`, `SeniorDashboard`, `SeniorModuleHub`, `FrameworksPage` y `LessonPage`.
+### Fase 1 · Lote Táctico de Alto Impacto (30 Videos HD — `10.1 MB` verificados)
+- [x] **1.1** Crear `scripts/generate-cinema-audio.py` con diccionario fonético `clean_for_speech` de IA y mastering `ffmpeg` + generar los **primeros 5 videos de estudio** (`home-intro.mp3`, `senior-overview.mp3`, `b01.mp3`, `senior-s01.mp3`, `f01.mp3`).
+- [x] **1.2** Generar y masterizar `arena3d-intro` + siguientes `5` briefings Senior (`S02`–`S06`) integrando `<AxonPlayer />` en `GamesPage` (`#/games/arena3d`).
+- [x] **1.3** Generar y masterizar los briefings restantes Senior (`S07`–`S18`) y los `7` briefings restantes de Frameworks (`F02`–`F08`) totalizando **30 pistas `.mp3` (`10,339.8 KB`)**.
+- [x] **1.4** Completar auditoría E2E de los `30` videos del Lote 1 en desktop (`1440×960`) y móvil (`390×844` sin desbordamiento).
 
 ### Fase 2 · Cobertura Troncal Completa del Curso (35 Videos Adicionales → **65 Videos Totales — `~22.1 MB`**)
 - [ ] **2.1** Generar guiones conversacionales a 2 voces y pizarras `StageVisual` para `B02`–`B12` (`11` videos Básico).

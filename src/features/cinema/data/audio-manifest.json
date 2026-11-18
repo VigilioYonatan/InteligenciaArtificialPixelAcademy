@@ -1,0 +1,482 @@
+{
+  "home-intro": {
+    "src": "audio/home-intro.mp3",
+    "totalSec": 38.07,
+    "cues": [
+      0.45,
+      10.22,
+      19.99,
+      25.5
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-overview": {
+    "src": "audio/senior-overview.mp3",
+    "totalSec": 30.61,
+    "cues": [
+      0.45,
+      8.06,
+      17.48,
+      20.98
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "arena3d-intro": {
+    "src": "audio/arena3d-intro.mp3",
+    "totalSec": 35.97,
+    "cues": [
+      0.45,
+      9.17,
+      18.28,
+      23.77
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "b01": {
+    "src": "audio/b01.mp3",
+    "totalSec": 35.91,
+    "cues": [
+      0.45,
+      9.59,
+      18.14,
+      22.93
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s01": {
+    "src": "audio/senior-s01.mp3",
+    "totalSec": 37.16,
+    "cues": [
+      0.45,
+      8.81,
+      21.04,
+      25.19
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s02": {
+    "src": "audio/senior-s02.mp3",
+    "totalSec": 36.3,
+    "cues": [
+      0.45,
+      10.04,
+      19.8,
+      24.85
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s03": {
+    "src": "audio/senior-s03.mp3",
+    "totalSec": 34.17,
+    "cues": [
+      0.45,
+      9.78,
+      19.49,
+      23.83
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s04": {
+    "src": "audio/senior-s04.mp3",
+    "totalSec": 34.7,
+    "cues": [
+      0.45,
+      9.53,
+      17.94,
+      23.35
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s05": {
+    "src": "audio/senior-s05.mp3",
+    "totalSec": 35.02,
+    "cues": [
+      0.45,
+      10.64,
+      20.32,
+      24.5
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s06": {
+    "src": "audio/senior-s06.mp3",
+    "totalSec": 40.87,
+    "cues": [
+      0.45,
+      12.22,
+      25.21,
+      29.52
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s07": {
+    "src": "audio/senior-s07.mp3",
+    "totalSec": 34.45,
+    "cues": [
+      0.45,
+      12.36,
+      20.94,
+      25.06
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s08": {
+    "src": "audio/senior-s08.mp3",
+    "totalSec": 34.96,
+    "cues": [
+      0.45,
+      10.26,
+      19.87,
+      23.59
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s09": {
+    "src": "audio/senior-s09.mp3",
+    "totalSec": 35.37,
+    "cues": [
+      0.45,
+      11.65,
+      21.46,
+      26.01
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s10": {
+    "src": "audio/senior-s10.mp3",
+    "totalSec": 33.74,
+    "cues": [
+      0.45,
+      10.96,
+      19.81,
+      24.05
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s11": {
+    "src": "audio/senior-s11.mp3",
+    "totalSec": 37.02,
+    "cues": [
+      0.45,
+      11.09,
+      21.28,
+      26.3
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s12": {
+    "src": "audio/senior-s12.mp3",
+    "totalSec": 31.83,
+    "cues": [
+      0.45,
+      10.32,
+      18.27,
+      22.41
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s13": {
+    "src": "audio/senior-s13.mp3",
+    "totalSec": 32.84,
+    "cues": [
+      0.45,
+      9.89,
+      18.1,
+      22.85
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s14": {
+    "src": "audio/senior-s14.mp3",
+    "totalSec": 35.88,
+    "cues": [
+      0.45,
+      10.42,
+      19.71,
+      24.59
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s15": {
+    "src": "audio/senior-s15.mp3",
+    "totalSec": 35.14,
+    "cues": [
+      0.45,
+      11.23,
+      20.05,
+      24.28
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s16": {
+    "src": "audio/senior-s16.mp3",
+    "totalSec": 40.22,
+    "cues": [
+      0.45,
+      11.69,
+      23.43,
+      27.81
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s17": {
+    "src": "audio/senior-s17.mp3",
+    "totalSec": 35.44,
+    "cues": [
+      0.45,
+      11.21,
+      20.91,
+      25.68
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "senior-s18": {
+    "src": "audio/senior-s18.mp3",
+    "totalSec": 39.1,
+    "cues": [
+      0.45,
+      11.33,
+      22.24,
+      26.47
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "f01": {
+    "src": "audio/f01.mp3",
+    "totalSec": 30.21,
+    "cues": [
+      0.45,
+      8.0,
+      16.35,
+      18.98
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "f02": {
+    "src": "audio/f02.mp3",
+    "totalSec": 34.69,
+    "cues": [
+      0.45,
+      7.79,
+      18.83,
+      22.8
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "f03": {
+    "src": "audio/f03.mp3",
+    "totalSec": 32.46,
+    "cues": [
+      0.45,
+      7.62,
+      18.22,
+      22.21
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "f04": {
+    "src": "audio/f04.mp3",
+    "totalSec": 33.89,
+    "cues": [
+      0.45,
+      8.18,
+      19.6,
+      24.52
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "f05": {
+    "src": "audio/f05.mp3",
+    "totalSec": 36.56,
+    "cues": [
+      0.45,
+      8.95,
+      21.45,
+      25.36
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "f06": {
+    "src": "audio/f06.mp3",
+    "totalSec": 31.54,
+    "cues": [
+      0.45,
+      7.94,
+      17.25,
+      21.33
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "f07": {
+    "src": "audio/f07.mp3",
+    "totalSec": 33.99,
+    "cues": [
+      0.45,
+      9.43,
+      18.12,
+      21.99
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  },
+  "f08": {
+    "src": "audio/f08.mp3",
+    "totalSec": 38.02,
+    "cues": [
+      0.45,
+      11.03,
+      22.12,
+      26.63
+    ],
+    "speakers": [
+      "host",
+      "axon",
+      "host",
+      "axon"
+    ]
+  }
+}

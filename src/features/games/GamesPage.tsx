@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'preact/hooks';
 import { routeTo } from '../../app/router';
 import { Button, Card, Icon, Mascot, PageHeading } from '../../shared/ui/primitives';
+import { AxonPlayer } from '../cinema/AxonPlayer';
+import { ARENA3D_INTRO_DECK } from '../cinema/data/storyboards';
 import type { Prefs } from '../progress/types/progress.types';
 import {
   bugBank,
@@ -188,10 +190,13 @@ export function GamesPage({
       </div>
 
       {mode === 'arena3d' ? (
-        <RagVectorArena3D
-          reducedMotion={prefs.reducedMotion}
-          onCompleteArena={() => onWinGame('arena3d')}
-        />
+        <>
+          <AxonPlayer deck={ARENA3D_INTRO_DECK} compact />
+          <RagVectorArena3D
+            reducedMotion={prefs.reducedMotion}
+            onCompleteArena={() => onWinGame('arena3d')}
+          />
+        </>
       ) : (
       <Card className="game-arena">
         <div class="game-arena-head">
