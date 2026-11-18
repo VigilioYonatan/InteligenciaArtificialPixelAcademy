@@ -1,0 +1,128 @@
+[
+  {
+    "id": "S01",
+    "slug": "s01_rag_acl",
+    "title": "Fuga Cross-Tenant y Cross-User en Hybrid RAG",
+    "directory": "labs-ai-native/s01_rag_acl",
+    "command": "python -m unittest discover -s labs-ai-native/s01_rag_acl -t labs-ai-native -v"
+  },
+  {
+    "id": "S02",
+    "slug": "s02_arch_routing",
+    "title": "Sobreingeniería Agéntica frente a SQL + Hybrid RAG",
+    "directory": "labs-ai-native/s02_arch_routing",
+    "command": "python -m unittest discover -s labs-ai-native/s02_arch_routing -t labs-ai-native -v"
+  },
+  {
+    "id": "S03",
+    "slug": "s03_prompt_injection",
+    "title": "Exfiltración vía Prompt Injection Indirecta y Tool Calling",
+    "directory": "labs-ai-native/s03_prompt_injection",
+    "command": "python -m unittest discover -s labs-ai-native/s03_prompt_injection -t labs-ai-native -v"
+  },
+  {
+    "id": "S04",
+    "slug": "s04_semantic_cache",
+    "title": "Envenenamiento y Contaminación de Caché Semántico Multi-Tenant",
+    "directory": "labs-ai-native/s04_semantic_cache",
+    "command": "python -m unittest discover -s labs-ai-native/s04_semantic_cache -t labs-ai-native -v"
+  },
+  {
+    "id": "S05",
+    "slug": "s05_finops_retry_storm",
+    "title": "Agotamiento de Presupuesto FinOps por Reintentos y Loops",
+    "directory": "labs-ai-native/s05_finops_retry_storm",
+    "command": "python -m unittest discover -s labs-ai-native/s05_finops_retry_storm -t labs-ai-native -v"
+  },
+  {
+    "id": "S06",
+    "slug": "s06_hnsw_acl_recall",
+    "title": "Caída de Recall@K en HNSW con Filtros ACL Selectivos",
+    "directory": "labs-ai-native/s06_hnsw_acl_recall",
+    "command": "python -m unittest discover -s labs-ai-native/s06_hnsw_acl_recall -t labs-ai-native -v"
+  },
+  {
+    "id": "S07",
+    "slug": "s07_embedding_mismatch",
+    "title": "Mezcla Silenciosa de Modelos de Embedding",
+    "directory": "labs-ai-native/s07_embedding_mismatch",
+    "command": "python -m unittest discover -s labs-ai-native/s07_embedding_mismatch -t labs-ai-native -v"
+  },
+  {
+    "id": "S08",
+    "slug": "s08_otel_pii_redaction",
+    "title": "Fuga de PII y Secretos en Trazas OpenTelemetry / Langfuse",
+    "directory": "labs-ai-native/s08_otel_pii_redaction",
+    "command": "python -m unittest discover -s labs-ai-native/s08_otel_pii_redaction -t labs-ai-native -v"
+  },
+  {
+    "id": "S09",
+    "slug": "s09_citation_grounding",
+    "title": "Alucinación de Citas e Identificadores Inventados",
+    "directory": "labs-ai-native/s09_citation_grounding",
+    "command": "python -m unittest discover -s labs-ai-native/s09_citation_grounding -t labs-ai-native -v"
+  },
+  {
+    "id": "S10",
+    "slug": "s10_db_pool_isolation",
+    "title": "Saturación de Pool PostgreSQL durante Ingesta Masiva",
+    "directory": "labs-ai-native/s10_db_pool_isolation",
+    "command": "python -m unittest discover -s labs-ai-native/s10_db_pool_isolation -t labs-ai-native -v"
+  },
+  {
+    "id": "S11",
+    "slug": "s11_mcp_sandboxing",
+    "title": "Escalada de Privilegios y Path Traversal en Servidor MCP",
+    "directory": "labs-ai-native/s11_mcp_sandboxing",
+    "command": "python -m unittest discover -s labs-ai-native/s11_mcp_sandboxing -t labs-ai-native -v"
+  },
+  {
+    "id": "S12",
+    "slug": "s12_evals_temporal_leakage",
+    "title": "Data Leakage Temporal y Sesgo en Pipelines de Evaluación",
+    "directory": "labs-ai-native/s12_evals_temporal_leakage",
+    "command": "python -m unittest discover -s labs-ai-native/s12_evals_temporal_leakage -t labs-ai-native -v"
+  },
+  {
+    "id": "S13",
+    "slug": "s13_rerank_p99_latency",
+    "title": "Degradación de Latencia p99 por Reranking No Acotado",
+    "directory": "labs-ai-native/s13_rerank_p99_latency",
+    "command": "python -m unittest discover -s labs-ai-native/s13_rerank_p99_latency -t labs-ai-native -v"
+  },
+  {
+    "id": "S14",
+    "slug": "s14_hitl_idempotency",
+    "title": "Doble Cobro y Acciones Duplicadas en Agentes Transaccionales",
+    "directory": "labs-ai-native/s14_hitl_idempotency",
+    "command": "python -m unittest discover -s labs-ai-native/s14_hitl_idempotency -t labs-ai-native -v"
+  },
+  {
+    "id": "S15",
+    "slug": "s15_data_residency",
+    "title": "Residencia de Datos, Failover Multi-Región y Soberanía",
+    "directory": "labs-ai-native/s15_data_residency",
+    "command": "python -m unittest discover -s labs-ai-native/s15_data_residency -t labs-ai-native -v"
+  },
+  {
+    "id": "S16",
+    "slug": "s16_vllm_serving_oom",
+    "title": "Saturación de VRAM y Seguridad en Serving Local (Ollama / vLLM)",
+    "directory": "labs-ai-native/s16_vllm_serving_oom",
+    "command": "python -m unittest discover -s labs-ai-native/s16_vllm_serving_oom -t labs-ai-native -v"
+  },
+  {
+    "id": "S17",
+    "slug": "s17_gdpr_vector_erasure",
+    "title": "Borrado Incompleto GDPR / Derecho al Olvido en Vectores y Caché",
+    "directory": "labs-ai-native/s17_gdpr_vector_erasure",
+    "command": "python -m unittest discover -s labs-ai-native/s17_gdpr_vector_erasure -t labs-ai-native -v"
+  },
+  {
+    "id": "S18",
+    "slug": "s18_release_go_nogo",
+    "title": "Auditoría Integral Go/No-Go de Plataforma IA (32 Controles)",
+    "directory": "labs-ai-native/s18_release_go_nogo",
+    "command": "python -m unittest discover -s labs-ai-native/s18_release_go_nogo -t labs-ai-native -v"
+  }
+]

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.tmp/
+coverage/
+test-results/
+screenshots/ui-audit/
+__pycache__/
+*.pyc
+*.local
+.DS_Store
+Thumbs.db

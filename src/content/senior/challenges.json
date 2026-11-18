@@ -1,0 +1,812 @@
+[
+  {
+    "moduleId": "S01",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "RLS o WHERE por tenant_id no distingue roles internos como RRHH o dirección.",
+      "Los chunks prohibidos nunca deben entrar en la ventana del modelo.",
+      "Sin prueba negativa cross-user/cross-tenant hay riesgo directo de fuga."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Qué falla en una consulta RAG que solo filtra tenant_id?",
+        "options": [
+          "Nada si el índice es HNSW",
+          "Expone documentos restringidos entre usuarios del mismo tenant",
+          "Solo afecta al rendimiento de lectura"
+        ],
+        "correct": 1,
+        "explanation": "RLS o WHERE por tenant_id no distingue roles internos como RRHH o dirección."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Cuándo debe aplicarse la verificación ACL en RAG?",
+        "options": [
+          "En SQL/retrieval antes del top-K y revalidando citas",
+          "En un prompt pidiendo al modelo que ignore secretos",
+          "Solo en el frontend"
+        ],
+        "correct": 0,
+        "explanation": "Los chunks prohibidos nunca deben entrar en la ventana del modelo."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué prueba es bloqueante antes de liberar?",
+        "options": [
+          "Solo probar 3 preguntas felices",
+          "Test automatizado cross-tenant y cross-user dentro del mismo tenant",
+          "Medir únicamente latencia p50"
+        ],
+        "correct": 1,
+        "explanation": "Sin prueba negativa cross-user/cross-tenant hay riesgo directo de fuga."
+      }
+    ]
+  },
+  {
+    "moduleId": "S02",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Los estados transaccionales exactos exigen SQL/API tipada, no similitud semántica.",
+      "La complejidad agéntica debe justificarse por evidencia cuantificada.",
+      "Se mide exactitud, latencia y costo por respuesta válida."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Cómo resolver \"¿cuál es el saldo de la póliza 48392?\"?",
+        "options": [
+          "API/SQL parametrizado con autorización del actor",
+          "Embeddings vectoriales del historial",
+          "Enjambre de 5 agentes"
+        ],
+        "correct": 0,
+        "explanation": "Los estados transaccionales exactos exigen SQL/API tipada, no similitud semántica."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Cuándo se justifica escalar a GraphRAG o multiagente?",
+        "options": [
+          "Siempre por defecto",
+          "Solo cuando evals reproducibles demuestran ganancia sobre Hybrid RAG",
+          "Para evitar escribir tests"
+        ],
+        "correct": 1,
+        "explanation": "La complejidad agéntica debe justificarse por evidencia cuantificada."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué métrica evidencia el beneficio del cambio?",
+        "options": [
+          "Número de archivos YAML",
+          "Exactitud determinista, latencia p95 y costo por respuesta útil",
+          "Cantidad de prompts del sistema"
+        ],
+        "correct": 1,
+        "explanation": "Se mide exactitud, latencia y costo por respuesta válida."
+      }
+    ]
+  },
+  {
+    "moduleId": "S03",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Cualquier documento recuperado es dato no confiable (OWASP LLM).",
+      "Los controles efectivos viven en servidor y en permisos de tools, no solo en el prompt.",
+      "Acciones mutables/irreversibles requieren HITL e idempotencia."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Cómo debe tratarse el texto extraído de un PDF o email en RAG?",
+        "options": [
+          "Como instrucción confiable si tiene score alto",
+          "Como datos no confiables delimitados, nunca como instrucciones",
+          "Como código Python ejecutable"
+        ],
+        "correct": 1,
+        "explanation": "Cualquier documento recuperado es dato no confiable (OWASP LLM)."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Qué impide la exfiltración vía herramientas?",
+        "options": [
+          "Pedir al modelo en el prompt que sea amable",
+          "Allowlist de tools, validación Zod/Pydantic y autorización server-side",
+          "Ocultar el nombre de la empresa"
+        ],
+        "correct": 1,
+        "explanation": "Los controles efectivos viven en servidor y en permisos de tools, no solo en el prompt."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué ocurre ante una tool con efectos laterales como borrar o enviar?",
+        "options": [
+          "Se ejecuta automáticamente en silencio",
+          "Exige confirmación humana + clave de idempotencia",
+          "Se reintenta 10 veces"
+        ],
+        "correct": 1,
+        "explanation": "Acciones mutables/irreversibles requieren HITL e idempotencia."
+      }
+    ]
+  },
+  {
+    "moduleId": "S04",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Sin tenant_id ni acl_scope_hash, un usuario sin permisos hereda respuestas ajenas.",
+      "KEYS * / DEL con wildcard bloquea o falla silenciosamente; usa epoch/versión por tenant.",
+      "La revocación de permisos exige invalidación determinista del caché."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Por qué falla un caché indexado solo por similitud de la pregunta?",
+        "options": [
+          "Filtra respuestas privadas entre tenants y roles distintos",
+          "Es demasiado rápido",
+          "Usa demasiados decimales"
+        ],
+        "correct": 0,
+        "explanation": "Sin tenant_id ni acl_scope_hash, un usuario sin permisos hereda respuestas ajenas."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Qué antipatrón debes evitar al invalidar caché en Redis/Valkey?",
+        "options": [
+          "Incluir pipeline_version en la clave",
+          "Ejecutar DEL(\"prefix:*\") o KEYS * en producción",
+          "Usar TTL acotado"
+        ],
+        "correct": 1,
+        "explanation": "KEYS * / DEL con wildcard bloquea o falla silenciosamente; usa epoch/versión por tenant."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué debe pasar cuando se revoca un documento?",
+        "options": [
+          "Esperar 30 días",
+          "Invalidar por versión/epoch de ACL y purgar entradas afectadas",
+          "Ignorar hasta el próximo deploy"
+        ],
+        "correct": 1,
+        "explanation": "La revocación de permisos exige invalidación determinista del caché."
+      }
+    ]
+  },
+  {
+    "moduleId": "S05",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Loops de grafo × reintentos HTTP generan amplificación cuadrática de costo.",
+      "Los dashboards y YAMLs observan o documentan; el bloqueo requiere reserva atómica previa.",
+      "Jitter + tope de intentos + circuit breaker evitan thundering herd."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Qué multiplica el gasto en una degradación parcial de proveedor LLM?",
+        "options": [
+          "Reintentos sin tope multiplicados por loops de agentes sin recursionLimit",
+          "Logs estructurados sin PII",
+          "Usar JSON Schema"
+        ],
+        "correct": 0,
+        "explanation": "Loops de grafo × reintentos HTTP generan amplificación cuadrática de costo."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Dónde vive el enforcement real del presupuesto FinOps?",
+        "options": [
+          "En un archivo YAML de documentación",
+          "En reserva atómica en aplicación/gateway antes de invocar al modelo",
+          "En una gráfica de Prometheus"
+        ],
+        "correct": 1,
+        "explanation": "Los dashboards y YAMLs observan o documentan; el bloqueo requiere reserva atómica previa."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué protección adicional requiere el backoff?",
+        "options": [
+          "Reintentos inmediatos en ráfaga",
+          "Límite máximo de intentos + jitter + circuit breaker",
+          "Aumentar timeout a 10 minutos"
+        ],
+        "correct": 1,
+        "explanation": "Jitter + tope de intentos + circuit breaker evitan thundering herd."
+      }
+    ]
+  },
+  {
+    "moduleId": "S06",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "El post-filtering sobre HNSW descarta candidatos fuera del tenant tras explorar ef_search nodos.",
+      "Iterative scans o particionado garantizan cobertura sin romper el aislamiento.",
+      "HNSW consume mucha RAM y añade complejidad; comparar siempre contra búsqueda exacta."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Por qué HNSW devuelve 0 filas para un tenant que ocupa <0.5% de la tabla?",
+        "options": [
+          "El grafo visita ef_search vecinos globales y todos son descartados por el WHERE",
+          "PostgreSQL borró los vectores",
+          "La distancia coseno siempre da NaN"
+        ],
+        "correct": 0,
+        "explanation": "El post-filtering sobre HNSW descarta candidatos fuera del tenant tras explorar ef_search nodos."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Cómo mitigar esta caída en pgvector?",
+        "options": [
+          "Activar hnsw.iterative_scan / aumentar ef_search / evaluar particionado por tenant",
+          "Quitar el filtro tenant_id del WHERE",
+          "Cambiar a float16 sin medir"
+        ],
+        "correct": 0,
+        "explanation": "Iterative scans o particionado garantizan cobertura sin romper el aislamiento."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Cuándo NO usar HNSW?",
+        "options": [
+          "En tablas gigantes multi-millón",
+          "En tablas pequeñas donde búsqueda exacta ya cumple el SLO de latencia",
+          "Cuando hay filtros"
+        ],
+        "correct": 1,
+        "explanation": "HNSW consume mucha RAM y añade complejidad; comparar siempre contra búsqueda exacta."
+      }
+    ]
+  },
+  {
+    "moduleId": "S07",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Misma dimensión no implica mismo espacio vectorial; SQL calcula cosenos sin sentido.",
+      "Blue-green / shadow reindexing evita degradación silenciosa.",
+      "Versionar el modelo previene consultas incompatibles."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Por qué no falla SQL cuando consultas un índice v1 (1024d) con un encoder v2 (1024d)?",
+        "options": [
+          "Ambos son vectores de 1024 floats aunque sus espacios latentes no son comparables",
+          "PostgreSQL convierte automáticamente de v1 a v2",
+          "Porque HNSW ignora las dimensiones"
+        ],
+        "correct": 0,
+        "explanation": "Misma dimensión no implica mismo espacio vectorial; SQL calcula cosenos sin sentido."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Cómo se migra un modelo de embedding sin downtime?",
+        "options": [
+          "Sobrescribir vectores in-place en producción",
+          "Reindexar en tabla/columna sombra, validar en golden set y conmutar puntero",
+          "Cambiar solo el encoder de queries"
+        ],
+        "correct": 1,
+        "explanation": "Blue-green / shadow reindexing evita degradación silenciosa."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué metadato debe acompañar al índice?",
+        "options": [
+          "embedding_model, model_revision, dimensiones y normalización",
+          "Solo la fecha de creación",
+          "Nombre del desarrollador"
+        ],
+        "correct": 0,
+        "explanation": "Versionar el modelo previene consultas incompatibles."
+      }
+    ]
+  },
+  {
+    "moduleId": "S08",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "La observabilidad no debe convertirse en una fuga masiva de PII ni secretos.",
+      "Prometheus requiere labels de baja cardinalidad (modelo, feature, status).",
+      "Las plataformas de trazas almacenan metadatos sensibles y deben estar autenticadas."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Qué política debe aplicarse por defecto en trazas GenAI (OTel/Langfuse/Phoenix)?",
+        "options": [
+          "Capturar prompts y respuestas crudas de todos los clientes",
+          "Omitir prompts privados/PII por defecto y registrar modelo, tokens, latencia y trace_id",
+          "Usar user_email como label de Prometheus"
+        ],
+        "correct": 1,
+        "explanation": "La observabilidad no debe convertirse en una fuga masiva de PII ni secretos."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Por qué evitar user_id o request_id en labels de Prometheus?",
+        "options": [
+          "Explota la cardinalidad de series temporales (OOM y factura alta)",
+          "Prometheus no acepta strings",
+          "Ralentiza las GPUs"
+        ],
+        "correct": 0,
+        "explanation": "Prometheus requiere labels de baja cardinalidad (modelo, feature, status)."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Cómo deben desplegarse Langfuse/Phoenix/Ollama?",
+        "options": [
+          "Abiertos en Internet para debug rápido",
+          "En red privada con autenticación, RBAC y retención acotada",
+          "Sin TLS"
+        ],
+        "correct": 1,
+        "explanation": "Las plataformas de trazas almacenan metadatos sensibles y deben estar autenticadas."
+      }
+    ]
+  },
+  {
+    "moduleId": "S09",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Zod/JSON Schema valida forma; el servidor debe verificar la existencia real de cada cita.",
+      "Citas no resolubles rompen la trazabilidad y engañan al usuario.",
+      "Evaluar faithfulness y precisión de citas detecta alucinaciones antes del deploy."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Basta validar JSON Schema para evitar citas inventadas?",
+        "options": [
+          "Sí, Zod verifica la existencia en PostgreSQL",
+          "No; el schema valida estructura pero no que el ID exista en los chunks recuperados",
+          "Solo si temperature es 0.9"
+        ],
+        "correct": 1,
+        "explanation": "Zod/JSON Schema valida forma; el servidor debe verificar la existencia real de cada cita."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Qué debe hacer el backend si detecta una cita inventada?",
+        "options": [
+          "Mostrarla igual al usuario",
+          "Rechazar/abstenerse o regenerar con verificación estricta",
+          "Inventar un enlace genérico"
+        ],
+        "correct": 1,
+        "explanation": "Citas no resolubles rompen la trazabilidad y engañan al usuario."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué métrica de Evals mide esto?",
+        "options": [
+          "Citation precision / Faithfulness sobre golden set",
+          "Tamaño del archivo CSS",
+          "Número de tablas"
+        ],
+        "correct": 0,
+        "explanation": "Evaluar faithfulness y precisión de citas detecta alucinaciones antes del deploy."
+      }
+    ]
+  },
+  {
+    "moduleId": "S10",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Concurrencia sin cota agota max_connections y bloquea el tráfico online.",
+      "Aislar colas, pools y límites protege el SLO p95 en vivo.",
+      "La deduplicación idempotente ahorra cómputo y DB IO."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Qué causa `Promise.all` sin límite ni `forEach(async ...)` en ingesta?",
+        "options": [
+          "Satura conexiones DB/API, dispara OOM o pierde errores sin esperar promesas",
+          "Acelera PostgreSQL 10x",
+          "Reduce la cardinalidad"
+        ],
+        "correct": 0,
+        "explanation": "Concurrencia sin cota agota max_connections y bloquea el tráfico online."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Cómo proteger el tráfico RAG interactivo frente a reindexaciones?",
+        "options": [
+          "Aislar pools/roles entre ingesta offline e inferencia online con concurrencia acotada",
+          "Compartir la misma conexión superusuario",
+          "Ejecutar ingesta en el thread del endpoint HTTP"
+        ],
+        "correct": 0,
+        "explanation": "Aislar colas, pools y límites protege el SLO p95 en vivo."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué ventaja tiene la ingesta asíncrona por lotes con hash SHA-256?",
+        "options": [
+          "Evita re-embedear documentos sin cambios y suaviza picos de IO",
+          "Elimina la necesidad de índices",
+          "Permite borrar sin transacciones"
+        ],
+        "correct": 0,
+        "explanation": "La deduplicación idempotente ahorra cómputo y DB IO."
+      }
+    ]
+  },
+  {
+    "moduleId": "S11",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "MCP debe heredar scopes mínimos del usuario y nunca ejecutar bajo clave maestra global.",
+      "Solo la canonicalización real verifica que el destino final sigue dentro del sandbox.",
+      "Los audit logs registran eventos sin filtrar credenciales ni PII."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Qué principio aplica a servidores y conectores MCP?",
+        "options": [
+          "Dar credencial maestra de administrador al servidor MCP",
+          "Mínimo privilegio, credenciales delegadas por actor y allowlist estricta",
+          "Permitir cualquier ruta relativa"
+        ],
+        "correct": 1,
+        "explanation": "MCP debe heredar scopes mínimos del usuario y nunca ejecutar bajo clave maestra global."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Cómo bloquear ataques `../` y escapes por symlinks?",
+        "options": [
+          "Validar únicamente que no empiece por \"/\"",
+          "Canonicalizar ruta real (realpath/resolve) y comprobar pertenencia al root permitido",
+          "Confiar en que el LLM no pedirá .env"
+        ],
+        "correct": 1,
+        "explanation": "Solo la canonicalización real verifica que el destino final sigue dentro del sandbox."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué no debe aparecer en los logs de auditoría MCP?",
+        "options": [
+          "timestamp y tool_name",
+          "Secretos, tokens Bearer ni contenidos privados",
+          "actor_id hasheado"
+        ],
+        "correct": 1,
+        "explanation": "Los audit logs registran eventos sin filtrar credenciales ni PII."
+      }
+    ]
+  },
+  {
+    "moduleId": "S12",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Sin particionado cronológico se produce data leakage temporal e infla métricas falsas.",
+      "Los jueces LLM tienen sesgos de longitud/estilo y deben calibrarse con humanos.",
+      "PSI y métricas de abstención/grounding alertan cambios de distribución."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Por qué un split aleatorio k-fold engaña en datos temporales o de tickets?",
+        "options": [
+          "Permite que respuestas futuras se filtren al entrenamiento/índice de pruebas pasadas",
+          "Porque es lento en CPU",
+          "Porque ordena alfabéticamente"
+        ],
+        "correct": 0,
+        "explanation": "Sin particionado cronológico se produce data leakage temporal e infla métricas falsas."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Qué requiere usar un LLM-as-a-Judge de forma confiable?",
+        "options": [
+          "Confiar a ciegas porque es un modelo grande",
+          "Calibrarlo periódicamente contra etiquetas humanas expertas y casos negativos",
+          "Usar el mismo prompt como juez y generador"
+        ],
+        "correct": 1,
+        "explanation": "Los jueces LLM tienen sesgos de longitud/estilo y deben calibrarse con humanos."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Cómo detectar drift en producción?",
+        "options": [
+          "Monitorear PSI, tasa de abstención y distribución de scores/consultas",
+          "Esperar quejas en redes sociales",
+          "Reiniciar el servidor cada hora"
+        ],
+        "correct": 0,
+        "explanation": "PSI y métricas de abstención/grounding alertan cambios de distribución."
+      }
+    ]
+  },
+  {
+    "moduleId": "S13",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Un cross-encoder evalúa pares (query, chunk) y debe recibir un top-N acotado.",
+      "Si no aporta ganancia neta medida, es complejidad y latencia innecesarias.",
+      "SSE entrega tokens progresivamente reduciendo el TTFT percibido."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Qué ocurre al pasar 200 candidatos a un cross-encoder en producción?",
+        "options": [
+          "La latencia p99 y el costo escalan linealmente degradando el TTFT",
+          "Mejora el p99 automáticamente",
+          "Elimina la necesidad de embeddings"
+        ],
+        "correct": 0,
+        "explanation": "Un cross-encoder evalúa pares (query, chunk) y debe recibir un top-N acotado."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Cuándo mantener un reranker activado?",
+        "options": [
+          "Siempre, aunque duplique la latencia sin mejorar nDCG",
+          "Solo si las evals muestran ganancia real de precisión dentro del presupuesto de p95 y costo",
+          "Solo cuando usa CPU sin batching"
+        ],
+        "correct": 1,
+        "explanation": "Si no aporta ganancia neta medida, es complejidad y latencia innecesarias."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué ayuda además a proteger la percepción de latencia?",
+        "options": [
+          "Streaming SSE con cancelación al desconectar",
+          "Ocultar respuesta hasta completar 40 chunks",
+          "Quitar timeouts"
+        ],
+        "correct": 0,
+        "explanation": "SSE entrega tokens progresivamente reduciendo el TTFT percibido."
+      }
+    ]
+  },
+  {
+    "moduleId": "S14",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Una clave aleatoria por reintento provoca ejecuciones duplicadas.",
+      "HITL + permisos en servidor + idempotencia protegen operaciones críticas.",
+      "Procesos reglados (pagos/aprobaciones) deben seguir workflows explícitos."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Qué es obligatorio al reintentar una tool con efectos laterales tras timeout?",
+        "options": [
+          "Cambiar el modelo de embedding",
+          "Exigir idempotency_key determinista en servidor y verificar estado previo",
+          "Reintentar con una nueva clave aleatoria cada vez"
+        ],
+        "correct": 1,
+        "explanation": "Una clave aleatoria por reintento provoca ejecuciones duplicadas."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Qué requieren acciones irreversibles (pago, borrado, cambio de privilegios)?",
+        "options": [
+          "Confirmación humana explícita (HITL) antes de ejecutar el adaptador mutable",
+          "Ejecución silenciosa en background",
+          "Solo un log INFO"
+        ],
+        "correct": 0,
+        "explanation": "HITL + permisos en servidor + idempotencia protegen operaciones críticas."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Cómo separar workflows reglados de agentes abiertos?",
+        "options": [
+          "Preferir máquinas de estado/workflows explícitos para flujos críticos reglados",
+          "Dejar que un agente improvise pasos de facturación",
+          "Quitar validaciones de schema"
+        ],
+        "correct": 0,
+        "explanation": "Procesos reglados (pagos/aprobaciones) deben seguir workflows explícitos."
+      }
+    ]
+  },
+  {
+    "moduleId": "S15",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "El cumplimiento legal y de privacidad prevalece sobre un failover no autorizado.",
+      "Los tiers gratuitos suelen retener prompts para entrenamiento si no se auditan.",
+      "Minimización de PII y ACL estricta reducen la superficie de riesgo."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Qué debe hacer el gateway si el endpoint primario falla y solo queda fallback fuera de la región regulada?",
+        "options": [
+          "Redirigir los datos médicos/financieros al endpoint global sin avisar",
+          "Fallar cerrado (fail-closed) o usar solo fallback dentro de la jurisdicción y sin retención",
+          "Eliminar el cifrado TLS"
+        ],
+        "correct": 1,
+        "explanation": "El cumplimiento legal y de privacidad prevalece sobre un failover no autorizado."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Qué contratos hay que auditar en proveedores externos?",
+        "options": [
+          "Solo el precio por millón de tokens",
+          "Residencia geográfica, política de retención cero para entrenamiento y DPA",
+          "Únicamente la velocidad de streaming"
+        ],
+        "correct": 1,
+        "explanation": "Los tiers gratuitos suelen retener prompts para entrenamiento si no se auditan."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Cómo se minimiza exposición si se usa proveedor externo?",
+        "options": [
+          "Enviando tablas completas de clientes",
+          "Minimizando/redactando PII y pasando solo chunks estrictamente autorizados",
+          "Guardando API keys en el frontend"
+        ],
+        "correct": 1,
+        "explanation": "Minimización de PII y ACL estricta reducen la superficie de riesgo."
+      }
+    ]
+  },
+  {
+    "moduleId": "S16",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "FinOps exige contabilizar TCO completo de infraestructura local y capacidad ociosa.",
+      "OWASP LLM exige red privada + autenticación en todos los endpoints IA.",
+      "El KV-cache crece con concurrencia × longitud de contexto."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Es verdad que correr Ollama/vLLM local tiene \"costo cero\"?",
+        "options": [
+          "Sí, porque no cobra por token",
+          "Falso: incluye GPU/CPU ociosa, VRAM, energía, discos y operación SRE",
+          "Solo cuesta si usas Python"
+        ],
+        "correct": 1,
+        "explanation": "FinOps exige contabilizar TCO completo de infraestructura local y capacidad ociosa."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Qué riesgo crítico tiene exponer Ollama/vLLM/Phoenix sin auth en red?",
+        "options": [
+          "Cualquiera en la red puede consumir GPU o leer trazas/modelos sin control",
+          "Ninguno porque es HTTP",
+          "Mejora el throughput"
+        ],
+        "correct": 0,
+        "explanation": "OWASP LLM exige red privada + autenticación en todos los endpoints IA."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué evita el OOM por KV-cache en vLLM?",
+        "options": [
+          "Configurar max_model_len realista + control de admisión / cola acotada",
+          "Aceptar concurrencia infinita",
+          "Desactivar límites de tokens"
+        ],
+        "correct": 0,
+        "explanation": "El KV-cache crece con concurrencia × longitud de contexto."
+      }
+    ]
+  },
+  {
+    "moduleId": "S17",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "El derecho al olvido exige limpiar fuente, chunks, índice vectorial y cachés.",
+      "Los tests de borrado y revocación son obligatorios en el gate de seguridad.",
+      "El linaje document_id permite borrar o reindexar de forma atómica."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "¿Qué falla al borrar solo el registro maestro sin cascada hacia chunks y caché?",
+        "options": [
+          "Quedan fragmentos vectoriales huérfanos y respuestas cacheadas que siguen filtrando datos borrados",
+          "Mejora la velocidad de HNSW",
+          "Se borra automáticamente Redis"
+        ],
+        "correct": 0,
+        "explanation": "El derecho al olvido exige limpiar fuente, chunks, índice vectorial y cachés."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Cómo verificar que el borrado fue efectivo?",
+        "options": [
+          "Confiar en que el SQL devolvió 1 row affected",
+          "Test negativo que consulte explícitamente por el documento borrado y compruebe 0 hits",
+          "Esperar un mes"
+        ],
+        "correct": 1,
+        "explanation": "Los tests de borrado y revocación son obligatorios en el gate de seguridad."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué facilita esta purga limpia?",
+        "options": [
+          "Mantener FK ON DELETE CASCADE o linaje explícito document_id -> chunks -> cache_epoch",
+          "Desnormalizar sin document_id",
+          "No guardar metadatos"
+        ],
+        "correct": 0,
+        "explanation": "El linaje document_id permite borrar o reindexar de forma atómica."
+      }
+    ]
+  },
+  {
+    "moduleId": "S18",
+    "challengeId": "decision-lab",
+    "version": 1,
+    "learningPoints": [
+      "Regla Vigilio: NOT_RUN en controles críticos de ACL o FinOps equivale a NO-GO.",
+      "Nunca declarar PASS sin ejecución reproducible real.",
+      "La matriz de 32 controles cubre calidad, seguridad, observabilidad, costo y operación."
+    ],
+    "questions": [
+      {
+        "id": "decision",
+        "prompt": "Si un copiloto tuvo 3 demos exitosas pero `cross_tenant_acl` está `NOT_RUN`, ¿cuál es el dictamen?",
+        "options": [
+          "GO con seguimiento posterior",
+          "NO-GO hasta ejecutar y aprobar la evidencia crítica",
+          "GO si el CEO aprueba por email"
+        ],
+        "correct": 1,
+        "explanation": "Regla Vigilio: NOT_RUN en controles críticos de ACL o FinOps equivale a NO-GO."
+      },
+      {
+        "id": "risk",
+        "prompt": "¿Qué distingue una prueba real de un dataset o YAML versionado?",
+        "options": [
+          "Un JSONL o YAML guardado equivale a prueba superada",
+          "Solo la ejecución real reproducible de código/SQL/evals genera PASS",
+          "Un screenshot es suficiente"
+        ],
+        "correct": 1,
+        "explanation": "Nunca declarar PASS sin ejecución reproducible real."
+      },
+      {
+        "id": "validation",
+        "prompt": "¿Qué debe incluir todo release gate IA?",
+        "options": [
+          "Retrieval + citas + ACL + prompt injection + FinOps atómico + OTel sin PII + rollback",
+          "Únicamente lint y build CSS",
+          "Solo prompt engineering"
+        ],
+        "correct": 0,
+        "explanation": "La matriz de 32 controles cubre calidad, seguridad, observabilidad, costo y operación."
+      }
+    ]
+  }
+]

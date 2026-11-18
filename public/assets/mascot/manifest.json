@@ -1,0 +1,74 @@
+[
+  {
+    "name": "welcome",
+    "file": "mascot/welcome.png",
+    "thumb": "mascot/welcome-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "reading",
+    "file": "mascot/reading.png",
+    "thumb": "mascot/reading-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "coding",
+    "file": "mascot/coding.png",
+    "thumb": "mascot/coding-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "question",
+    "file": "mascot/question.png",
+    "thumb": "mascot/question-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "celebrate",
+    "file": "mascot/celebrate.png",
+    "thumb": "mascot/celebrate-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "debug",
+    "file": "mascot/debug.png",
+    "thumb": "mascot/debug-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "building",
+    "file": "mascot/building.png",
+    "thumb": "mascot/building-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "senior",
+    "file": "mascot/senior.png",
+    "thumb": "mascot/senior-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "idea",
+    "file": "mascot/idea.png",
+    "thumb": "mascot/idea-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "architecture",
+    "file": "mascot/architecture.png",
+    "thumb": "mascot/architecture-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "graduate",
+    "file": "mascot/graduate.png",
+    "thumb": "mascot/graduate-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  },
+  {
+    "name": "sleep",
+    "file": "mascot/sleep.png",
+    "thumb": "mascot/sleep-128.png",
+    "role": "Axon \u2014 AI Architecture Pixel Mascot (Original asset)"
+  }
+]

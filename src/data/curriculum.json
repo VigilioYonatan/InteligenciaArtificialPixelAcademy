@@ -1,0 +1,1756 @@
+[
+  {
+    "id": "B01",
+    "slug": "basic-01",
+    "track": "basic",
+    "title": {
+      "es": "Tokens, Ventanas de Contexto y Presupuesto Base",
+      "en": "Tokens, Context Windows and Base Budgets",
+      "ja": "トークン・コンテキスト長と基本予算設計",
+      "zh": "Token、上下文窗口与基础预算控制",
+      "pt": "Tokens, Janelas de Contexto e Orçamento Base",
+      "fr": "Tokens, Fenêtres de Contexte et Budget Initial"
+    },
+    "summary": {
+      "es": "Cálculo determinista de input/output tokens, truncamiento explícito, límites max_tokens y prevención de desbordes en APIs LLM.",
+      "en": "Deterministic input/output token accounting, explicit truncation, max_tokens ceilings, and overflow prevention in LLM APIs.",
+      "ja": "入出力トークンの決定論的計測、明示的な切り詰め、max_tokens上限設定、LLM APIでのコンテキスト溢れ防止。",
+      "zh": "输入输出 Token 的确定性计量、显式截断策略、max_tokens 上限配置及 LLM API 上下文溢出防护。",
+      "pt": "Cálculo determinístico de tokens de entrada/saída, truncamento explícito, limites max_tokens e prevenção de estouro em APIs LLM.",
+      "fr": "Comptage déterministe des tokens entrée/sortie, troncature explicite, plafonds max_tokens et prévention des dépassements LLM."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B02",
+    "slug": "basic-02",
+    "track": "basic",
+    "title": {
+      "es": "Prompts Defensivos y Separación Instrucción vs Datos",
+      "en": "Defensive Prompts and Instruction vs Data Isolation",
+      "ja": "防御的プロンプト設計と命令・データの分離",
+      "zh": "防御性提示工程与指令数据隔离",
+      "pt": "Prompts Defensivos e Isolamento Instrução vs Dados",
+      "fr": "Prompts Défensifs et Séparation Instructions / Données"
+    },
+    "summary": {
+      "es": "Delimitadores estrictos entre políticas del sistema y texto externo no confiable (PDFs, emails, chunks) sin guardar secretos en prompts.",
+      "en": "Strict delimiters between trusted system policies and untrusted external text (PDFs, emails, chunks) with zero secrets in prompts.",
+      "ja": "信頼されたシステム命令と非信頼外部テキスト（PDF・メール・チャンク）の厳密な境界分離とシークレット混入防止。",
+      "zh": "受信任系统策略与不受信任外部文本（PDF、邮件、分块）的严格边界隔离，严禁在提示词中存放密钥。",
+      "pt": "Delimitadores estritos entre políticas confiáveis do sistema e dados externos não confiáveis sem segredos no prompt.",
+      "fr": "Délimiteurs stricts entre directives système fiables et contenus externes non fiables, sans aucun secret dans le prompt."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B03",
+    "slug": "basic-03",
+    "track": "basic",
+    "title": {
+      "es": "Structured Outputs con JSON Schema y Zod",
+      "en": "Structured Outputs with JSON Schema and Zod",
+      "ja": "JSON SchemaとZodによる構造化出力",
+      "zh": "基于 JSON Schema 与 Zod 的结构化输出",
+      "pt": "Structured Outputs com JSON Schema e Zod",
+      "fr": "Sorties Structurées avec JSON Schema et Zod"
+    },
+    "summary": {
+      "es": "Contratos tipados para respuestas del modelo, validación estricta con Zod/Pydantic, manejo de rechazos y enums deterministas.",
+      "en": "Typed model response contracts, strict runtime validation with Zod/Pydantic, refusal handling, and deterministic enums.",
+      "ja": "モデル応答の型付き契約、Zod/Pydanticによる厳格な実行時検証、拒否応答の安全な処理と列挙型制約。",
+      "zh": "模型响应的类型化契约、基于 Zod/Pydantic 的严格运行时校验、拒答分支处理与确定性枚举约束。",
+      "pt": "Contratos tipados para respostas de modelos, validação estrita com Zod/Pydantic, tratamento de recusas e enums seguros.",
+      "fr": "Contrats typés pour réponses LLM, validation stricte via Zod/Pydantic, gestion des refus et énumérations déterministes."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B04",
+    "slug": "basic-04",
+    "track": "basic",
+    "title": {
+      "es": "Embeddings Vectoriales y Similitud Coseno",
+      "en": "Vector Embeddings and Cosine Similarity",
+      "ja": "ベクトル埋め込みとコサイン類似度",
+      "zh": "向量嵌入（Embeddings）与余弦相似度",
+      "pt": "Embeddings Vetoriais e Similaridade de Cosseno",
+      "fr": "Embeddings Vectoriels et Similarité Cosinus"
+    },
+    "summary": {
+      "es": "Representación densa de texto, normalización L2, dimensionalidad versionada, prefijos query/passage y límites de la similitud semántica.",
+      "en": "Dense text representation, L2 normalization, versioned dimensions, query/passage prefixes, and limits of semantic similarity.",
+      "ja": "テキストの密ベクトル表現、L2正規化、次元数のバージョン管理、query/passageプレフィックス、意味類似度の限界。",
+      "zh": "文本稠密向量表示、L2 归一化、维度版本管理、查询/段落指令前缀及语义相似度的适用边界。",
+      "pt": "Representação densa de texto, normalização L2, dimensões versionadas, prefixos query/passage e limites da busca semântica.",
+      "fr": "Représentation vectorielle dense, normalisation L2, dimensions versionnées, préfixes query/passage et limites sémantiques."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B05",
+    "slug": "basic-05",
+    "track": "basic",
+    "title": {
+      "es": "Estrategias de Chunking y Linaje Documental",
+      "en": "Chunking Strategies and Document Lineage",
+      "ja": "チャンキング戦略とドキュメント系譜管理",
+      "zh": "分块（Chunking）策略与文档血缘追踪",
+      "pt": "Estratégias de Chunking e Linhagem Documental",
+      "fr": "Stratégies de Chunking et Lignage Documentaire"
+    },
+    "summary": {
+      "es": "Particionado por estructura Markdown/secciones, solapamiento controlado (overlap) y metadatos obligatorios de documento, página y versión.",
+      "en": "Structure-aware Markdown/section splitting, bounded overlap, and mandatory document, page, and version lineage metadata.",
+      "ja": "見出し・構造に基づく分割、制御されたオーバーラップ、ドキュメントID・ページ・バージョンの必須メタデータ付与。",
+      "zh": "基于标题与结构的语义切分、受控重叠窗口，以及文档 ID、页码与版本等强制血缘元数据。",
+      "pt": "Divisão orientada à estrutura/seções, sobreposição controlada e metadados obrigatórios de documento, página e versão.",
+      "fr": "Découpage guidé par la structure, chevauchement maîtrisé et métadonnées obligatoires de document, page et version."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B06",
+    "slug": "basic-06",
+    "track": "basic",
+    "title": {
+      "es": "Pipelines de Ingesta Asíncrona e Idempotente",
+      "en": "Asynchronous and Idempotent Ingestion Pipelines",
+      "ja": "非同期・冪等なドキュメント取り込みパイプライン",
+      "zh": "异步与幂等文档摄取（Ingestion）流水线",
+      "pt": "Pipelines de Ingestão Assíncrona e Idempotente",
+      "fr": "Pipelines d’Ingestion Asynchrone et Idempotente"
+    },
+    "summary": {
+      "es": "Hashing SHA-256 de contenido, claves de idempotencia, colas de trabajo resilientes y actualización atómica de chunks sin duplicados.",
+      "en": "Content SHA-256 hashing, idempotency keys, resilient worker queues, and atomic chunk replacement without duplicates.",
+      "ja": "SHA-256コンテンツハッシュ、冪等性キー、耐障害ワーカーキュー、重複を生まないアトミックなチャンク更新。",
+      "zh": "内容 SHA-256 哈希去重、幂等键、高可靠异步队列及无重复分块的原子替换机制。",
+      "pt": "Hash SHA-256 de conteúdo, chaves de idempotência, filas assíncronas e substituição atômica de chunks sem duplicação.",
+      "fr": "Hachage SHA-256 du contenu, clés d’idempotence, files asynchrones résilientes et remplacement atomique sans doublons."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B07",
+    "slug": "basic-07",
+    "track": "basic",
+    "title": {
+      "es": "PostgreSQL + pgvector: Esquema y Consultas Parametrizadas",
+      "en": "PostgreSQL + pgvector: Schema and Parameterized Queries",
+      "ja": "PostgreSQL + pgvector：スキーマ設計とパラメータ化クエリ",
+      "zh": "PostgreSQL + pgvector：表结构设计与参数化查询",
+      "pt": "PostgreSQL + pgvector: Schema e Consultas Parametrizadas",
+      "fr": "PostgreSQL + pgvector : Schéma et Requêtes Paramétrées"
+    },
+    "summary": {
+      "es": "Tipo vector(d), operador de distancia coseno (<=>), consultas SQL parametrizadas sin interpolación y filtrado de borrados lógicos.",
+      "en": "Typed vector(d) columns, cosine distance operator (<=>), SQL parameterization without string interpolation, and soft-delete filters.",
+      "ja": "vector(d)型カラム、コサイン距離演算子（<=>）、SQLインジェクションを防ぐパラメータ化クエリと論理削除フィルタ。",
+      "zh": "vector(d) 列类型、余弦距离运算符（<=>）、零字符串拼接的参数化 SQL 查询与软删除过滤。",
+      "pt": "Colunas vector(d), operador de distância de cosseno (<=>), SQL parametrizado sem interpolação e filtro de registros excluídos.",
+      "fr": "Colonnes vector(d), opérateur de distance cosinus (<=>), requêtes SQL paramétrées et filtrage des suppressions logiques."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B08",
+    "slug": "basic-08",
+    "track": "basic",
+    "title": {
+      "es": "Primer Pipeline RAG End-to-End en Backend",
+      "en": "First End-to-End Backend RAG Pipeline",
+      "ja": "バックエンドにおける最初のEnd-to-End RAGパイプライン",
+      "zh": "构建首个后端端到端 RAG 流水线",
+      "pt": "Primeiro Pipeline RAG End-to-End no Backend",
+      "fr": "Premier Pipeline RAG de Bout en Bout côté Backend"
+    },
+    "summary": {
+      "es": "Flujo completo pregunta → embedding → retrieval top-K → ensamblado de contexto delimitado → generación tipada con latencia medida.",
+      "en": "Complete flow from query embedding and top-K retrieval to delimited context assembly and typed generation with latency tracking.",
+      "ja": "質問埋め込み→Top-K検索→境界付きコンテキスト構築→型付き回答生成とレイテンシ計測までの一貫フロー。",
+      "zh": "从查询向量化、Top-K 检索、受限上下文组装到类型化生成与延迟度量的完整服务端闭环。",
+      "pt": "Fluxo completo de embedding da pergunta, busca top-K, montagem delimitada de contexto e geração tipada com medição de latência.",
+      "fr": "Flux complet : embedding de requête, récupération top-K, assemblage délimité du contexte et génération typée mesurée."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B09",
+    "slug": "basic-09",
+    "track": "basic",
+    "title": {
+      "es": "Citas Verificables, Grounding y Abstención Segura",
+      "en": "Verifiable Citations, Grounding and Safe Abstention",
+      "ja": "検証可能な引用・グラウンディングと安全な回答差し控え",
+      "zh": "可验证引用、事实锚定（Grounding）与安全拒答",
+      "pt": "Citações Verificáveis, Grounding e Abstenção Segura",
+      "fr": "Citations Vérifiables, Grounding et Abstention Sûre"
+    },
+    "summary": {
+      "es": "Validación server-side de document_id/chunk_id citados contra el set recuperado y política explícita de abstención ante falta de evidencia.",
+      "en": "Server-side verification of cited document_id/chunk_id against retrieved chunks and explicit abstention when evidence is missing.",
+      "ja": "引用されたdocument_id/chunk_idが検索結果に実在するかのサーバー側検証と、根拠不足時の明確な回答差し控え。",
+      "zh": "服务端校验模型引用的 document_id/chunk_id 是否真实存在于检索集中，并在证据不足时强制安全拒答。",
+      "pt": "Verificação no servidor dos IDs citados contra os chunks recuperados e abstenção explícita quando faltar evidência.",
+      "fr": "Vérification serveur des identifiants cités par rapport aux chunks récupérés et abstention explicite faute de preuve."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B10",
+    "slug": "basic-10",
+    "track": "basic",
+    "title": {
+      "es": "Contratos HTTP Delgados y Puertos de Dominio IA",
+      "en": "Thin HTTP Contracts and AI Domain Ports",
+      "ja": "薄いHTTPコントローラとAIドメインポート設計",
+      "zh": "精简 HTTP 控制器与 AI 领域端口设计",
+      "pt": "Controllers HTTP Enxutos e Portas de Domínio IA",
+      "fr": "Contrôleurs HTTP Fins et Ports Métier IA"
+    },
+    "summary": {
+      "es": "Separación limpia entre controllers (answerQuestion, ingestDocument) y puertos EmbeddingProvider, KnowledgeRetriever y AnswerGenerator.",
+      "en": "Clean separation between thin controllers (answerQuestion, ingestDocument) and domain ports for Embedding, Retrieval, and Generation.",
+      "ja": "薄いController（answerQuestion, ingestDocument）とEmbeddingProvider・KnowledgeRetriever等のPort分離。",
+      "zh": "精简控制器（answerQuestion、ingestDocument）与向量化、知识检索、回答生成等领域端口的解耦架构。",
+      "pt": "Separação limpa entre controllers enxutos (answerQuestion, ingestDocument) e portas de domínio para Embedding e Retrieval.",
+      "fr": "Séparation nette entre contrôleurs fins (answerQuestion, ingestDocument) et ports domaine Embedding/Retrieval."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B11",
+    "slug": "basic-11",
+    "track": "basic",
+    "title": {
+      "es": "Timeouts, Cancelación (AbortSignal) y Reintentos Acotados",
+      "en": "Timeouts, Cancellation (AbortSignal) and Bounded Retries",
+      "ja": "タイムアウト・AbortSignalキャンセルと上限付きリトライ",
+      "zh": "超时控制、AbortSignal 取消与有界重试策略",
+      "pt": "Timeouts, Cancelamento (AbortSignal) e Retries Limitados",
+      "fr": "Timeouts, Annulation (AbortSignal) et Retries Bornés"
+    },
+    "summary": {
+      "es": "Propagación de cancelación extremo a extremo, backoff exponencial con jitter y prohibición de reintentos infinitos que multiplican costos.",
+      "en": "End-to-end cancellation propagation, exponential backoff with jitter, and strict retry budgets to prevent cost amplification.",
+      "ja": "End-to-Endのキャンセル伝播、ジッター付き指数バックオフ、コスト爆発を防ぐ厳格なリトライ上限。",
+      "zh": "端到端取消信号传播、带抖动的指数退避，以及防止费用倍增的严格重试预算控制。",
+      "pt": "Propagação de cancelamento ponta a ponta, backoff exponencial com jitter e orçamento estrito de tentativas.",
+      "fr": "Propagation d’annulation de bout en bout, backoff exponentiel avec jitter et budget strict de réessais."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "B12",
+    "slug": "basic-12",
+    "track": "basic",
+    "title": {
+      "es": "Testing Determinista de Servicios IA con Fixtures y Fakes",
+      "en": "Deterministic Testing of AI Services with Fixtures and Fakes",
+      "ja": "フィクスチャとフェイクによるAIサービスの決定論的テスト",
+      "zh": "使用固件（Fixtures）与替身对 AI 服务进行确定性测试",
+      "pt": "Testes Determinísticos de Serviços de IA com Fixtures e Fakes",
+      "fr": "Tests Déterministes des Services IA avec Fixtures et Fakes"
+    },
+    "summary": {
+      "es": "Pruebas rápidas en CI sin depender de APIs externas usando adaptadores deterministas, contratos Zod/Pydantic y casos negativos de PII.",
+      "en": "Fast CI unit/integration tests without live LLM API calls using deterministic fake adapters, schema assertions, and PII redaction tests.",
+      "ja": "外部LLM APIに依存しない決定論的フェイクアダプタ、スキーマ検証、PIIマスキングの高速CIテスト。",
+      "zh": "无需调用外部实时大模型 API，利用确定性假适配器、Schema 断言与 PII 脱敏用例实现快速 CI 测试。",
+      "pt": "Testes rápidos em CI sem chamadas externas usando adaptadores determinísticos, validação de schemas e redação de PII.",
+      "fr": "Tests CI rapides sans appels LLM externes grâce aux adaptateurs déterministes, assertions de schémas et filtrage PII."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I01",
+    "slug": "intermediate-01",
+    "track": "intermediate",
+    "title": {
+      "es": "Selección de Arquitectura: SQL vs Hybrid RAG vs Contexto Largo",
+      "en": "Architecture Selection: SQL vs Hybrid RAG vs Long Context",
+      "ja": "アーキテクチャ選定：SQL vs Hybrid RAG vs ロングコンテキスト",
+      "zh": "架构选型矩阵：SQL、混合 RAG 与长上下文对比",
+      "pt": "Seleção de Arquitetura: SQL vs Hybrid RAG vs Contexto Longo",
+      "fr": "Choix d’Architecture : SQL vs Hybrid RAG vs Long Contexte"
+    },
+    "summary": {
+      "es": "Cuándo resolver estados exactos con SQL/APIs autorizadas frente a conocimiento documental con RAG híbrido o ventana larga según evidencia.",
+      "en": "When to serve transactional facts via authorized SQL/APIs versus documentary retrieval with Hybrid RAG or long context by benchmark evidence.",
+      "ja": "正確な取引状態は認可済みSQL/APIで解決し、文書知識は評価根拠に基づきHybrid RAGや長文脈を使い分ける設計判断。",
+      "zh": "基于评测证据区分何时使用授权 SQL/API 查询精确交易状态，何时采用混合 RAG 或长上下文处理文档知识。",
+      "pt": "Quando usar SQL/APIs autorizadas para dados transacionais exatos versus Hybrid RAG ou contexto longo para base documental.",
+      "fr": "Arbitrer par la preuve entre SQL/API autorisés pour l’état transactionnel exact et Hybrid RAG ou long contexte documentaire."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I02",
+    "slug": "intermediate-02",
+    "track": "intermediate",
+    "title": {
+      "es": "Hybrid Search en PostgreSQL: Full-Text Search + pgvector + RRF",
+      "en": "Hybrid Search in PostgreSQL: Full-Text Search + pgvector + RRF",
+      "ja": "PostgreSQLハイブリッド検索：全文検索（FTS）+ pgvector + RRF",
+      "zh": "PostgreSQL 混合检索：全文检索（FTS）+ pgvector + RRF 融合",
+      "pt": "Hybrid Search no PostgreSQL: Full-Text Search + pgvector + RRF",
+      "fr": "Recherche Hybride PostgreSQL : FTS + pgvector + Fusion RRF"
+    },
+    "summary": {
+      "es": "Combinación de búsqueda léxica (tsvector/GIN) para códigos exactos y semántica (pgvector) fusionadas mediante Reciprocal Rank Fusion (RRF).",
+      "en": "Combining lexical tsvector/GIN matching for exact identifiers with dense pgvector search fused via Reciprocal Rank Fusion (RRF).",
+      "ja": "型番や条文番号に強いtsvector/GIN全文検索と意味検索pgvectorをReciprocal Rank Fusion（RRF）で統合。",
+      "zh": "结合擅长精确编号匹配的 tsvector/GIN 全文检索与 pgvector 稠密检索，并通过倒数排序融合（RRF）统一排序。",
+      "pt": "Combinação de busca léxica tsvector/GIN para códigos exatos com vetores pgvector fundidos via Reciprocal Rank Fusion (RRF).",
+      "fr": "Combinaison de la recherche lexicale tsvector/GIN et vectorielle pgvector fusionnées par Reciprocal Rank Fusion (RRF)."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I03",
+    "slug": "intermediate-03",
+    "track": "intermediate",
+    "title": {
+      "es": "Reranking Cross-Encoder y Gates de Latencia / Calidad",
+      "en": "Cross-Encoder Reranking and Latency / Quality Gates",
+      "ja": "Cross-Encoderリランキングとレイテンシ・品質ゲート",
+      "zh": "Cross-Encoder 重排序（Reranking）与延迟质量门禁",
+      "pt": "Reranking Cross-Encoder e Gates de Latência / Qualidade",
+      "fr": "Reranking Cross-Encoder et Seuils Latence / Qualité"
+    },
+    "summary": {
+      "es": "Reordenamiento acotado de candidatos top-N (p. ej. Qwen3 Reranker), medición de mejora en nDCG@K frente al presupuesto de p95 y costo.",
+      "en": "Bounded top-N candidate reranking (e.g., Qwen3 Reranker), proving nDCG@K lift against p95 latency and per-query cost budgets.",
+      "ja": "Top-N候補に対するCross-Encoderリランキング（Qwen3 Reranker等）と、p95遅延・コスト増に見合うnDCG改善の検証。",
+      "zh": "对受限 Top-N 候选集执行 Cross-Encoder 重排序（如 Qwen3 Reranker），在 p95 延迟与成本预算下验证 nDCG@K 增益。",
+      "pt": "Reordenação top-N controlada (ex.: Qwen3 Reranker), comprovando ganho real em nDCG@K frente à latência p95 e ao custo.",
+      "fr": "Réordonnancement top-N borné (ex. Qwen3 Reranker) en validant le gain nDCG@K face au budget de latence p95 et de coût."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I04",
+    "slug": "intermediate-04",
+    "track": "intermediate",
+    "title": {
+      "es": "Seguridad Multi-Tenant: RLS + ACL por Usuario y Documento",
+      "en": "Multi-Tenant Security: RLS + User and Document-Level ACL",
+      "ja": "マルチテナントセキュリティ：RLSとユーザー・文書単位ACL",
+      "zh": "多租户安全边界：RLS 与用户级、文档级细粒度 ACL",
+      "pt": "Segurança Multi-Tenant: RLS + ACL por Usuário e Documento",
+      "fr": "Sécurité Multi-Tenant : RLS + ACL Utilisateur et Document"
+    },
+    "summary": {
+      "es": "Por qué RLS solo por tenant es insuficiente: filtrado obligatorio tenant_id + principal ACL en retrieval y revalidación antes de citar.",
+      "en": "Why tenant-only RLS is insufficient: mandatory tenant_id + principal document ACL filtering at retrieval and chunk revalidation.",
+      "ja": "テナント単位RLSだけでは不十分な理由：検索時およびチャンク参照時のtenant_id＋ユーザー権限ACL必須検証。",
+      "zh": "剖析仅靠租户级 RLS 的不足：在检索阶段与分块读取阶段强制执行 tenant_id + 用户文档权限双重校验。",
+      "pt": "Por que RLS apenas por tenant não basta: filtragem obrigatória por tenant_id e ACL documental na busca e na leitura do chunk.",
+      "fr": "Pourquoi le RLS par tenant seul est insuffisant : filtrage obligatoire tenant_id + ACL documentaire à la recherche et lecture."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I05",
+    "slug": "intermediate-05",
+    "track": "intermediate",
+    "title": {
+      "es": "Defensa en Profundidad contra Prompt Injection Indirecta",
+      "en": "Defense in Depth against Indirect Prompt Injection",
+      "ja": "間接プロンプトインジェクションに対する多層防御",
+      "zh": "针对间接提示注入（Indirect Prompt Injection）的纵深防御",
+      "pt": "Defesa em Profundidade contra Prompt Injection Indireta",
+      "fr": "Défense en Profondeur contre le Prompt Injection Indirect"
+    },
+    "summary": {
+      "es": "Aislamiento de documentos maliciosos recuperados por RAG para impedir exfiltración de datos o disparo no autorizado de herramientas.",
+      "en": "Isolating untrusted RAG chunks so malicious instructions inside retrieved PDFs/emails cannot exfiltrate data or trigger tools.",
+      "ja": "検索されたPDFやメール内の悪意ある命令がデータ流出や不正ツール実行を引き起こさないための権限・構造分離。",
+      "zh": "隔离检索到的不可信文档分块，防止 PDF 或邮件中隐藏的恶意指令窃取数据或越权触发工具调用。",
+      "pt": "Isolamento de chunks recuperados para impedir que instruções maliciosas em PDFs exfiltrem dados ou acionem ferramentas.",
+      "fr": "Isolation des chunks RAG non fiables afin d’empêcher l’exfiltration de données ou l’appel non autorisé d’outils."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I06",
+    "slug": "intermediate-06",
+    "track": "intermediate",
+    "title": {
+      "es": "Caché Exacto y Semántico Segregado por ACL y Versión",
+      "en": "ACL- and Version-Segregated Exact & Semantic Caching",
+      "ja": "ACL・バージョン分離された完全一致＆セマンティックキャッシュ",
+      "zh": "按 ACL 权限与版本隔离的精确缓存与语义缓存",
+      "pt": "Cache Exato e Semântico Segregado por ACL e Versão",
+      "fr": "Cache Exact et Sémantique Ségrégué par ACL et Version"
+    },
+    "summary": {
+      "es": "Construcción de claves de caché con tenant_id, acl_scope_hash y pipeline_version, e invalidación determinista ante borrado o revocación.",
+      "en": "Building cache keys with tenant_id, acl_scope_hash, and pipeline_version, plus deterministic invalidation upon document revocation.",
+      "ja": "tenant_id・acl_scope_hash・pipeline_versionを含むキャッシュキー設計と、権限剥奪・文書削除時の確実な無効化。",
+      "zh": "使用 tenant_id、acl_scope_hash 与 pipeline_version 构造安全缓存键，并在权限撤销或文档删除时精确失效。",
+      "pt": "Chaves de cache com tenant_id, acl_scope_hash e pipeline_version, mais invalidação imediata ao revogar permissões.",
+      "fr": "Clés de cache incluant tenant_id, acl_scope_hash et pipeline_version avec invalidation stricte lors des révocations."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I07",
+    "slug": "intermediate-07",
+    "track": "intermediate",
+    "title": {
+      "es": "Tool Calling Tipado y Autorización Server-Side por Acción",
+      "en": "Typed Tool Calling and Per-Action Server-Side Authorization",
+      "ja": "型安全なTool Callingとアクション単位のサーバー側認可",
+      "zh": "类型安全的工具调用（Tool Calling）与逐次服务端鉴权",
+      "pt": "Tool Calling Tipado e Autorização Server-Side por Ação",
+      "fr": "Tool Calling Typé et Autorisation Serveur par Action"
+    },
+    "summary": {
+      "es": "Herramientas estrechas (getPolicy, searchOrders) con validación Zod/Pydantic, identidad tomada del token de sesión y cero SQL arbitrario.",
+      "en": "Narrow tools (getPolicy, searchOrders) with strict schema validation, actor identity from auth context, and zero raw SQL/shell tools.",
+      "ja": "限定されたツール群（getPolicy等）のスキーマ検証、認証トークンからの主体識別、任意SQL/シェル実行の完全排除。",
+      "zh": "最小职责工具（getPolicy、searchOrders）的参数校验、从认证上下文提取真实身份，严禁暴露任意 SQL 或 Shell 工具。",
+      "pt": "Ferramentas restritas (getPolicy, searchOrders) com validação estrita, identidade extraída da sessão e zero SQL arbitrário.",
+      "fr": "Outils restreints (getPolicy, searchOrders) validés par schéma, identité issue du jeton serveur et zéro SQL/shell libre."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I08",
+    "slug": "intermediate-08",
+    "track": "intermediate",
+    "title": {
+      "es": "LangChain Runnables y Adaptadores Limpios en NestJS / Python",
+      "en": "LangChain Runnables and Clean Adapters in NestJS / Python",
+      "ja": "LangChain RunnablesとNestJS/Pythonクリーンアダプタ統合",
+      "zh": "LangChain Runnables 与 NestJS / Python 整洁适配器集成",
+      "pt": "LangChain Runnables e Adaptadores Limpos em NestJS / Python",
+      "fr": "LangChain Runnables et Adaptateurs Propres NestJS / Python"
+    },
+    "summary": {
+      "es": "Encapsular cadenas LCEL/Runnables detrás de puertos de infraestructura sin acoplar entidades de dominio ni controllers al SDK.",
+      "en": "Wrapping LCEL/Runnable pipelines behind infrastructure ports so domain logic and HTTP controllers remain SDK-agnostic.",
+      "ja": "LCEL/Runnablesをインフラ層のPort背後にカプセル化し、ドメイン層やHTTPコントローラのSDKロックインを防止。",
+      "zh": "将 LCEL/Runnables 封装在基础设施端口之后，保持领域模型与 HTTP 控制器不与特定 AI SDK 强耦合。",
+      "pt": "Encapsular pipelines LCEL/Runnables atrás de portas de infraestrutura mantendo o domínio desacoplado do SDK.",
+      "fr": "Encapsuler les chaînes LCEL/Runnables derrière des ports d’infrastructure sans coupler le domaine métier au SDK."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I09",
+    "slug": "intermediate-09",
+    "track": "intermediate",
+    "title": {
+      "es": "Orquestación Cíclica con LangGraph: StateGraph y Checkpoints",
+      "en": "Stateful Orchestration with LangGraph: StateGraph and Checkpoints",
+      "ja": "LangGraphによる状態遷移オーケストレーションとCheckpoints",
+      "zh": "LangGraph 状态机编排：StateGraph、条件边与持久化检查点",
+      "pt": "Orquestração com Estado no LangGraph: StateGraph e Checkpoints",
+      "fr": "Orchestration à États avec LangGraph : StateGraph et Checkpoints"
+    },
+    "summary": {
+      "es": "Diseño explícito de nodos, aristas condicionales, estado tipado inmutable, persistencia de checkpoints y recursionLimit obligatorio.",
+      "en": "Explicit nodes, conditional edges, typed state reducers, durable checkpointers, and mandatory recursionLimit guards.",
+      "ja": "明示的なノードと条件付きエッジ、型付きState、永続化Checkpointer、無限ループを防ぐ必須のrecursionLimit設定。",
+      "zh": "显式节点与条件路由边、类型化状态归约、持久化 Checkpointer 及防止死循环的强制 recursionLimit 护栏。",
+      "pt": "Nós explícitos, arestas condicionais, estado tipado, checkpointers persistentes e trava obrigatória recursionLimit.",
+      "fr": "Nœuds explicites, transitions conditionnelles, état typé, checkpointers durables et garde-fou recursionLimit obligatoire."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I10",
+    "slug": "intermediate-10",
+    "track": "intermediate",
+    "title": {
+      "es": "Streaming Server-Sent Events (SSE), Backpressure y Cancelación",
+      "en": "Server-Sent Events (SSE) Streaming, Backpressure and Cancellation",
+      "ja": "SSEストリーミング配信・バックプレッシャーと接続切断処理",
+      "zh": "SSE 流式响应、背压控制与客户端断连取消",
+      "pt": "Streaming via Server-Sent Events (SSE), Backpressure e Cancelamento",
+      "fr": "Streaming Server-Sent Events (SSE), Backpressure et Annulation"
+    },
+    "summary": {
+      "es": "Entrega progresiva de tokens y eventos de citas por SSE abortando inmediatamente la inferencia cuando el cliente cierra la conexión.",
+      "en": "Progressive token and citation event delivery over SSE while immediately aborting upstream LLM inference on client disconnect.",
+      "ja": "トークンと引用イベントのSSE逐次配信と、クライアント切断時に上流LLM推論を即座に中断するリソース保護。",
+      "zh": "通过 SSE 渐进推送 Token 与引用事件，并在客户端断开连接时立即中止上游大模型推理以节约算力。",
+      "pt": "Entrega progressiva de tokens e citações via SSE abortando imediatamente a inferência quando o cliente desconecta.",
+      "fr": "Diffusion progressive des tokens et citations en SSE avec arrêt immédiat de l’inférence dès la déconnexion client."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I11",
+    "slug": "intermediate-11",
+    "track": "intermediate",
+    "title": {
+      "es": "Evaluación Continua (Evals): Golden Sets, Recall@K y Ragas",
+      "en": "Continuous Evaluation (Evals): Golden Sets, Recall@K and Ragas",
+      "ja": "継続的品質評価（Evals）：Golden Set・Recall@K・Ragas",
+      "zh": "持续评测体系（Evals）：黄金数据集、Recall@K 与 Ragas",
+      "pt": "Avaliação Contínua (Evals): Golden Sets, Recall@K e Ragas",
+      "fr": "Évaluation Continue (Evals) : Golden Sets, Recall@K et Ragas"
+    },
+    "summary": {
+      "es": "Separación de métricas de retrieval (Recall@K, MRR, nDCG) y generación (Faithfulness, precisión de citas, abstención) en CI.",
+      "en": "Separating retrieval metrics (Recall@K, MRR, nDCG) from generation metrics (Faithfulness, citation precision, abstention) in CI.",
+      "ja": "検索評価（Recall@K, MRR, nDCG）と生成評価（忠実度・引用精度・適切な棄権率）を分離した再現可能なCIゲート。",
+      "zh": "在 CI 中解耦度量检索指标（Recall@K、MRR、nDCG）与生成指标（忠实度、引用准确率、恰当拒答率）。",
+      "pt": "Separação entre métricas de recuperação (Recall@K, MRR, nDCG) e de geração (Faithfulness, citações, abstenção) na CI.",
+      "fr": "Séparation des métriques de récupération (Recall@K, MRR, nDCG) et de génération (fidélité, citations, abstention) en CI."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "I12",
+    "slug": "intermediate-12",
+    "track": "intermediate",
+    "title": {
+      "es": "Observabilidad GenAI con OpenTelemetry, Langfuse y Arize Phoenix",
+      "en": "GenAI Observability with OpenTelemetry, Langfuse and Arize Phoenix",
+      "ja": "OpenTelemetry・Langfuse・Arize PhoenixによるGenAI可観測性",
+      "zh": "基于 OpenTelemetry、Langfuse 与 Arize Phoenix 的生成式 AI 可观测性",
+      "pt": "Observabilidade GenAI com OpenTelemetry, Langfuse e Arize Phoenix",
+      "fr": "Observabilité GenAI avec OpenTelemetry, Langfuse et Arize Phoenix"
+    },
+    "summary": {
+      "es": "Spans semánticos GenAI (modelo, tokens, latencia, costo) con redacción de PII/prompts crudos por defecto y métricas de baja cardinalidad.",
+      "en": "Semantic GenAI spans (model, tokens, latency, cost) with default raw-prompt/PII redaction and low-cardinality Prometheus labels.",
+      "ja": "生プロンプトやPIIを既定で除外したGenAIセマンティックスパン計測と、低カーディナリティなメトリクス設計。",
+      "zh": "默认脱敏原始提示词与 PII 的 GenAI 语义链路追踪，配合低基数 Prometheus 指标监控模型延迟与成本。",
+      "pt": "Spans semânticos GenAI (modelo, tokens, latência, custo) ocultando prompts brutos/PII por padrão e baixa cardinalidade.",
+      "fr": "Spans sémantiques GenAI (modèle, tokens, latence, coût) sans prompts bruts ni PII par défaut et labels à faible cardinalité."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A01",
+    "slug": "advanced-01",
+    "track": "advanced",
+    "title": {
+      "es": "Agentic RAG Iterativo con Presupuesto de Pasos y Costo",
+      "en": "Iterative Agentic RAG with Step and Cost Budgets",
+      "ja": "ステップ数・コスト予算を備えた反復型Agentic RAG",
+      "zh": "受步数与成本预算约束的迭代式 Agentic RAG",
+      "pt": "Agentic RAG Iterativo com Orçamento de Passos e Custo",
+      "fr": "Agentic RAG Itératif sous Budget d’Étapes et de Coût"
+    },
+    "summary": {
+      "es": "Reescritura de consultas multi-salto bajo límites estrictos de iteraciones, latencia acumulada, ACL en cada salto y degradación segura.",
+      "en": "Multi-hop query refinement governed by hard iteration ceilings, cumulative latency caps, per-hop ACL enforcement, and safe fallback.",
+      "ja": "厳格な反復回数・累積遅延上限、各ホップでのACL強制、予算到達時の安全なフォールバックを備えたマルチホップ検索。",
+      "zh": "在严格迭代上限、累计延迟封顶、每跳强制 ACL 校验及预算耗尽安全降级机制下的多跳自适应检索。",
+      "pt": "Refinamento multi-salto governado por tetos rígidos de iteração, latência acumulada, ACL em cada busca e fallback seguro.",
+      "fr": "Recherche multi-sauts encadrée par des plafonds stricts d’itérations, de latence cumulée, d’ACL à chaque saut et repli sûr."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A02",
+    "slug": "advanced-02",
+    "track": "advanced",
+    "title": {
+      "es": "Human-in-the-Loop (HITL) e Idempotencia en Tools con Efectos Laterales",
+      "en": "Human-in-the-Loop (HITL) and Idempotency for Side-Effect Tools",
+      "ja": "副作用を持つツールのHuman-in-the-Loop承認と冪等実行",
+      "zh": "副作用工具的人机协同审批（HITL）与幂等执行保障",
+      "pt": "Human-in-the-Loop (HITL) e Idempotência em Tools com Efeitos Colaterais",
+      "fr": "Human-in-the-Loop (HITL) et Idempotence des Outils à Effets de Bord"
+    },
+    "summary": {
+      "es": "Pausa del grafo mediante interrupt/checkpoint para aprobación humana explícita y ejecución protegida con idempotency_key.",
+      "en": "Graph suspension via interrupt/checkpoint for explicit human approval and side-effect execution guarded by idempotency_key.",
+      "ja": "interrupt/checkpointによる承認待ち一時停止と、idempotency_keyによる二重実行ゼロの安全な副作用処理。",
+      "zh": "利用中断与检查点暂停工作流等待人工显式批准，并通过 idempotency_key 确保外部写操作绝不重复执行。",
+      "pt": "Suspensão do grafo via interrupt/checkpoint para aprovação humana explícita e escrita protegida por idempotency_key.",
+      "fr": "Suspension du graphe par interrupt/checkpoint pour validation humaine explicite et exécution protégée par idempotency_key."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A03",
+    "slug": "advanced-03",
+    "track": "advanced",
+    "title": {
+      "es": "Model Context Protocol (MCP): Servidores, Scopes y Sandboxing",
+      "en": "Model Context Protocol (MCP): Servers, Scopes and Sandboxing",
+      "ja": "Model Context Protocol（MCP）：サーバー設計・最小権限・サンドボックス",
+      "zh": "Model Context Protocol（MCP）：服务端设计、最小权限与沙箱隔离",
+      "pt": "Model Context Protocol (MCP): Servidores, Escopos e Sandboxing",
+      "fr": "Model Context Protocol (MCP) : Serveurs, Scopes et Sandboxing"
+    },
+    "summary": {
+      "es": "Exposición segura de recursos y herramientas vía MCP aplicando menor privilegio, allowlists de rutas/argumentos y auditoría sin secretos.",
+      "en": "Exposing enterprise tools and resources over MCP with least-privilege scopes, path/argument allowlists, and secret-free audit logs.",
+      "ja": "最小権限スコープ、パス・引数allowlist、シークレットを含まない監査ログによる安全なMCPサーバー公開。",
+      "zh": "基于最小权限范围、路径与参数白名单以及零密钥泄露审计日志的企业级 MCP 资源与工具暴露规范。",
+      "pt": "Exposição segura de ferramentas via MCP com escopos de privilégio mínimo, allowlists de argumentos e auditoria limpa.",
+      "fr": "Exposition sécurisée d’outils via MCP avec moindre privilège, listes blanches d’arguments et journaux d’audit sans secrets."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A04",
+    "slug": "advanced-04",
+    "track": "advanced",
+    "title": {
+      "es": "Tuning de Índices Vectoriales HNSW vs Búsqueda Exacta en Producción",
+      "en": "Tuning HNSW Vector Indexes vs Exact Search in Production",
+      "ja": "本番環境におけるHNSWインデックス調整と厳密検索の比較",
+      "zh": "生产环境 HNSW 向量索引调优与精确检索对比",
+      "pt": "Tuning de Índices HNSW vs Busca Exata em Produção",
+      "fr": "Tuning d’Index HNSW vs Recherche Exacte en Production"
+    },
+    "summary": {
+      "es": "Calibración de m, ef_construction y ef_search, impacto del post-filtering ACL sobre el recall de HNSW e iterative index scans en pgvector.",
+      "en": "Calibrating m, ef_construction, and ef_search, mitigating ACL post-filter recall drop, and using pgvector iterative index scans.",
+      "ja": "m・ef_construction・ef_searchの最適化、ACLフィルタ時のRecall低下対策、pgvector反復インデックススキャン。",
+      "zh": "校准 m、ef_construction 与 ef_search 参数，解决高选择性 ACL 过滤导致的召回骤降，并善用 pgvector 迭代索引扫描。",
+      "pt": "Calibração de m, ef_construction e ef_search, mitigação de queda de recall com filtros ACL e scans iterativos no pgvector.",
+      "fr": "Calibrage de m, ef_construction et ef_search, maintien du recall sous filtre ACL et scans itératifs pgvector."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A05",
+    "slug": "advanced-05",
+    "track": "advanced",
+    "title": {
+      "es": "Ciclo de Vida de Modelos y Migración Blue-Green de Embeddings",
+      "en": "Model Lifecycle and Zero-Downtime Embedding Migrations",
+      "ja": "モデルライフサイクル管理と無停止Embedding移行（Blue-Green）",
+      "zh": "模型生命周期管理与零停机向量索引蓝绿迁移",
+      "pt": "Ciclo de Vida de Modelos e Migração Blue-Green de Embeddings",
+      "fr": "Cycle de Vie des Modèles et Migration Blue-Green d’Embeddings"
+    },
+    "summary": {
+      "es": "Versionado de embedding_model y dimensiones, reindexación en tabla sombra, evaluación comparativa shadow y rollback instantáneo.",
+      "en": "Versioning embedding_model and dimensions, shadow-table reindexing, offline/shadow evaluation gates, and instant pointer rollback.",
+      "ja": "embedding_modelと次元数のバージョン管理、シャドウテーブル再インデックス、比較評価ゲートと即時ロールバック。",
+      "zh": "管理 embedding_model 与维度版本，通过影子表后台重建索引、对比评测门禁实现零停机切换与秒级回滚。",
+      "pt": "Versionamento de modelo e dimensões, reindexação em tabela sombra, validação comparativa e rollback instantâneo.",
+      "fr": "Versionnage des modèles et dimensions, réindexation sur table fantôme, évaluation comparative et rollback immédiat."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A06",
+    "slug": "advanced-06",
+    "track": "advanced",
+    "title": {
+      "es": "FinOps Atómico: Reserva Concurrente por Tenant y Conciliación",
+      "en": "Atomic FinOps: Concurrent Tenant Budget Reservation & Reconciliation",
+      "ja": "アトミックFinOps：テナント予算の並行予約と請求突合",
+      "zh": "原子级 FinOps：多租户并发预算预留与账单对账",
+      "pt": "FinOps Atômico: Reserva Concorrente por Tenant e Conciliação",
+      "fr": "FinOps Atomique : Réservation Concurrente par Tenant et Réconciliation"
+    },
+    "summary": {
+      "es": "Ledger transaccional que reserva presupuesto antes de invocar al LLM, evita sobregiros bajo concurrencia y concilia estimado vs facturado.",
+      "en": "Transactional token ledger reserving budget prior to LLM calls, preventing concurrent overdrafts, and reconciling estimated vs billed USD.",
+      "ja": "LLM呼び出し前のアトミック予算予約により並行リクエスト下の予算超過を防ぎ、概算コストと実請求額を突合。",
+      "zh": "在调用模型前通过事务账本原子预留额度，杜绝高并发超支，并对预估费用、缓存命中与实际账单进行对账。",
+      "pt": "Ledger transacional que reserva orçamento antes da chamada LLM, impede estouro sob concorrência e concilia fatura real.",
+      "fr": "Grand livre transactionnel réservant le budget avant l’appel LLM, bloquant les dépassements concurrents et réconciliant la facture."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A07",
+    "slug": "advanced-07",
+    "track": "advanced",
+    "title": {
+      "es": "Compresión de Contexto y Presupuesto Adaptativo Basado en Evidencia",
+      "en": "Context Compression and Evidence-Driven Adaptive Token Budgets",
+      "ja": "コンテキスト圧縮と根拠駆動のアダプティブトークン予算",
+      "zh": "上下文压缩与基于证据的自适应 Token 预算分配",
+      "pt": "Compressão de Contexto e Orçamento Adaptativo de Tokens",
+      "fr": "Compression de Contexte et Budget Adaptatif de Tokens"
+    },
+    "summary": {
+      "es": "Poda de redundancia en chunks recuperados sin alterar contratos, números ni citas críticas, optimizando costo por respuesta útil.",
+      "en": "Pruning redundant retrieval noise without mutating contracts, figures, or citations, optimizing cost per accurate authorized answer.",
+      "ja": "契約条件・数値・引用IDを損なわずに検索チャンクの冗長部分を圧縮し、正答あたりのコストと遅延を最適化。",
+      "zh": "在不破坏合同条款、关键数值与引用标识的前提下裁剪检索冗余，优化单次有效且合规回答的综合成本。",
+      "pt": "Remoção de redundância nos chunks sem alterar contratos, valores ou citações, reduzindo o custo por resposta útil.",
+      "fr": "Élagage des redondances documentaires sans altérer chiffres, contrats ni citations afin d’optimiser le coût par réponse utile."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A08",
+    "slug": "advanced-08",
+    "track": "advanced",
+    "title": {
+      "es": "Routing Multi-Modelo, Circuit Breakers y Degradación Segura",
+      "en": "Multi-Model Routing, Circuit Breakers and Safe Degradation",
+      "ja": "マルチモデルルーティング・サーキットブレーカーと安全な縮退運転",
+      "zh": "多模型智能路由、熔断器（Circuit Breaker）与安全降级",
+      "pt": "Roteamento Multi-Modelo, Circuit Breakers e Degradação Segura",
+      "fr": "Routage Multi-Modèles, Circuit Breakers et Dégradation Sûre"
+    },
+    "summary": {
+      "es": " Clasificación de complejidad hacia modelos ligeros/pesados, failover ante caídas 429/5xx preservando políticas de seguridad y residencia.",
+      "en": "Routing queries between compact and frontier models with 429/5xx circuit breakers while preserving data-residency and safety policies.",
+      "ja": "難易度に応じた軽量・高性能モデルの振り分けと、データ所在地・セキュリティ制約を破らない429/5xxフェイルオーバー。",
+      "zh": "按任务复杂度在轻量与旗舰模型间路由，配置 429/5xx 熔断切换，同时严格遵守数据驻留与合规边界。",
+      "pt": "Roteamento entre modelos leves e avançados com circuit breakers para 429/5xx respeitando residência de dados e segurança.",
+      "fr": "Routage entre modèles compacts et avancés avec disjoncteurs 429/5xx respectant résidence des données et sécurité."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A09",
+    "slug": "advanced-09",
+    "track": "advanced",
+    "title": {
+      "es": "Inferencia Auto-Hospedada (Ollama / vLLM), KV-Cache y Costo Real",
+      "en": "Self-Hosted Inference (Ollama / vLLM), KV-Cache and True TCO",
+      "ja": "セルフホスト推論（Ollama / vLLM）・KVキャッシュと実総保有コスト",
+      "zh": "自托管推理（Ollama / vLLM）、KV-Cache 与真实总拥有成本（TCO）",
+      "pt": "Inferência Self-Hosted (Ollama / vLLM), KV-Cache e TCO Real",
+      "fr": "Inférence Auto-Hébergée (Ollama / vLLM), KV-Cache et Coût Réel"
+    },
+    "summary": {
+      "es": "Continuous batching, memoria VRAM del KV-cache, endpoints autenticados en red privada y contabilidad honesta de GPU/CPU ociosa.",
+      "en": "Continuous batching, KV-cache VRAM sizing, private authenticated endpoints, and honest TCO accounting including idle GPU/CPU capacity.",
+      "ja": "連続バッチ処理、KVキャッシュVRAM見積もり、プライベート認証保護、遊休GPU/CPUを含めた正直なコスト計算。",
+      "zh": "连续批处理、KV-Cache 显存规划、内网鉴权加固，以及计入空闲 GPU/CPU 与运维折旧的真实成本核算。",
+      "pt": "Continuous batching, dimensionamento de VRAM do KV-cache, rede privada autenticada e cálculo honesto de custo de GPU ociosa.",
+      "fr": "Continuous batching, dimensionnement VRAM du KV-cache, réseau privé authentifié et calcul honnête du coût GPU inactif."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A10",
+    "slug": "advanced-10",
+    "track": "advanced",
+    "title": {
+      "es": "Multimodal RAG: Tablas, PDFs Complejos y Citas a Coordenadas",
+      "en": "Multimodal RAG: Complex Tables, PDFs and Page-Coordinate Citations",
+      "ja": "マルチモーダルRAG：複雑な表・PDF構造解析とページ座標引用",
+      "zh": "多模态 RAG：复杂表格、PDF 版面解析与页码坐标引用",
+      "pt": "Multimodal RAG: Tabelas, PDFs Complexos e Citações por Página",
+      "fr": "RAG Multimodal : Tableaux, PDF Complexes et Citations par Page"
+    },
+    "summary": {
+      "es": "Extracción estructurada de tablas y figuras sin romper filas/columnas, redacción de PII en imágenes y citas verificables por página.",
+      "en": "Structured table/layout extraction preserving row-column semantics, visual PII redaction, and page/figure-resolved citations.",
+      "ja": "行列構造を壊さない表・レイアウト抽出、画像内PIIのマスキング、ページ番号・図表単位の検証可能な引用。",
+      "zh": "保持行列语义的复杂表格与版面抽取、图像敏感信息脱敏，以及精确到页码与图表编号的可核验引用。",
+      "pt": "Extração estruturada de tabelas preservando linhas/colunas, redação visual de PII e citações resolvidas por página e figura.",
+      "fr": "Extraction structurée de tableaux préservant lignes/colonnes, masquage PII visuel et citations résolues par page/figure."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A11",
+    "slug": "advanced-11",
+    "track": "advanced",
+    "title": {
+      "es": "GraphRAG vs SQL Joins Autorizados: Cuándo Justifica el Grafo",
+      "en": "GraphRAG vs Authorized SQL Joins: When Graphs Earn Their Complexity",
+      "ja": "GraphRAG vs 認可済みSQL JOIN：グラフ導入が正当化される条件",
+      "zh": "GraphRAG 对比授权 SQL 关联查询：何时真正需要图检索",
+      "pt": "GraphRAG vs SQL Joins Autorizados: Quando o Grafo se Justifica",
+      "fr": "GraphRAG vs Jointures SQL Autorisées : Quand le Graphe se Justifie"
+    },
+    "summary": {
+      "es": "Evaluación rigurosa de costo de extracción/mantenimiento de aristas y ACL por nodo frente a consultas relacionales y Hybrid RAG.",
+      "en": "Rigorous trade-off analysis of entity/edge extraction cost and node-level ACLs against relational SQL joins and Hybrid RAG.",
+      "ja": "エンティティ・エッジ抽出コストとノード単位ACLの複雑さを、SQL JOINおよびHybrid RAGと定量比較する判断基準。",
+      "zh": "量化评估实体边抽取维护成本与节点级 ACL 复杂度，对比关系型 SQL JOIN 与混合 RAG 的真实多跳收益。",
+      "pt": "Análise rigorosa do custo de extração de arestas e ACL por nó frente a joins SQL relacionais e Hybrid RAG.",
+      "fr": "Analyse rigoureuse du coût d’extraction d’arêtes et d’ACL par nœud face aux jointures SQL relationnelles et Hybrid RAG."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "A12",
+    "slug": "advanced-12",
+    "track": "advanced",
+    "title": {
+      "es": "Derecho al Olvido Vectorial y Matriz Go/No-Go de 32 Controles",
+      "en": "Vector Right-to-Erasure and the 32-Control RAG Go/No-Go Matrix",
+      "ja": "ベクトルデータの削除権（忘れられる権利）と32項目Go/No-Goゲート",
+      "zh": "向量数据被遗忘权清理与 32 项 RAG 生产发布门禁矩阵",
+      "pt": "Direito ao Esquecimento Vetorial e Matriz Go/No-Go de 32 Controles",
+      "fr": "Droit à l’Oubli Vectoriel et Matrice Go/No-Go à 32 Contrôles"
+    },
+    "summary": {
+      "es": "Purga atómica en tabla origen, índice pgvector, cachés y backups ante revocación GDPR, más auditoría completa previa a producción.",
+      "en": "Atomic purge across source tables, pgvector indexes, caches, and traces on GDPR deletion, plus the 32-control release checklist.",
+      "ja": "GDPR削除要求時の元表・pgvector・キャッシュの一貫パージと、本番リリース前の32項目品質・セキュリティ監査。",
+      "zh": "响应数据删除请求时跨源表、pgvector 索引与缓存的一致性清理，以及上线前 32 项检索安全与成本门禁核验。",
+      "pt": "Expurgo consistente entre tabelas, índices pgvector e caches em exclusões LGPD/GDPR, mais checklist de 32 controles.",
+      "fr": "Purge cohérente des tables sources, index pgvector et caches lors d’une suppression RGPD, plus matrice de 32 contrôles."
+    },
+    "status": "implemented"
+  },
+  {
+    "id": "S01",
+    "slug": "senior-01",
+    "track": "senior",
+    "title": {
+      "es": "Fuga Cross-Tenant y Cross-User en Hybrid RAG",
+      "en": "Cross-Tenant and Cross-User Leakage in Hybrid RAG",
+      "ja": "Hybrid RAGにおけるクロステナント・クロスユーザー情報漏洩",
+      "zh": "混合 RAG 中的跨租户与同租户跨用户越权泄露",
+      "pt": "Vazamento Cross-Tenant e Cross-User no Hybrid RAG",
+      "fr": "Fuite Cross-Tenant et Cross-User dans un RAG Hybride"
+    },
+    "summary": {
+      "es": "Auditoría y remediación cuando RLS solo filtra tenant_id pero expone documentos confidenciales de RRHH/ejecutivos a otros roles.",
+      "en": "Auditing and remediating pipelines where tenant-only RLS leaks confidential HR/executive chunks across unauthorized user roles.",
+      "ja": "テナント単位RLSのみでロール別文書ACLが欠落し、人事・経営機密チャンクが他ユーザーへ漏洩する欠陥の修正。",
+      "zh": "排查并修复仅依赖租户级 RLS 而缺失文档角色 ACL，导致高管与人事机密分块被同租户普通员工检索到的漏洞。",
+      "pt": "Auditoria e correção quando o RLS filtra apenas tenant_id e expõe documentos confidenciais de RH entre papéis distintos.",
+      "fr": "Audit et correction d’un pipeline où le RLS par tenant seul expose des documents RH confidentiels entre rôles non autorisés."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "security",
+      "scenario": {
+        "es": "Un empleado recupera fragmentos salariales de dirección dentro de su propio tenant porque la fusión RRF omite el filtro de permisos por documento.",
+        "en": "An employee retrieves executive compensation chunks within their own tenant because the RRF SQL query omits document-level principal ACLs.",
+        "ja": "RRF統合クエリに文書単位のACL条件が欠けているため、一般社員が同一テナント内の役員報酬チャンクを取得できてしまう障害を修正せよ。",
+        "zh": "由于 RRF 融合 SQL 漏掉了文档级角色 ACL 过滤，普通员工检索到了同租户高管薪酬分块；请制定修复与验证方案。",
+        "pt": "Um colaborador recupera trechos salariais da diretoria no mesmo tenant porque a query RRF omite a ACL por documento.",
+        "fr": "Un employé récupère des extraits salariaux de la direction de son tenant car la requête RRF omet l’ACL documentaire."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S02",
+    "slug": "senior-02",
+    "track": "senior",
+    "title": {
+      "es": "Sobreingeniería Agéntica frente a SQL Parametrizado + Hybrid RAG",
+      "en": "Agentic Over-Engineering vs Parameterized SQL + Hybrid RAG",
+      "ja": "過剰なマルチエージェント設計 vs パラメータ化SQL＋Hybrid RAG",
+      "zh": "多智能体过度设计对比参数化 SQL + 混合 RAG",
+      "pt": "Sobreengenharia Multiagente vs SQL Parametrizado + Hybrid RAG",
+      "fr": "Sur-Ingénierie Multi-Agents vs SQL Paramétré + Hybrid RAG"
+    },
+    "summary": {
+      "es": "Refactorizar un enjambre lento y costoso de 5 agentes hacia enrutamiento determinista entre API/SQL transaccional y Hybrid RAG.",
+      "en": "Refactoring a slow, expensive 5-agent swarm into deterministic routing between authorized transactional SQL/APIs and Hybrid RAG.",
+      "ja": "高コスト・高遅延な5エージェント構成を、認可済みSQL/APIとHybrid RAGの決定論的ルーティングへ簡素化する。",
+      "zh": "将高延迟高成本的五智能体架构重构为授权事务 SQL/API 与混合 RAG 的确定性分流架构。",
+      "pt": "Refatorar um enxame lento e caro de 5 agentes para roteamento determinístico entre SQL/API autorizada e Hybrid RAG.",
+      "fr": "Refactoriser un essaim coûteux de 5 agents vers un routage déterministe entre SQL/API transactionnel et Hybrid RAG."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "architecture",
+      "scenario": {
+        "es": "Consultar el saldo de una póliza tarda 14 s y cuesta $0.09 con alucinaciones numéricas porque todo pasa por embeddings y tres agentes.",
+        "en": "Checking an exact policy balance takes 14s, costs $0.09, and hallucinates figures because every query runs through embeddings and three agents.",
+        "ja": "保険契約の正確な残高照会がベクトル検索と3つのエージェントを経由して14秒かかり数値ハルシネーションを起こしている設計を是正せよ。",
+        "zh": "查询保单精确余额因强行走向量检索与三个智能体耗时 14 秒且出现金额幻觉；请重新设计架构边界。",
+        "pt": "Consultar o saldo exato de uma apólice leva 14s e gera alucinação numérica porque passa por embeddings e três agentes.",
+        "fr": "La consultation du solde exact d’une police prend 14 s et hallucine des montants car tout transite par embeddings et trois agents."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S03",
+    "slug": "senior-03",
+    "track": "senior",
+    "title": {
+      "es": "Exfiltración vía Prompt Injection Indirecta y Tool Calling",
+      "en": "Data Exfiltration via Indirect Prompt Injection and Tool Calling",
+      "ja": "間接プロンプトインジェクションとTool悪用によるデータ持ち出し",
+      "zh": "通过间接提示注入与工具调用实现的敏感数据外泄",
+      "pt": "Exfiltração via Prompt Injection Indireta e Tool Calling",
+      "fr": "Exfiltration via Prompt Injection Indirect et Appel d’Outils"
+    },
+    "summary": {
+      "es": "Contención de payloads ocultos en PDFs indexados que intentan invocar herramientas de envío de correo o webhooks externos.",
+      "en": "Containing hidden instructions inside indexed PDFs attempting to invoke email/webhook tools with sensitive retrieved context.",
+      "ja": "インデックス済みPDF内の隠し命令が機密コンテキストを含めて外部送信ツールを呼び出す攻撃の封じ込め。",
+      "zh": "阻断索引 PDF 中隐藏指令诱导模型调用邮件或外部 Webhook 工具外传机密上下文的攻击链。",
+      "pt": "Contenção de instruções ocultas em PDFs indexados que tentam acionar ferramentas de e-mail ou webhooks com dados sensíveis.",
+      "fr": "Blocage d’instructions cachées dans des PDF indexés tentant d’exfiltrer le contexte via des outils d’envoi externe."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "security",
+      "scenario": {
+        "es": "Un currículum PDF subido al portal contiene texto invisible que ordena al asistente reenviar otros candidatos por webhook.",
+        "en": "An uploaded resume PDF contains hidden text instructing the assistant to forward competing candidate records via an outbound tool.",
+        "ja": "アップロードされた履歴書PDFの不可視テキストが他候補者データを外部送信ツールで転送させようとする事案に対処せよ。",
+        "zh": "候选人上传的简历 PDF 含有隐藏文本，试图指令助手调用外发工具泄露其他候选人资料；请设计多层防护。",
+        "pt": "Um currículo em PDF enviado ao portal contém texto oculto ordenando que o assistente envie dados de outros candidatos.",
+        "fr": "Un CV PDF téléversé contient du texte caché ordonnant à l’assistant de transférer d’autres dossiers vers l’extérieur."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S04",
+    "slug": "senior-04",
+    "track": "senior",
+    "title": {
+      "es": "Envenenamiento y Contaminación de Caché Semántico Multi-Tenant",
+      "en": "Semantic Cache Poisoning and Cross-Role Contamination",
+      "ja": "セマンティックキャッシュ汚染とロール間レスポンス混線",
+      "zh": "多租户语义缓存投毒与跨角色响应串扰",
+      "pt": "Envenenamento de Cache Semântico e Contaminação entre Papéis",
+      "fr": "Empoisonnement du Cache Sémantique et Contamination Inter-Rôles"
+    },
+    "summary": {
+      "es": "Diagnóstico de respuestas cacheadas por similitud de pregunta sin particionar por tenant_id, acl_hash ni versión de documento.",
+      "en": "Diagnosing semantic cache hits keyed solely by query embedding without partitioning by tenant_id, acl_hash, and document version.",
+      "ja": "質問ベクトル類似度のみでキャッシュヒットさせ、tenant_id・acl_hash・文書バージョンを含めない設計欠陥の診断。",
+      "zh": "诊断仅凭查询向量相似度命中缓存，未按 tenant_id、权限哈希与文档版本隔离导致的跨角色泄密故障。",
+      "pt": "Diagnóstico de hits no cache semântico baseados apenas no embedding da pergunta sem isolar tenant_id, acl_hash e versão.",
+      "fr": "Diagnostic de réponses servies depuis un cache sémantique indexé sans clé tenant_id, acl_hash ni version documentaire."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "debug",
+      "scenario": {
+        "es": "Tras revocar acceso a un contrato rescindido, usuarios sin permiso siguen recibiendo el resumen confidencial desde Redis/Valkey.",
+        "en": "After revoking access to a terminated contract, unauthorized users still receive its confidential summary from the semantic cache.",
+        "ja": "契約書の閲覧権限を剥奪した後も、権限のないユーザーがセマンティックキャッシュ経由で機密要約を受け取り続けている。",
+        "zh": "撤销某份机密合同访问权限后，无权限用户仍通过语义缓存命中获取该合同摘要；请定位根因并给出失效方案。",
+        "pt": "Após revogar acesso a um contrato confidencial, usuários sem permissão continuam recebendo o resumo pelo cache semântico.",
+        "fr": "Après révocation d’accès à un contrat confidentiel, des utilisateurs non autorisés reçoivent encore son résumé en cache."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S05",
+    "slug": "senior-05",
+    "track": "senior",
+    "title": {
+      "es": "Agotamiento de Presupuesto FinOps por Tormenta de Reintentos y Loops",
+      "en": "FinOps Budget Exhaustion from Retry Storms and Unbounded Agent Loops",
+      "ja": "リトライ嵐と無限エージェントループによるFinOps予算枯渇",
+      "zh": "重试风暴与无界智能体循环导致的 FinOps 预算耗尽",
+      "pt": "Esgotamento de Orçamento FinOps por Tempestade de Retries e Loops",
+      "fr": "Épuisement du Budget FinOps par Tempête de Retries et Boucles d’Agents"
+    },
+    "summary": {
+      "es": "Implantación de reserva atómica previa, recursionLimit en LangGraph, circuit breakers y topes por tenant ante picos 429/503.",
+      "en": "Enforcing pre-call atomic budget reservation, LangGraph recursionLimit, circuit breakers, and tenant hard-stops under 429/503 spikes.",
+      "ja": "事前アトミック予算予約、LangGraphのrecursionLimit、サーキットブレーカー、テナント別ハードストップの実装。",
+      "zh": "实施调用前原子预算预留、LangGraph 递归步数硬上限、429/503 熔断器以及租户级费用硬截断。",
+      "pt": "Implementação de reserva atômica prévia, recursionLimit no LangGraph, circuit breakers e hard-stop por tenant.",
+      "fr": "Mise en place de réservation atomique préalable, recursionLimit LangGraph, disjoncteurs et arrêt dur par tenant."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "operations",
+      "scenario": {
+        "es": "Un bucle de auto-corrección en LangGraph combinado con 5 reintentos HTTP consumió $4,800 en 40 minutos durante una degradación parcial.",
+        "en": "A self-correcting LangGraph loop multiplied by 5 HTTP retries burned $4,800 in 40 minutes during an upstream latency brownout.",
+        "ja": "上流APIの遅延発生時、LangGraphの自己修正ループと5回のHTTPリトライが重なり40分間で4,800ドルを消費した事故を防げ。",
+        "zh": "上游接口抖动期间，LangGraph 自纠错循环叠加 5 次 HTTP 重试在 40 分钟内烧掉 4800 美元；请设计止血与预防控制。",
+        "pt": "Um loop de autocorreção no LangGraph somado a 5 retries HTTP consumiu US$ 4.800 em 40 minutos durante lentidão no provedor.",
+        "fr": "Une boucle d’auto-correction LangGraph couplée à 5 réessais HTTP a brûlé 4 800 $ en 40 minutes lors d’un ralentissement."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S06",
+    "slug": "senior-06",
+    "track": "senior",
+    "title": {
+      "es": "Caída Severa de Recall@K en HNSW con Filtros ACL Selectivos",
+      "en": "Severe HNSW Recall@K Collapse under High-Selectivity ACL Filters",
+      "ja": "高選択性ACLフィルタ適用時におけるHNSWのRecall@K急落",
+      "zh": "高选择性 ACL 过滤导致 HNSW 向量索引 Recall@K 断崖下跌",
+      "pt": "Queda Severa de Recall@K no HNSW sob Filtros ACL Seletivos",
+      "fr": "Chute Sévère du Recall@K HNSW sous Filtres ACL Très Sélectifs"
+    },
+    "summary": {
+      "es": "Análisis de planes EXPLAIN ANALYZE cuando un tenant pequeño recibe 0 resultados por post-filtering de ef_search y solución con scans iterativos.",
+      "en": "Analyzing EXPLAIN ANALYZE plans when small tenants get zero results due to ef_search post-filtering, solved via iterative scans/partitioning.",
+      "ja": "小規模テナント検索でHNSWの事後フィルタにより結果が0件になる現象をEXPLAIN ANALYZEで解析し反復スキャンで解決。",
+      "zh": "通过 EXPLAIN ANALYZE 剖析小租户因 ef_search 后置过滤导致返回零结果的机理，并用迭代索引扫描或分区修复。",
+      "pt": "Análise de EXPLAIN ANALYZE quando tenants menores recebem zero chunks devido ao pós-filtro do HNSW e correção com scan iterativo.",
+      "fr": "Analyse EXPLAIN ANALYZE lorsque les petits tenants obtiennent zéro résultat par post-filtrage HNSW et résolution par scan itératif."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "debug",
+      "scenario": {
+        "es": "Los documentos existen y la búsqueda exacta los encuentra, pero con el índice HNSW activo los tenants con <0.5% del corpus reciben respuestas vacías.",
+        "en": "Target chunks exist and exact search finds them, yet with HNSW enabled any tenant holding <0.5% of the table gets empty retrieval.",
+        "ja": "厳密検索ではヒットするのにHNSW有効時はデータ比率0.5%未満のテナントで検索結果が空になる原因を特定・解決せよ。",
+        "zh": "目标分块确实存在且精确搜索能命中，但启用 HNSW 后数据占比低于 0.5% 的租户检索结果全空；请诊断并修复。",
+        "pt": "Os chunks existem na busca exata, mas com HNSW ativo qualquer tenant com menos de 0,5% da tabela recebe retorno vazio.",
+        "fr": "Les chunks apparaissent en recherche exacte mais restent introuvables avec HNSW pour les tenants représentant <0,5 % de la table."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S07",
+    "slug": "senior-07",
+    "track": "senior",
+    "title": {
+      "es": "Mezcla Silenciosa de Modelos de Embedding e Incompatibilidad Vectorial",
+      "en": "Silent Embedding Model Mismatch and Vector Space Corruption",
+      "ja": "Embeddingモデルのサイレント混在とベクトル空間の不整合",
+      "zh": "嵌入模型版本静默混用导致的向量空间污染",
+      "pt": "Mistura Silenciosa de Modelos de Embedding e Corrupção Vetorial",
+      "fr": "Mélange Silencieux de Modèles d’Embedding et Corruption Vectorielle"
+    },
+    "summary": {
+      "es": "Detectar ingesta con modelo v2 y consultas con modelo v1 de igual dimensión (1024), imponiendo columnas/índices versionados.",
+      "en": "Detecting v2 ingestion queried with v1 embeddings of identical dimension (1024) and enforcing version-pinned schemas and indexes.",
+      "ja": "同じ1024次元だが異なるバージョンのEmbeddingモデルが取り込みと検索で混在する障害の検知とスキーマ強制。",
+      "zh": "识别维度同为 1024 但模型版本不一致导致的检索退化，并在数据库层强制模型版本约束与蓝绿重索引。",
+      "pt": "Detecção de ingestão com modelo v2 consultada por modelo v1 de mesma dimensão (1024) e imposição de versionamento estrito.",
+      "fr": "Détection d’une ingestion modèle v2 interrogée en v1 de même dimension (1024) et verrouillage par version au schéma."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "review",
+      "scenario": {
+        "es": "Un despliegue actualizó el modelo de consulta manteniendo la dimensión 1024 sin reindexar; SQL no falla pero Recall@5 cayó del 89% al 11%.",
+        "en": "A deploy upgraded the query encoder keeping dimension 1024 without reindexing; SQL succeeds silently while Recall@5 drops from 89% to 11%.",
+        "ja": "クエリ側モデルのみ同次元の新バージョンへ更新したためSQLエラーなくRecall@5が89%から11%へ暴落した問題を防げ。",
+        "zh": "一次发布仅升级了查询端同维度新编码器而未重建索引，SQL 无报错但 Recall@5 从 89% 暴跌至 11%；请建立防呆机制。",
+        "pt": "Um deploy atualizou o encoder de busca mantendo 1024 dimensões sem reindexar; o SQL roda sem erro mas o Recall@5 cai para 11%.",
+        "fr": "Un déploiement a changé l’encodeur de requête de dimension 1024 sans réindexer ; aucun crash SQL mais le Recall@5 chute à 11 %."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S08",
+    "slug": "senior-08",
+    "track": "senior",
+    "title": {
+      "es": "Fuga de PII y Secretos en Trazas OpenTelemetry / Langfuse",
+      "en": "PII and Secret Leakage in OpenTelemetry / Langfuse GenAI Traces",
+      "ja": "OpenTelemetry / LangfuseトレースへのPII・シークレット漏洩",
+      "zh": "OpenTelemetry / Langfuse 链路追踪中的 PII 与密钥泄露",
+      "pt": "Vazamento de PII e Segredos em Traces OpenTelemetry / Langfuse",
+      "fr": "Fuite de PII et Secrets dans les Traces OpenTelemetry / Langfuse"
+    },
+    "summary": {
+      "es": "Sanitización en el procesador OTel antes de exportar spans, hashing de identificadores, retención corta y RBAC sobre plataformas de observabilidad.",
+      "en": "Redacting prompts/outputs inside the OTel span processor prior to export, hashing actor IDs, short retention, and observability RBAC.",
+      "ja": "エクスポート前のOTel SpanProcessorでのPIIマスキング、IDハッシュ化、短期保持、可観測性基盤のアクセス制御。",
+      "zh": "在 OTel Span 导出前完成敏感提示词与医疗金融隐私脱敏、用户标识哈希化、短周期留存及观测平台权限加固。",
+      "pt": "Redação de prompts/respostas no SpanProcessor OTel antes da exportação, hash de IDs, retenção curta e controle de acesso.",
+      "fr": "Masquage des prompts/sorties dans le SpanProcessor OTel avant export, hachage des IDs, rétention courte et RBAC."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "security",
+      "scenario": {
+        "es": "El SDK de trazabilidad captura por defecto historias clínicas completas y tokens Bearer en atributos de span accesibles a todo ingeniería.",
+        "en": "Default tracing instrumentation captures full medical records and Bearer headers inside span attributes visible to all developers.",
+        "ja": "標準トレーシング設定によりカルテ全文とBearerトークンがスパン属性に記録され開発者全員から閲覧可能になっている。",
+        "zh": "默认追踪配置将完整病历文本与 Bearer 令牌写入 Span 属性并对全体研发可见；请设计合规观测改造方案。",
+        "pt": "A instrumentação padrão grava prontuários médicos completos e cabeçalhos Bearer em atributos de span visíveis a toda equipe.",
+        "fr": "L’instrumentation par défaut enregistre dossiers médicaux complets et jetons Bearer dans des spans visibles par toute l’équipe."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S09",
+    "slug": "senior-09",
+    "track": "senior",
+    "title": {
+      "es": "Alucinación de Citas e Identificadores Inventados en Respuestas Legales",
+      "en": "Hallucinated Citations and Fabricated Document IDs in Legal Answers",
+      "ja": "法務・規定回答における架空引用と存在しない文書IDの捏造",
+      "zh": "法务合规问答中的引用幻觉与伪造文档编号",
+      "pt": "Alucinação de Citações e IDs Inventados em Respostas Jurídicas",
+      "fr": "Hallucination de Citations et IDs Inventés dans les Réponses Juridiques"
+    },
+    "summary": {
+      "es": "Verificación determinista post-generación de que cada cita pertenece al conjunto autorizado recuperado y soporte real de la afirmación.",
+      "en": "Deterministic post-generation verification ensuring every cited ID belongs to the authorized retrieved set and supports the claim.",
+      "ja": "生成後にすべての引用IDが認可済み検索セットに実在し主張を裏付けているかを決定論的に検証するガードレール。",
+      "zh": "生成后确定性核验每个引用编号是否真实属于本次授权检索集且具备原文支撑，拒绝伪造条款。",
+      "pt": "Validação determinística pós-geração garantindo que cada citação pertença ao conjunto recuperado autorizado.",
+      "fr": "Validation déterministe post-génération garantissant que chaque citation appartient au lot récupéré autorisé."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "review",
+      "scenario": {
+        "es": "El modelo responde con formato JSON válido pero cita el artículo \"NORM-994\" que no existe en ningún chunk recuperado.",
+        "en": "The model emits valid JSON Schema output yet cites clause \"NORM-994\" which does not exist in any retrieved chunk.",
+        "ja": "JSONスキーマ検証は通過するが、検索チャンクに存在しない架空条項「NORM-994」を引用して回答してしまう不具合を防止せよ。",
+        "zh": "模型输出通过了 JSON Schema 校验，却引用了检索结果中根本不存在的条款“NORM-994”；请设计后端拦截闭环。",
+        "pt": "O modelo retorna JSON válido pelo schema, mas cita a cláusula \"NORM-994\" inexistente nos chunks recuperados.",
+        "fr": "Le modèle renvoie un JSON conforme au schéma mais cite la clause « NORM-994 » absente des chunks récupérés."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S10",
+    "slug": "senior-10",
+    "track": "senior",
+    "title": {
+      "es": "Saturación de Pool PostgreSQL durante Ingesta Masiva + Tráfico RAG",
+      "en": "PostgreSQL Connection & IO Starvation during Bulk Ingestion + Live RAG",
+      "ja": "大量取り込みとオンラインRAG同時実行時のPostgreSQLプール枯渇",
+      "zh": "批量向量入库与在线 RAG 并发争抢导致的 PostgreSQL 连接池耗尽",
+      "pt": "Saturação do Pool PostgreSQL durante Ingestão em Massa + Tráfego RAG",
+      "fr": "Saturation du Pool PostgreSQL lors d’Ingestion Massive + Trafic RAG"
+    },
+    "summary": {
+      "es": "Aislamiento de pools/roles entre workers de indexación e inferencia online, concurrencia acotada y batching transaccional sin bloquear lecturas.",
+      "en": "Isolating DB pools/roles between ingestion workers and online RAG queries, bounded worker concurrency, and non-blocking batch upserts.",
+      "ja": "取り込みワーカーとオンライン検索のDB接続プール・ロール分離、並列度制限、検索を阻害しないバッチ更新。",
+      "zh": "隔离离线摄取 Worker 与在线检索服务的数据库连接池和角色，限制并发批量写入以保障在线 p95 延迟。",
+      "pt": "Isolamento de pools e roles entre workers de ingestão e consultas RAG online, concorrência limitada e upserts em lote.",
+      "fr": "Isolation des pools et rôles entre workers d’ingestion et requêtes RAG temps réel, concurrence bornée et lots non bloquants."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "operations",
+      "scenario": {
+        "es": "Reindexar 50,000 manuales con Promise.all sin límite agotó max_connections y elevó el p95 del asistente en vivo a 19 segundos.",
+        "en": "Reindexing 50,000 manuals via unbounded concurrency exhausted max_connections and spiked live assistant p95 latency to 19 seconds.",
+        "ja": "無制限の並列処理で5万件のマニュアルを再インデックスした結果、max_connectionsが枯渇し本番応答p95が19秒に悪化した。",
+        "zh": "无并发限制地重索引 5 万份手册耗尽了数据库 max_connections，导致线上助手 p95 飙升至 19 秒；请设计隔离方案。",
+        "pt": "Reindexar 50 mil manuais sem limite de concorrência esgotou max_connections e elevou o p95 em produção para 19 segundos.",
+        "fr": "La réindexation non bornée de 50 000 manuels a saturé max_connections et fait bondir la latence p95 en direct à 19 s."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S11",
+    "slug": "senior-11",
+    "track": "senior",
+    "title": {
+      "es": "Escalada de Privilegios y Path Traversal en Servidor MCP Interno",
+      "en": "Privilege Escalation and Path Traversal in an Internal MCP Server",
+      "ja": "社内MCPサーバーにおける権限昇格とパストラバーサル脆弱性",
+      "zh": "内部 MCP 服务器中的权限提升与路径遍历漏洞防护",
+      "pt": "Escalada de Privilégios e Path Traversal em Servidor MCP Interno",
+      "fr": "Escalade de Privilèges et Path Traversal dans un Serveur MCP Interne"
+    },
+    "summary": {
+      "es": "Endurecimiento de servidores MCP: canonicalización de rutas, prohibición de symlinks fuera del workspace, credenciales por usuario y scopes.",
+      "en": "Hardening MCP servers with path canonicalization, symlink escape checks, per-user delegated credentials, and read/write scope gates.",
+      "ja": "パス正規化、シンボリックリンク脱出防止、サービス共通鍵の廃止とユーザー別委譲スコープによるMCPサーバー堅牢化。",
+      "zh": "通过路径规范化、符号链接越界拦截、按用户委派最小权限凭据代替全局管理员密钥来加固 MCP 服务器。",
+      "pt": "Endurecimento de servidor MCP com canonicalização de caminhos, bloqueio de symlinks externos e credenciais delegadas por usuário.",
+      "fr": "Durcissement de serveur MCP par canonicalisation des chemins, blocage de symlinks sortants et jetons délégués par utilisateur."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "security",
+      "scenario": {
+        "es": "Un servidor MCP de documentos acepta rutas \"../.env\" y ejecuta consultas usando una única credencial maestra de administrador.",
+        "en": "A document MCP server accepts \"../.env\" relative paths and executes backend calls under a single shared admin service key.",
+        "ja": "社内MCPサーバーが「../.env」の相対パスを受け入れ、単一の管理者マスターキーでバックエンドを実行している脆弱性を修正せよ。",
+        "zh": "某内部文档 MCP 服务未校验“../.env”路径遍历，且使用单一全局管理员密钥访问后端；请完成安全重构。",
+        "pt": "Um servidor MCP aceita caminhos relativos \"../.env\" e acessa o backend usando uma única chave mestra administrativa.",
+        "fr": "Un serveur MCP accepte des chemins « ../.env » et exécute ses appels avec une clé administrateur partagée unique."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S12",
+    "slug": "senior-12",
+    "track": "senior",
+    "title": {
+      "es": "Data Leakage Temporal en Datasets de Evaluación y Calibración",
+      "en": "Temporal Data Leakage and Judge Bias in AI Evaluation Pipelines",
+      "ja": "AI評価パイプラインにおける時系列データリークとLLM-as-a-Judgeバイアス",
+      "zh": "AI 评测流水线中的时间穿越数据泄露与裁判模型偏差",
+      "pt": "Data Leakage Temporal e Viés de Juiz em Pipelines de Avaliação",
+      "fr": "Fuite Temporelle de Données et Biais d’Évaluation LLM-as-a-Judge"
+    },
+    "summary": {
+      "es": "Particionado estrictamente temporal, calibración de jueces LLM contra etiquetas humanas expertas y detección de drift con PSI.",
+      "en": "Enforcing chronological dataset splits, calibrating LLM-as-a-Judge against human gold labels, and monitoring input drift via PSI.",
+      "ja": "厳密な時系列データ分割、人間専門家ラベルとの一致率によるLLM Judge校正、PSIを用いた本番ドリフト監視。",
+      "zh": "强制按时间顺序切分评测集，用人类专家标注校准裁判模型，并通过群体稳定性指标（PSI）监控线上分布漂移。",
+      "pt": "Divisão estritamente cronológica, calibração de LLM-as-a-Judge contra rótulos humanos e detecção de drift com PSI.",
+      "fr": "Découpage chronologique strict, calibrage du juge LLM face aux annotations humaines et détection de dérive par PSI."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "debug",
+      "scenario": {
+        "es": "Las evaluaciones offline reportan 97% de éxito pero en producción las quejas suben porque el golden set contenía respuestas post-incidente.",
+        "en": "Offline evals report 97% accuracy while live incidents rise because future post-mortem docs leaked into historical test queries.",
+        "ja": "オフライン評価は97%合格だが本番品質が悪化している。事後作成された回答文書が評価セットに混入していたリークを是正せよ。",
+        "zh": "离线评测准确率高达 97% 但线上投诉激增，排查发现事后复盘文档穿越混入了历史测试集；请重构评测门禁。",
+        "pt": "As avaliações offline marcam 97% de acerto, mas falham em produção porque documentos futuros vazaram no conjunto histórico.",
+        "fr": "Les évals offline affichent 97 % de réussite mais échouent en réel car des documents postérieurs ont fuité dans le jeu de test."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S13",
+    "slug": "senior-13",
+    "track": "senior",
+    "title": {
+      "es": "Degradación de Latencia p99 por Reranking No Acotado y Contextos Gigantes",
+      "en": "p99 Latency Degradation from Unbounded Reranking and Bloated Contexts",
+      "ja": "無制限リランキングと巨大コンテキスト注入によるp99レイテンシ悪化",
+      "zh": "无上限重排序与超大上下文拼接引发的 p99 延迟雪崩",
+      "pt": "Degradação de Latência p99 por Reranking Ilimitado e Contextos Gigantes",
+      "fr": "Dégradation Latence p99 par Reranking Non Borné et Contextes Géants"
+    },
+    "summary": {
+      "es": "Acotar candidatos enviados al cross-encoder, aplicar presupuesto de tokens al contexto final y medir ganancia marginal vs SLA.",
+      "en": "Capping cross-encoder candidate counts, enforcing prompt context token budgets, and validating quality gain vs p99 SLA.",
+      "ja": "Cross-Encoderへの候補数上限設定、最終プロンプトのトークン予算強制、p99 SLAに対する品質向上のトレードオフ検証。",
+      "zh": "限制送入 Cross-Encoder 的候选数量，强制裁剪最终提示词上下文预算，在 p99 SLA 内平衡精度与吞吐。",
+      "pt": "Limitar candidatos enviados ao cross-encoder, impor orçamento de tokens no contexto e validar ganho frente ao SLA p99.",
+      "fr": "Plafonner les candidats du cross-encoder, imposer un budget de contexte et valider le gain réel face au SLA p99."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "operations",
+      "scenario": {
+        "es": "Pasar 200 chunks al reranker en CPU y meter 40 chunks completos al LLM llevó el TTFT a 11 segundos rompiendo el SLO de atención.",
+        "en": "Sending 200 chunks to a CPU reranker and stuffing 40 full chunks into the prompt pushed TTFT to 11s, breaching the support SLO.",
+        "ja": "200チャンクをCPUリランカーに渡し40チャンク全文をLLMへ投入した結果、TTFTが11秒に達しSLO違反となった構成を最適化せよ。",
+        "zh": "将 200 个分块送入 CPU 重排序并把 40 个完整分块塞进提示词导致首字延迟达 11 秒违约；请实施预算裁剪。",
+        "pt": "Enviar 200 chunks ao reranker em CPU e injetar 40 chunks inteiros no prompt elevou o TTFT para 11s violando o SLO.",
+        "fr": "Envoyer 200 chunks au reranker CPU et 40 chunks complets au prompt a poussé le TTFT à 11 s, violant le SLO."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S14",
+    "slug": "senior-14",
+    "track": "senior",
+    "title": {
+      "es": "Doble Cobro y Acciones Duplicadas en Agentes Transaccionales",
+      "en": "Duplicate Side Effects and Double Execution in Transactional Agents",
+      "ja": "トランザクション系エージェントにおける二重実行と重複課金防止",
+      "zh": "事务型智能体中的重复副作用与双重扣款防护",
+      "pt": "Efeitos Duplicados e Execução Dupla em Agentes Transacionais",
+      "fr": "Effets de Bord Dupliqués et Double Exécution dans les Agents Transactionnels"
+    },
+    "summary": {
+      "es": "Claves deterministas de idempotencia por paso de workflow, separación lectura/escritura y reconciliación tras timeouts de red.",
+      "en": "Deterministic per-step idempotency keys, strict read/write tool separation, and state reconciliation after network timeouts.",
+      "ja": "ワークフローステップ単位の冪等キー、読み書きツールの分離、ネットワークタイムアウト後の状態突合と再実行制御。",
+      "zh": "为工作流步骤绑定确定性幂等键、严格分离读写工具，并在网络超时后先查询对账状态再决定恢复策略。",
+      "pt": "Chaves determinísticas de idempotência por etapa, separação entre leitura e escrita e reconciliação após timeouts.",
+      "fr": "Clés d’idempotence déterministes par étape, séparation lecture/écriture et réconciliation d’état après timeout réseau."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "review",
+      "scenario": {
+        "es": "Tras un timeout de lectura HTTP, el nodo de LangGraph reejecutó createRefund() sin idempotency_key emitiendo dos reembolsos reales.",
+        "en": "Following an HTTP read timeout, a LangGraph node retried createRefund() without an idempotency_key, issuing two real refunds.",
+        "ja": "HTTP読み取りタイムアウト後、LangGraphノードがidempotency_keyなしでcreateRefund()を再実行し二重返金が発生した。",
+        "zh": "一次 HTTP 读取超时后，LangGraph 节点在无幂等键的情况下重试 createRefund() 造成两次真实退款；请修复契约。",
+        "pt": "Após um timeout de leitura HTTP, um nó do LangGraph reexecutou createRefund() sem idempotency_key gerando reembolso duplo.",
+        "fr": "Après un timeout HTTP, un nœud LangGraph a relancé createRefund() sans idempotency_key et émis deux remboursements réels."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S15",
+    "slug": "senior-15",
+    "track": "senior",
+    "title": {
+      "es": "Residencia de Datos, Failover Multi-Región y Soberanía en LLMs",
+      "en": "Data Residency, Multi-Region Failover and Compliance in LLM Gateways",
+      "ja": "LLMゲートウェイにおけるデータレジデンシーとマルチリージョン耐障害設計",
+      "zh": "大模型网关的数据驻留合规与多区域容灾切换设计",
+      "pt": "Residência de Dados, Failover Multi-Região e Conformidade em Gateways LLM",
+      "fr": "Résidence des Données, Bascule Multi-Région et Conformité des Gateways LLM"
+    },
+    "summary": {
+      "es": "Diseñar fallbacks de proveedor que jamás redirijan payloads regulados (salud/banca UE-LATAM) hacia regiones o tiers con retención de entrenamiento.",
+      "en": "Designing provider failovers that never route regulated payloads into unauthorized jurisdictions or training-retention endpoints.",
+      "ja": "障害時のフェイルオーバー先が規制データを許可外リージョンや学習利用エンドポイントへ送信しないゲートウェイ設計。",
+      "zh": "设计故障切换策略，确保医疗金融等受监管负载在主用模型故障时绝不流向越权司法管辖区或保留训练数据的端点。",
+      "pt": "Projetar failovers de provedor que nunca enviem dados regulados para regiões não autorizadas ou endpoints com retenção.",
+      "fr": "Concevoir des bascules fournisseurs n’acheminant jamais de données réglementées vers des régions ou offres non conformes."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "architecture",
+      "scenario": {
+        "es": "El fallback automático ante errores 503 envió expedientes regulados de clientes a un endpoint público global fuera de la jurisdicción aprobada.",
+        "en": "Automatic 503 failover routed regulated customer claims to a global public endpoint outside the approved compliance region.",
+        "ja": "503障害時の自動フェイルオーバーが規制対象データを承認リージョン外のグローバルエンドポイントへ転送してしまった。",
+        "zh": "主区域 503 故障触发自动降级时，网关将受监管客户理赔数据发往了未获合规批准的公共区域端点；请重构路由策略。",
+        "pt": "O failover automático em erro 503 redirecionou sinistros regulados para um endpoint global fora da jurisdição aprovada.",
+        "fr": "La bascule automatique sur erreur 503 a routé des dossiers réglementés vers un endpoint public hors juridiction approuvée."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S16",
+    "slug": "senior-16",
+    "track": "senior",
+    "title": {
+      "es": "Fugas de Recursos y VRAM en Serving Local (Ollama / vLLM)",
+      "en": "Resource & VRAM Starvation in Self-Hosted Serving (Ollama / vLLM)",
+      "ja": "セルフホスト推論（Ollama / vLLM）におけるVRAM枯渇とOOM対策",
+      "zh": "自托管推理（Ollama / vLLM）显存耗尽、并发排队与 OOM 治理",
+      "pt": "Saturação de VRAM e OOM em Inferência Local (Ollama / vLLM)",
+      "fr": "Saturation VRAM et OOM en Inférence Auto-Hébergée (Ollama / vLLM)"
+    },
+    "summary": {
+      "es": "Control de admisión, cola acotada, max_model_len realista, autenticación de red privada y cálculo real de costo GPU vs API gestionada.",
+      "en": "Admission control, bounded queues, realistic max_model_len, private network auth, and honest GPU utilization vs managed API cost.",
+      "ja": "アドミッション制御、上限付き待機キュー、適切なmax_model_len設定、閉域網認証、マネージドAPIとの実コスト比較。",
+      "zh": "实施准入控制、有界排队、合理的 max_model_len 上限、内网认证加固，并与托管 API 进行真实吞吐成本核算。",
+      "pt": "Controle de admissão, fila limitada, max_model_len realista, autenticação em rede privada e custo real de GPU vs API.",
+      "fr": "Contrôle d’admission, file bornée, max_model_len réaliste, authentification réseau privé et coût réel GPU vs API gérée."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "operations",
+      "scenario": {
+        "es": "Un nodo GPU con vLLM cae por OOM cada mañana y además tenía el puerto 8000 expuesto sin autenticación en la subred corporativa.",
+        "en": "A vLLM GPU node crashes with OOM during morning bursts while exposing port 8000 unauthenticated across the internal network.",
+        "ja": "朝のピーク時にvLLMノードがOOMクラッシュを繰り返し、さらにポート8000が認証なしで社内網に露出している状態を是正せよ。",
+        "zh": "某 vLLM GPU 节点早高峰频繁显存溢出崩溃，且 8000 端口在无鉴权状态下暴露于内网；请制定加固与容量方案。",
+        "pt": "Um nó GPU com vLLM sofre OOM nos picos matinais e mantém a porta 8000 exposta sem autenticação na rede interna.",
+        "fr": "Un nœud GPU vLLM plante en OOM chaque matin tout en exposant le port 8000 sans authentification sur le réseau interne."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S17",
+    "slug": "senior-17",
+    "track": "senior",
+    "title": {
+      "es": "Incumplimiento de Borrado GDPR / Derecho al Olvido en Índices y Backups",
+      "en": "Incomplete GDPR Right-to-Erasure across Vector Indexes and Caches",
+      "ja": "ベクトルインデックス・キャッシュに残存するGDPR削除漏れ障害",
+      "zh": "向量索引、语义缓存与追踪日志中的 GDPR 删除遗漏治理",
+      "pt": "Exclusão Incompleta LGPD/GDPR em Índices Vetoriais e Caches",
+      "fr": "Suppression RGPD Incomplète dans les Index Vectoriels et Caches"
+    },
+    "summary": {
+      "es": "Trazabilidad completa document_id → chunks → pgvector → caché → artefactos de evaluación para garantizar cero residuos tras borrado.",
+      "en": "End-to-end lineage from document_id to chunks, pgvector rows, caches, and eval logs guaranteeing zero residual fragments post-erasure.",
+      "ja": "document_idからチャンク・pgvector・キャッシュ・評価ログまでの一貫系譜管理と削除後の残存ゼロ検証。",
+      "zh": "建立从 document_id 到分块表、pgvector 索引、缓存及评测日志的全链路血缘清理与零残留自动化验证。",
+      "pt": "Linhagem ponta a ponta de document_id até chunks, pgvector, caches e logs garantindo zero resíduos após exclusão.",
+      "fr": "Lignage complet de document_id vers chunks, pgvector, caches et journaux garantissant zéro résidu après effacement."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "debug",
+      "scenario": {
+        "es": "Se borró el registro maestro del cliente en PostgreSQL, pero sus fragmentos huérfanos en document_chunks siguen apareciendo en respuestas RAG.",
+        "en": "A customer master record was deleted, yet orphaned rows in document_chunks and cached answers continue surfacing in RAG responses.",
+        "ja": "顧客マスタ削除後もdocument_chunksの孤立レコードとキャッシュが残り、RAG回答に個人情報が出力され続けている。",
+        "zh": "客户主表记录虽已删除，但 document_chunks 中的孤儿向量分块与缓存仍持续出现在 RAG 回答中；请彻底修复。",
+        "pt": "O cadastro principal do cliente foi apagado, mas chunks órfãos e entradas em cache continuam aparecendo nas respostas RAG.",
+        "fr": "La fiche client principale a été supprimée mais des chunks orphelins et le cache continuent d’alimenter les réponses RAG."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "S18",
+    "slug": "senior-18",
+    "track": "senior",
+    "title": {
+      "es": "Auditoría Integral Go/No-Go de Plataforma IA (Matriz de 32 Controles)",
+      "en": "Comprehensive AI Platform Go/No-Go Release Audit (32-Control Matrix)",
+      "ja": "本番リリース判定：AIプラットフォーム32項目Go/No-Go総合監査",
+      "zh": "生产发布终审：AI 平台 32 项 Go/No-Go 质量安全门禁综合审计",
+      "pt": "Auditoria Integral Go/No-Go de Plataforma de IA (Matriz de 32 Controles)",
+      "fr": "Audit Intégral Go/No-Go de Plateforme IA (Matrice à 32 Contrôles)"
+    },
+    "summary": {
+      "es": "Dictamen ejecutivo basado en evidencia verificable sobre retrieval, ACL, citas, prompt injection, observabilidad, FinOps y plan de rollback.",
+      "en": "Evidence-backed release verdict across retrieval quality, ACLs, citations, prompt injection, observability, FinOps, and rollback readiness.",
+      "ja": "検索品質・ACL・引用・インジェクション耐性・可観測性・FinOps・ロールバック手順の実証データに基づく本番判定。",
+      "zh": "基于可复现证据对检索质量、细粒度 ACL、引用核验、注入防护、无隐私观测、原子预算及回滚预案作出上线裁决。",
+      "pt": "Veredito de release baseado em evidências cobrindo qualidade de busca, ACL, citações, segurança, observabilidade, FinOps e rollback.",
+      "fr": "Verdict de mise en production fondé sur preuves couvrant recherche, ACL, citations, sécurité, observabilité, FinOps et rollback."
+    },
+    "status": "implemented",
+    "challenge": {
+      "kind": "architecture",
+      "scenario": {
+        "es": "El negocio pide lanzar mañana un copiloto corporativo que tuvo 3 demos exitosas, pero aún no tiene tests cross-tenant ni hard-stop FinOps.",
+        "en": "Stakeholders push to launch an enterprise copilot tomorrow after three good demos, despite missing cross-tenant ACL tests and FinOps caps.",
+        "ja": "3回のデモ成功だけを根拠に明日リリースを求められているが、クロステナントACL試験と予算上限が未実装の案件を判定せよ。",
+        "zh": "业务方仅凭三次成功演示要求明日全量上线企业助手，但跨租户越权测试与预算硬上限均处于缺失状态；请给出裁决。",
+        "pt": "O negócio pede o lançamento amanhã após três boas demos, mas faltam testes de isolamento cross-tenant e trava de orçamento.",
+        "fr": "Les métiers demandent un lancement demain après trois démos réussies, sans tests ACL cross-tenant ni plafond FinOps."
+      },
+      "criteria": [
+        "correctness",
+        "reliability",
+        "security",
+        "performance",
+        "maintainability",
+        "reasoning"
+      ]
+    }
+  },
+  {
+    "id": "F01",
+    "slug": "frameworks-01",
+    "track": "frameworks",
+    "title": {
+      "es": "LangChain & LangGraph en Producción",
+      "en": "LangChain & LangGraph in Production",
+      "ja": "本番運用のLangChain & LangGraph",
+      "zh": "LangChain 与 LangGraph 生产级编排",
+      "pt": "LangChain & LangGraph em Produção",
+      "fr": "LangChain & LangGraph en Production"
+    },
+    "summary": {
+      "es": "Pipelines tipados, StateGraph con límites de recursión, persistencia de checkpoints, aprobaciones HITL y puertos desacoplados.",
+      "en": "Typed pipelines, bounded StateGraphs, durable checkpointers, human-in-the-loop interrupts, and clean domain port adapters.",
+      "ja": "型付きパイプライン、再帰上限付きStateGraph、永続Checkpointer、HITL承認割り込みとクリーンなPort分離。",
+      "zh": "类型化流水线、带递归上限的 StateGraph、持久化检查点、人工审批中断与整洁领域端口封装。",
+      "pt": "Pipelines tipados, StateGraph com limite de recursão, checkpointers duráveis, interrupções HITL e portas desacopladas.",
+      "fr": "Pipelines typés, StateGraph à récursion bornée, checkpointers durables, interruptions HITL et ports découplés."
+    },
+    "status": "implemented",
+    "tools": [
+      "LangChain",
+      "LangGraph",
+      "StateGraph",
+      "Checkpointer"
+    ]
+  },
+  {
+    "id": "F02",
+    "slug": "frameworks-02",
+    "track": "frameworks",
+    "title": {
+      "es": "PostgreSQL + pgvector + Hybrid Search",
+      "en": "PostgreSQL + pgvector + Hybrid Search",
+      "ja": "PostgreSQL + pgvector + ハイブリッド検索",
+      "zh": "PostgreSQL + pgvector + 混合检索实战",
+      "pt": "PostgreSQL + pgvector + Hybrid Search",
+      "fr": "PostgreSQL + pgvector + Recherche Hybride"
+    },
+    "summary": {
+      "es": "Esquemas vectoriales versionados, índices HNSW, búsqueda léxica FTS, fusión RRF y filtrado obligatorio de ACL por documento.",
+      "en": "Versioned vector schemas, HNSW indexes, full-text GIN search, Reciprocal Rank Fusion (RRF), and mandatory document-level ACLs.",
+      "ja": "バージョン管理されたベクトルスキーマ、HNSW、FTS全文検索、RRF統合、文書単位ACLの強制。",
+      "zh": "版本化向量表结构、HNSW 索引调优、GIN 全文检索、RRF 融合排序以及强制文档级 ACL 权限过滤。",
+      "pt": "Schemas vetoriais versionados, índices HNSW, busca textual GIN, fusão RRF e filtragem obrigatória de ACL documental.",
+      "fr": "Schémas vectoriels versionnés, index HNSW, recherche plein texte GIN, fusion RRF et ACL documentaire obligatoire."
+    },
+    "status": "implemented",
+    "tools": [
+      "PostgreSQL",
+      "pgvector",
+      "FTS / GIN",
+      "RRF"
+    ]
+  },
+  {
+    "id": "F03",
+    "slug": "frameworks-03",
+    "track": "frameworks",
+    "title": {
+      "es": "NestJS + Zod AI Backend Architecture",
+      "en": "NestJS + Zod AI Backend Architecture",
+      "ja": "NestJS + ZodによるAIバックエンド設計",
+      "zh": "NestJS + Zod 企业级 AI 后端架构",
+      "pt": "Arquitetura Backend IA com NestJS + Zod",
+      "fr": "Architecture Backend IA avec NestJS + Zod"
+    },
+    "summary": {
+      "es": "Controllers delgados, validación Zod 4, identidad segura desde Guards, puertos DDD (KnowledgeRetriever, BudgetAuthorizer) y SSE.",
+      "en": "Thin controllers, Zod validation, trusted actor context from Guards, DDD ports (KnowledgeRetriever, BudgetAuthorizer), and SSE.",
+      "ja": "薄いController、Zod検証、Guardからの信頼された主体取得、DDDポート設計とSSEストリーミング。",
+      "zh": "精简控制器、Zod 严格校验、通过 Guard 提取可信租户身份、DDD 领域端口与 SSE 流式传输。",
+      "pt": "Controllers enxutos, validação Zod, contexto confiável via Guards, portas DDD (KnowledgeRetriever, BudgetAuthorizer) e SSE.",
+      "fr": "Contrôleurs fins, validation Zod, identité fiable via Guards, ports DDD (KnowledgeRetriever, BudgetAuthorizer) et SSE."
+    },
+    "status": "implemented",
+    "tools": [
+      "NestJS",
+      "Zod",
+      "OpenAPI",
+      "SSE"
+    ]
+  },
+  {
+    "id": "F04",
+    "slug": "frameworks-04",
+    "track": "frameworks",
+    "title": {
+      "es": "Python FastAPI, Workers de Ingesta y Reranking",
+      "en": "Python FastAPI, Ingestion Workers and Reranking",
+      "ja": "Python FastAPI・非同期取り込みワーカーとリランキング",
+      "zh": "Python FastAPI、异步摄取 Worker 与重排序服务",
+      "pt": "Python FastAPI, Workers de Ingestão e Reranking",
+      "fr": "Python FastAPI, Workers d’Ingestion et Reranking"
+    },
+    "summary": {
+      "es": "Microservicios tipados con Pydantic v2, ingesta idempotente asíncrona, adaptadores de embeddings/rerankers y suite unittest/pytest.",
+      "en": "Typed Pydantic v2 services, async idempotent document ingestion, embedding/reranker adapters, and deterministic unittest/pytest suites.",
+      "ja": "Pydantic v2による型安全なAPI、冪等な非同期取り込み、Embedding/Rerankerアダプタと決定論的テスト。",
+      "zh": "基于 Pydantic v2 的类型安全服务、幂等异步文档摄取、向量与重排序适配器及确定性单元测试。",
+      "pt": "Serviços tipados com Pydantic v2, ingestão assíncrona idempotente, adaptadores de embedding/rerank e testes determinísticos.",
+      "fr": "Services typés Pydantic v2, ingestion asynchrone idempotente, adaptateurs embedding/rerank et tests déterministes."
+    },
+    "status": "implemented",
+    "tools": [
+      "FastAPI",
+      "Pydantic v2",
+      "AsyncIO",
+      "Qwen3"
+    ]
+  },
+  {
+    "id": "F05",
+    "slug": "frameworks-05",
+    "track": "frameworks",
+    "title": {
+      "es": "MCP (Model Context Protocol) & Tool Security",
+      "en": "MCP (Model Context Protocol) & Tool Security",
+      "ja": "MCP（Model Context Protocol）とツールセキュリティ",
+      "zh": "MCP（模型上下文协议）与安全工具网关",
+      "pt": "MCP (Model Context Protocol) e Segurança de Tools",
+      "fr": "MCP (Model Context Protocol) et Sécurité des Outils"
+    },
+    "summary": {
+      "es": "Diseño de servidores MCP empresariales con contratos estrictos, autorización por ejecución, aislamiento de rutas y auditoría.",
+      "en": "Building enterprise MCP servers with strict input schemas, per-call authorization, filesystem sandboxing, and clean audit trails.",
+      "ja": "厳格な入力スキーマ、呼び出し単位の認可、ファイルシステム隔離、監査証跡を備えたエンタープライズMCP設計。",
+      "zh": "构建具备严格输入契约、逐次调用鉴权、文件系统沙箱隔离与完整审计轨迹的企业级 MCP 服务。",
+      "pt": "Servidores MCP corporativos com schemas estritos, autorização a cada chamada, sandboxing de arquivos e trilha de auditoria.",
+      "fr": "Serveurs MCP d’entreprise avec schémas stricts, autorisation par appel, sandboxing système et piste d’audit propre."
+    },
+    "status": "implemented",
+    "tools": [
+      "MCP",
+      "JSON-RPC",
+      "OAuth Scopes",
+      "Sandboxing"
+    ]
+  },
+  {
+    "id": "F06",
+    "slug": "frameworks-06",
+    "track": "frameworks",
+    "title": {
+      "es": "Ragas, Golden Datasets y CI Regression Gates",
+      "en": "Ragas, Golden Datasets and CI Regression Gates",
+      "ja": "Ragas・ゴールデンデータセットとCI回帰ゲート",
+      "zh": "Ragas、黄金评测集与 CI 质量回归门禁",
+      "pt": "Ragas, Golden Datasets e Gates de Regressão em CI",
+      "fr": "Ragas, Golden Datasets et Gates de Régression CI"
+    },
+    "summary": {
+      "es": "Pipelines reproducibles de evaluación RAG midiendo Recall@K, nDCG, Faithfulness, citas válidas y abstención antes de cada merge.",
+      "en": "Reproducible RAG evaluation pipelines measuring Recall@K, nDCG, Faithfulness, valid citations, and abstention before every merge.",
+      "ja": "マージ前にRecall@K・nDCG・忠実度・引用妥当性・適切な棄権率を自動検証する再現可能な評価パイプライン。",
+      "zh": "在每次代码合并前自动度量 Recall@K、nDCG、忠实度、引用有效性及安全拒答率的可复现评测流水线。",
+      "pt": "Pipelines reprodutíveis medindo Recall@K, nDCG, Faithfulness, citações válidas e abstenção antes de cada merge.",
+      "fr": "Pipelines d’évaluation reproductibles mesurant Recall@K, nDCG, fidélité, citations valides et abstention avant fusion."
+    },
+    "status": "implemented",
+    "tools": [
+      "Ragas",
+      "Recall@K",
+      "nDCG",
+      "CI Gates"
+    ]
+  },
+  {
+    "id": "F07",
+    "slug": "frameworks-07",
+    "track": "frameworks",
+    "title": {
+      "es": "OpenTelemetry GenAI, Langfuse & Arize Phoenix",
+      "en": "OpenTelemetry GenAI, Langfuse & Arize Phoenix",
+      "ja": "OpenTelemetry GenAI・Langfuse・Arize Phoenix",
+      "zh": "OpenTelemetry GenAI、Langfuse 与 Arize Phoenix 观测",
+      "pt": "OpenTelemetry GenAI, Langfuse e Arize Phoenix",
+      "fr": "OpenTelemetry GenAI, Langfuse et Arize Phoenix"
+    },
+    "summary": {
+      "es": "Instrumentación distribuida de trazas LLM/RAG con redacción automática de PII, correlación de versiones de prompt y alertas SLO.",
+      "en": "Distributed LLM/RAG trace instrumentation with automatic PII redaction, prompt-version correlation, and latency/error SLO alerts.",
+      "ja": "自動PIIマスキング、プロンプトバージョン相関、レイテンシ・エラーSLOアラートを備えた分散GenAIトレーシング。",
+      "zh": "具备自动 PII 脱敏、提示词版本关联及延迟错误 SLO 告警的分布式大模型与检索链路追踪。",
+      "pt": "Instrumentação distribuída de traces LLM/RAG com redação automática de PII, versão de prompt e alertas de SLO.",
+      "fr": "Instrumentation distribuée des traces LLM/RAG avec masquage automatique des PII, versionnage de prompt et alertes SLO."
+    },
+    "status": "implemented",
+    "tools": [
+      "OpenTelemetry",
+      "Langfuse",
+      "Arize Phoenix",
+      "PII Redaction"
+    ]
+  },
+  {
+    "id": "F08",
+    "slug": "frameworks-08",
+    "track": "frameworks",
+    "title": {
+      "es": "Ollama / vLLM Serving & Atomic FinOps Gateway",
+      "en": "Ollama / vLLM Serving & Atomic FinOps Gateway",
+      "ja": "Ollama / vLLM推論基盤とアトミックFinOpsゲートウェイ",
+      "zh": "Ollama / vLLM 推理服务与原子级 FinOps 预算网关",
+      "pt": "Serving Ollama / vLLM e Gateway FinOps Atômico",
+      "fr": "Serving Ollama / vLLM et Passerelle FinOps Atomique"
+    },
+    "summary": {
+      "es": "Despliegue seguro de modelos locales/GPU, reserva atómica de presupuesto por tenant, caché segregado por ACL y conciliación de costos.",
+      "en": "Secure local/GPU model serving, atomic per-tenant budget reservation, ACL-segregated caching, and real billing reconciliation.",
+      "ja": "セキュアなローカル/GPUモデル配信、テナント別アトミック予算予約、ACL分離キャッシュと実請求コスト突合。",
+      "zh": "安全加固的本地/GPU 模型服务、多租户原子预算预留、按权限隔离的缓存以及真实账单对账网关。",
+      "pt": "Serving seguro de modelos locais/GPU, reserva atômica de orçamento por tenant, cache isolado por ACL e conciliação.",
+      "fr": "Serving sécurisé de modèles locaux/GPU, réservation atomique par tenant, cache isolé par ACL et réconciliation des coûts."
+    },
+    "status": "implemented",
+    "tools": [
+      "Ollama",
+      "vLLM",
+      "Token Ledger",
+      "Valkey Cache"
+    ]
+  }
+]

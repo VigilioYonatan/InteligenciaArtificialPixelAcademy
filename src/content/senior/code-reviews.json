@@ -1,0 +1,578 @@
+[
+  {
+    "moduleId": "S01",
+    "id": "s01-review",
+    "version": 1,
+    "title": "Fuga Cross-Tenant y Cross-User en Hybrid RAG",
+    "language": "es",
+    "code": "rows = db.query(\"SELECT text FROM chunks WHERE tenant_id = %s LIMIT 8\", [tenant_id])",
+    "questions": [
+      {
+        "prompt": "¿Qué riesgo crítico presenta esta consulta?",
+        "options": [
+          "Omitir permisos de usuario/documento y deleted_at",
+          "Usar LIMIT 8 es demasiado bajo",
+          "Falta ordenar alfabéticamente"
+        ],
+        "correct": 0,
+        "explanation": "Omitir permisos de usuario/documento y deleted_at"
+      },
+      {
+        "prompt": "¿Qué corrección exigirías en el PR?",
+        "options": [
+          "Mover el filtro ACL a React",
+          "Filtrar deleted_at IS NULL y allowed_principals en SQL + test cross-user",
+          "Cambiar LIMIT a 100"
+        ],
+        "correct": 1,
+        "explanation": "Filtrar deleted_at IS NULL y allowed_principals en SQL + test cross-user"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S02",
+    "id": "s02-review",
+    "version": 1,
+    "title": "Sobreingeniería Agéntica frente a SQL + Hybrid RAG",
+    "language": "es",
+    "code": "answer = agent_swarm.run(\"Lookup live account balance via vector similarity\")",
+    "questions": [
+      {
+        "prompt": "¿Por qué rechazar este enfoque?",
+        "options": [
+          "Vector similarity no garantiza exactitud transaccional y multiplica latencia/costo",
+          "Porque usa snake_case",
+          "Porque falta un segundo vector store"
+        ],
+        "correct": 0,
+        "explanation": "Vector similarity no garantiza exactitud transaccional y multiplica latencia/costo"
+      },
+      {
+        "prompt": "¿Qué alternativa aprobarías?",
+        "options": [
+          "Implementar getPolicyBalance(actor, id) con SQL autorizado",
+          "Agregar 3 prompts de sistema",
+          "Usar HNSW con ef_search=500"
+        ],
+        "correct": 0,
+        "explanation": "Implementar getPolicyBalance(actor, id) con SQL autorizado"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S03",
+    "id": "s03-review",
+    "version": 1,
+    "title": "Exfiltración vía Prompt Injection Indirecta y Tool Calling",
+    "language": "es",
+    "code": "tools = [execute_sql, send_external_webhook, run_shell]",
+    "questions": [
+      {
+        "prompt": "¿Qué riesgo OWASP LLM introduce esta lista de tools?",
+        "options": [
+          "Ejecución arbitraria y exfiltración si hay prompt injection indirecta",
+          "Ninguno si el LLM es grande",
+          "Solo consumo extra de RAM"
+        ],
+        "correct": 0,
+        "explanation": "Ejecución arbitraria y exfiltración si hay prompt injection indirecta"
+      },
+      {
+        "prompt": "¿Cómo refactorizar el catálogo de tools?",
+        "options": [
+          "Reemplazar por tools de negocio estrechas con allowlist y autorización por actor",
+          "Renombrar execute_sql a query_helper",
+          "Mover la lista a un archivo JSON"
+        ],
+        "correct": 0,
+        "explanation": "Reemplazar por tools de negocio estrechas con allowlist y autorización por actor"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S04",
+    "id": "s04-review",
+    "version": 1,
+    "title": "Envenenamiento y Contaminación de Caché Semántico Multi-Tenant",
+    "language": "es",
+    "code": "cache.set(normalize(query), llm_answer, ttl=86400)\n# production-review: verify invariants and tests",
+    "questions": [
+      {
+        "prompt": "¿Cuál es la falla de seguridad en esta línea?",
+        "options": [
+          "Cualquier tenant o rol con pregunta similar recibe el mismo llm_answer",
+          "TTL de 86400 es corto",
+          "normalize() no usa regex"
+        ],
+        "correct": 0,
+        "explanation": "Cualquier tenant o rol con pregunta similar recibe el mismo llm_answer"
+      },
+      {
+        "prompt": "¿Qué clave segura aprobarías?",
+        "options": [
+          "rag:{pipeline_ver}:{tenant_id}:{acl_hash}:{acl_epoch}:{q_hash}",
+          "cache:{query} (riesgo técnico)",
+          "global:{user_email}"
+        ],
+        "correct": 0,
+        "explanation": "rag:{pipeline_ver}:{tenant_id}:{acl_hash}:{acl_epoch}:{q_hash}"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S05",
+    "id": "s05-review",
+    "version": 1,
+    "title": "Agotamiento de Presupuesto FinOps por Reintentos y Loops",
+    "language": "es",
+    "code": "while response.status == 429:\n    response = call_llm(prompt)",
+    "questions": [
+      {
+        "prompt": "¿Qué incidente garantiza este bucle en producción?",
+        "options": [
+          "Bucle infinito / agotamiento de presupuesto y bloqueo del worker",
+          "Mejor latencia p99",
+          "Ahorro de tokens (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Bucle infinito / agotamiento de presupuesto y bloqueo del worker"
+      },
+      {
+        "prompt": "¿Qué reemplazo exigirías?",
+        "options": [
+          "Máximo 2 reintentos con jitter, AbortSignal y verificación de presupuesto previo",
+          "sleep(0) dentro del while",
+          "Quitar el manejo de 429"
+        ],
+        "correct": 0,
+        "explanation": "Máximo 2 reintentos con jitter, AbortSignal y verificación de presupuesto previo"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S06",
+    "id": "s06-review",
+    "version": 1,
+    "title": "Caída de Recall@K en HNSW con Filtros ACL Selectivos",
+    "language": "es",
+    "code": "CREATE INDEX idx_vec ON chunks USING hnsw (embedding vector_cosine_ops) WITH (m=4, ef_construction=16);",
+    "questions": [
+      {
+        "prompt": "¿Qué riesgo tiene esta configuración extrema junto a filtros ACL?",
+        "options": [
+          "Recall muy bajo bajo filtros selectivos por grafo demasiado disperso",
+          "Consumo excesivo de disco por B-Tree",
+          "Error de sintaxis SQL"
+        ],
+        "correct": 0,
+        "explanation": "Recall muy bajo bajo filtros selectivos por grafo demasiado disperso"
+      },
+      {
+        "prompt": "¿Qué verificación pedirías antes de aprobar?",
+        "options": [
+          "Benchmark comparando Recall@K vs búsqueda exacta con filtros ACL reales",
+          "Aprobar porque el índice se creó rápido",
+          "Subir LIMIT a 5000"
+        ],
+        "correct": 0,
+        "explanation": "Benchmark comparando Recall@K vs búsqueda exacta con filtros ACL reales"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S07",
+    "id": "s07-review",
+    "version": 1,
+    "title": "Mezcla Silenciosa de Modelos de Embedding",
+    "language": "es",
+    "code": "sql = \"SELECT id FROM chunks WHERE embedding <=> $1 LIMIT 5\"  # sin filtro embedding_model",
+    "questions": [
+      {
+        "prompt": "¿Qué bug silencioso permite esta consulta al actualizar modelos?",
+        "options": [
+          "Comparar vectores de modelos incompatibles si comparten dimensión",
+          "Falta GROUP BY (riesgo técnico)",
+          "SQL injection en LIMIT 5"
+        ],
+        "correct": 0,
+        "explanation": "Comparar vectores de modelos incompatibles si comparten dimensión"
+      },
+      {
+        "prompt": "¿Cómo blindar la consulta y el esquema?",
+        "options": [
+          "Añadir embedding_model_version al esquema/índice y validar compatibilidad antes de consultar",
+          "Cambiar <=> por <->",
+          "Quitar el LIMIT (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Añadir embedding_model_version al esquema/índice y validar compatibilidad antes de consultar"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S08",
+    "id": "s08-review",
+    "version": 1,
+    "title": "Fuga de PII y Secretos en Trazas OpenTelemetry / Langfuse",
+    "language": "es",
+    "code": "span.set_attribute(\"gen_ai.prompt\", req.raw_prompt)\nmetrics.inc(\"llm_calls\", labels={\"user_id\": req.user_id})",
+    "questions": [
+      {
+        "prompt": "¿Qué dos defectos críticos contiene este bloque?",
+        "options": [
+          "Fuga de PII en gen_ai.prompt y alta cardinalidad con user_id en métricas",
+          "Falta punto y coma",
+          "El nombre llm_calls es largo"
+        ],
+        "correct": 0,
+        "explanation": "Fuga de PII en gen_ai.prompt y alta cardinalidad con user_id en métricas"
+      },
+      {
+        "prompt": "¿Qué cambio exigirías?",
+        "options": [
+          "Redactar/omitir raw_prompt y usar labels de baja cardinalidad (model, feature, status)",
+          "Cambiar user_id por raw_prompt",
+          "Duplicar las métricas"
+        ],
+        "correct": 0,
+        "explanation": "Redactar/omitir raw_prompt y usar labels de baja cardinalidad (model, feature, status)"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S09",
+    "id": "s09-review",
+    "version": 1,
+    "title": "Alucinación de Citas e Identificadores Inventados",
+    "language": "es",
+    "code": "data = AnswerSchema.model_validate_json(raw)\nreturn data  # sin comprobar data.citations contra retrieved_ids",
+    "questions": [
+      {
+        "prompt": "¿Qué vacío deja aprobar este código?",
+        "options": [
+          "Permite devolver citas inventadas sintácticamente válidas",
+          "model_validate_json es lento",
+          "Falta try/except de red"
+        ],
+        "correct": 0,
+        "explanation": "Permite devolver citas inventadas sintácticamente válidas"
+      },
+      {
+        "prompt": "¿Qué validación agregarías?",
+        "options": [
+          "Verificar all(c in retrieved_ids for c in data.citations) y abstenerse si falla",
+          "Quitar citations del schema",
+          "Usar regex (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Verificar all(c in retrieved_ids for c in data.citations) y abstenerse si falla"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S10",
+    "id": "s10-review",
+    "version": 1,
+    "title": "Saturación de Pool PostgreSQL durante Ingesta Masiva",
+    "language": "es",
+    "code": "await Promise.all(documents.map((d) => ingestAndEmbed(d)));  // 50,000 docs",
+    "questions": [
+      {
+        "prompt": "¿Por qué bloquear este PR?",
+        "options": [
+          "Lanza 50,000 operaciones concurrentes saturando DB, CPU y rate limits LLM",
+          "map() no devuelve array",
+          "Falta console.log"
+        ],
+        "correct": 0,
+        "explanation": "Lanza 50,000 operaciones concurrentes saturando DB, CPU y rate limits LLM"
+      },
+      {
+        "prompt": "¿Qué patrón usarías?",
+        "options": [
+          "Cola asíncrona con concurrencia acotada (ej. 4-8 workers), batching e idempotencia",
+          "Cambiar map por forEach(async ...)",
+          "Quitar await (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Cola asíncrona con concurrencia acotada (ej. 4-8 workers), batching e idempotencia"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S11",
+    "id": "s11-review",
+    "version": 1,
+    "title": "Escalada de Privilegios y Path Traversal en Servidor MCP",
+    "language": "es",
+    "code": "def read_resource(path: str):\n    return open(os.path.join(BASE_DIR, path)).read()",
+    "questions": [
+      {
+        "prompt": "¿Qué vulnerabilidad crítica tiene os.path.join(BASE_DIR, path)?",
+        "options": [
+          "Si path es absoluto o contiene ../ escapa de BASE_DIR (Path Traversal)",
+          "open() no lee JSON",
+          "Falta async (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Si path es absoluto o contiene ../ escapa de BASE_DIR (Path Traversal)"
+      },
+      {
+        "prompt": "¿Cómo corregirlo?",
+        "options": [
+          "Resolver ruta real, verificar pertenencia estricta a BASE_DIR y aplicar allowlist",
+          "Comprobar if \"..\" not in path únicamente",
+          "Usar eval(path) (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Resolver ruta real, verificar pertenencia estricta a BASE_DIR y aplicar allowlist"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S12",
+    "id": "s12-review",
+    "version": 1,
+    "title": "Data Leakage Temporal y Sesgo en Pipelines de Evaluación",
+    "language": "es",
+    "code": "train, test = train_test_split(all_tickets, test_size=0.2, shuffle=True)",
+    "questions": [
+      {
+        "prompt": "¿Qué riesgo introduce shuffle=True en tickets/incidentes temporales?",
+        "options": [
+          "Data leakage temporal: tickets futuros contaminan el test histórico",
+          "test_size=0.2 es ilegal",
+          "shuffle requiere pandas"
+        ],
+        "correct": 0,
+        "explanation": "Data leakage temporal: tickets futuros contaminan el test histórico"
+      },
+      {
+        "prompt": "¿Cómo solucionarlo?",
+        "options": [
+          "Ordenar por timestamp y cortar estrictamente train <= cutoff < test",
+          "Usar test_size=0.5 con shuffle",
+          "Eliminar la fecha de los tickets"
+        ],
+        "correct": 0,
+        "explanation": "Ordenar por timestamp y cortar estrictamente train <= cutoff < test"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S13",
+    "id": "s13-review",
+    "version": 1,
+    "title": "Degradación de Latencia p99 por Reranking No Acotado",
+    "language": "es",
+    "code": "reranked = cross_encoder.score(query, all_200_chunks)\nprompt = \"\\n\".join(reranked[:40])",
+    "questions": [
+      {
+        "prompt": "¿Qué impacto operacional tiene este código?",
+        "options": [
+          "Dispara latencia p99, gasto de tokens e introduce ruido (\"lost in the middle\")",
+          "Reduce memoria RAM",
+          "Mejora seguridad ACL"
+        ],
+        "correct": 0,
+        "explanation": "Dispara latencia p99, gasto de tokens e introduce ruido (\"lost in the middle\")"
+      },
+      {
+        "prompt": "¿Qué ajuste aprobarías?",
+        "options": [
+          "Limitar candidatos a <=25 para rerank y presupuesto estricto de tokens/chunks finales",
+          "Subir a 400 chunks",
+          "Eliminar cross_encoder sin medir"
+        ],
+        "correct": 0,
+        "explanation": "Limitar candidatos a <=25 para rerank y presupuesto estricto de tokens/chunks finales"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S14",
+    "id": "s14-review",
+    "version": 1,
+    "title": "Doble Cobro y Acciones Duplicadas en Agentes Transaccionales",
+    "language": "es",
+    "code": "def refund_node(state):\n    return payment_api.create_refund(state[\"order_id\"], key=str(uuid.uuid4()))",
+    "questions": [
+      {
+        "prompt": "¿Por qué generar uuid4() dentro del nodo rompe la idempotencia?",
+        "options": [
+          "Cada reintento genera una clave distinta permitiendo cobros/reembolsos múltiples",
+          "uuid4 es demasiado lento",
+          "Falta un print (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Cada reintento genera una clave distinta permitiendo cobros/reembolsos múltiples"
+      },
+      {
+        "prompt": "¿Qué corrección exigirías?",
+        "options": [
+          "Derivar idempotency_key determinista de workflow_run_id + step_id y persistirla",
+          "Quitar la clave por completo",
+          "Usar timestamp en milisegundos"
+        ],
+        "correct": 0,
+        "explanation": "Derivar idempotency_key determinista de workflow_run_id + step_id y persistirla"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S15",
+    "id": "s15-review",
+    "version": 1,
+    "title": "Residencia de Datos, Failover Multi-Región y Soberanía",
+    "language": "es",
+    "code": "FALLBACK_URLS = [\"https://eu-private.llm\", \"https://global-free-tier.llm\"]",
+    "questions": [
+      {
+        "prompt": "¿Qué riesgo regulatorio introduce global-free-tier.llm como fallback?",
+        "options": [
+          "Fuga transfronteriza y posible retención de datos regulados para entrenamiento",
+          "El array tiene 2 elementos",
+          "HTTPS es lento (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Fuga transfronteriza y posible retención de datos regulados para entrenamiento"
+      },
+      {
+        "prompt": "¿Cómo corregir la tabla de rutas?",
+        "options": [
+          "Permitir solo endpoints en región autorizada con zero-retention o degradar fail-closed",
+          "Invertir el orden del array",
+          "Usar HTTP sin TLS"
+        ],
+        "correct": 0,
+        "explanation": "Permitir solo endpoints en región autorizada con zero-retention o degradar fail-closed"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S16",
+    "id": "s16-review",
+    "version": 1,
+    "title": "Saturación de VRAM y Seguridad en Serving Local (Ollama / vLLM)",
+    "language": "es",
+    "code": "vllm serve model --host 0.0.0.0 --port 8000 --max-model-len 131072  # sin gateway auth",
+    "questions": [
+      {
+        "prompt": "¿Qué dos riesgos combinados tiene este comando?",
+        "options": [
+          "Exposición sin auth en 0.0.0.0 y reserva excesiva de KV-cache con 128k",
+          "Usar puerto 8000 (riesgo técnico)",
+          "No usar YAML (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Exposición sin auth en 0.0.0.0 y reserva excesiva de KV-cache con 128k"
+      },
+      {
+        "prompt": "¿Qué endurecimiento aplicarías?",
+        "options": [
+          "Bind privado detrás de gateway autenticado + max_model_len acotado + rate limit",
+          "Cambiar puerto a 8080",
+          "Quitar --host (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Bind privado detrás de gateway autenticado + max_model_len acotado + rate limit"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S17",
+    "id": "s17-review",
+    "version": 1,
+    "title": "Borrado Incompleto GDPR / Derecho al Olvido en Vectores y Caché",
+    "language": "es",
+    "code": "await db.execute(\"DELETE FROM documents WHERE id = $1\", [docId]);\n// TODO: chunks are in separate store without cleanup",
+    "questions": [
+      {
+        "prompt": "¿Qué incumplimiento legal/seguridad deja este código?",
+        "options": [
+          "Chunks vectoriales y cachés huérfanos siguen siendo recuperables tras el borrado",
+          "Usa $1 en vez de ?",
+          "Falta punto y coma"
+        ],
+        "correct": 0,
+        "explanation": "Chunks vectoriales y cachés huérfanos siguen siendo recuperables tras el borrado"
+      },
+      {
+        "prompt": "¿Qué cambio es obligatorio antes de aprobar?",
+        "options": [
+          "Purgar document_chunks + índice + caché en el flujo de borrado con test negativo",
+          "Quitar DELETE FROM documents",
+          "Añadir un sleep(1)"
+        ],
+        "correct": 0,
+        "explanation": "Purgar document_chunks + índice + caché en el flujo de borrado con test negativo"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  },
+  {
+    "moduleId": "S18",
+    "id": "s18-review",
+    "version": 1,
+    "title": "Auditoría Integral Go/No-Go de Plataforma IA (32 Controles)",
+    "language": "es",
+    "code": "return {\"release\": \"GO\", \"acl_test\": \"NOT_RUN\", \"finops_cap\": \"YAML_ONLY\"}",
+    "questions": [
+      {
+        "prompt": "¿Por qué este dictamen viola la gobernanza Senior Vigilio?",
+        "options": [
+          "Declara GO con controles críticos sin ejecutar (NOT_RUN) y presupuesto meramente documental",
+          "El JSON usa llaves",
+          "Falta una coma (riesgo técnico)"
+        ],
+        "correct": 0,
+        "explanation": "Declara GO con controles críticos sin ejecutar (NOT_RUN) y presupuesto meramente documental"
+      },
+      {
+        "prompt": "¿Qué debe devolver la función?",
+        "options": [
+          "NO-GO cuando cualquier control obligatorio sea != PASS",
+          "GO si al menos 1 control pasa",
+          "Ignorar finops_cap"
+        ],
+        "correct": 0,
+        "explanation": "NO-GO cuando cualquier control obligatorio sea != PASS"
+      }
+    ],
+    "practice": "Explica el riesgo, exige una prueba negativa reproducible y registra el trade-off en tu ADR.",
+    "verification": "static-code-review: respuesta contra clave versionada; no ejecuta código en navegador"
+  }
+]

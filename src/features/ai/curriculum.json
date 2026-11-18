@@ -1,0 +1,146 @@
+[
+  {
+    "id": "AI01",
+    "title": "Python y pensamiento algorítmico",
+    "summary": "Tipos, funciones, estructuras y errores",
+    "stack": "Python",
+    "project": "Escribe funciones puras y casos de prueba",
+    "level": "fundamentos"
+  },
+  {
+    "id": "AI02",
+    "title": "Git, terminal y entornos",
+    "summary": "Git, venv, dependencias y reproducibilidad",
+    "stack": "Git / uv",
+    "project": "Crea un proyecto versionado reproducible",
+    "level": "fundamentos"
+  },
+  {
+    "id": "AI03",
+    "title": "Álgebra lineal para IA",
+    "summary": "Vectores, matrices y producto escalar",
+    "stack": "NumPy",
+    "project": "Implementa similitud coseno",
+    "level": "fundamentos"
+  },
+  {
+    "id": "AI04",
+    "title": "Probabilidad y estadística",
+    "summary": "Distribuciones, intervalos, sesgo y varianza",
+    "stack": "SciPy",
+    "project": "Evalúa datos con incertidumbre",
+    "level": "fundamentos"
+  },
+  {
+    "id": "AI05",
+    "title": "Datos y exploración",
+    "summary": "Limpieza, particiones y análisis exploratorio",
+    "stack": "pandas",
+    "project": "Diseña una pipeline de datos",
+    "level": "fundamentos"
+  },
+  {
+    "id": "AI06",
+    "title": "ML supervisado",
+    "summary": "Regresión, clasificación y regularización",
+    "stack": "scikit-learn",
+    "project": "Entrena un modelo con validación",
+    "level": "machine-learning"
+  },
+  {
+    "id": "AI07",
+    "title": "Evaluación de ML",
+    "summary": "Precision, recall, F1, leakage y drift",
+    "stack": "scikit-learn",
+    "project": "Construye una evaluación sin fuga",
+    "level": "machine-learning"
+  },
+  {
+    "id": "AI08",
+    "title": "Feature engineering",
+    "summary": "Transformaciones y pipelines seguras",
+    "stack": "scikit-learn",
+    "project": "Compón preprocessing reproducible",
+    "level": "machine-learning"
+  },
+  {
+    "id": "AI09",
+    "title": "Deep Learning",
+    "summary": "Autograd, optimizadores y entrenamiento",
+    "stack": "PyTorch",
+    "project": "Entrena una red neuronal",
+    "level": "deep-learning"
+  },
+  {
+    "id": "AI10",
+    "title": "Transformers y NLP",
+    "summary": "Atención, tokens y modelos de lenguaje",
+    "stack": "PyTorch / HF",
+    "project": "Analiza un Transformer",
+    "level": "deep-learning"
+  },
+  {
+    "id": "AI11",
+    "title": "Embeddings y vector search",
+    "summary": "Distancias, índices y filtros",
+    "stack": "pgvector",
+    "project": "Diseña una búsqueda semántica",
+    "level": "generative-ai"
+  },
+  {
+    "id": "AI12",
+    "title": "RAG verificable",
+    "summary": "Ingesta, retrieval, grounding y citas",
+    "stack": "Python / pgvector",
+    "project": "Construye RAG con evaluación",
+    "level": "generative-ai"
+  },
+  {
+    "id": "AI13",
+    "title": "Agentes y herramientas",
+    "summary": "Estados, tools, permisos y human-in-loop",
+    "stack": "LangGraph / MCP",
+    "project": "Implementa agente con límites",
+    "level": "generative-ai"
+  },
+  {
+    "id": "AI14",
+    "title": "Prompt y evaluación",
+    "summary": "Datasets de evals, regresiones y jueces",
+    "stack": "Python / MLflow",
+    "project": "Crea evaluación offline",
+    "level": "generative-ai"
+  },
+  {
+    "id": "AI15",
+    "title": "Serving e inferencia",
+    "summary": "FastAPI, colas, cachés y batching",
+    "stack": "FastAPI",
+    "project": "Sirve modelos con métricas",
+    "level": "senior"
+  },
+  {
+    "id": "AI16",
+    "title": "MLOps y LLMOps",
+    "summary": "Versionado, despliegue, observabilidad",
+    "stack": "MLflow / OpenTelemetry",
+    "project": "Entrega pipeline reproducible",
+    "level": "senior"
+  },
+  {
+    "id": "AI17",
+    "title": "Seguridad y DevSecOps IA",
+    "summary": "Injection, exfiltración, secretos y supply chain",
+    "stack": "OWASP / CI",
+    "project": "Audita arquitectura con pruebas",
+    "level": "senior"
+  },
+  {
+    "id": "AI18",
+    "title": "FinOps y arquitectura Senior",
+    "summary": "SLO, costos, GPU, incidentes y ADR",
+    "stack": "Vigilio Docs",
+    "project": "Defiende diseño de producción",
+    "level": "senior"
+  }
+]

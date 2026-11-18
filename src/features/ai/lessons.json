@@ -1,0 +1,396 @@
+[
+  {
+    "id": "AI01",
+    "language": "python",
+    "concepts": [
+      { "term": "Validación de entrada", "desc": "Todo payload o archivo externo es no confiable; validar tipos, rangos y longitud antes de operar." },
+      { "term": "Funciones puras", "desc": "Sin estado oculto ni efectos laterales; facilitan pruebas unitarias deterministas." },
+      { "term": "Fail-closed", "desc": "Ante un dato inválido o división por cero, lanzar ValueError explícito en vez de devolver None silencioso." }
+    ],
+    "doDont": {
+      "good": "Validar límites y tipos en el borde con ValueError explícito antes de procesar registros.",
+      "bad": "Usar eval(), pickle.loads() o capturar Exception devolviendo 0 silenciosamente."
+    },
+    "mission": "Completa `safe_mean(values)` para rechazar listas vacías o elementos no numéricos con `ValueError` y devolver el promedio exacto.",
+    "hint": "if not values: raise ValueError('empty'); if not all(isinstance(v, (int, float)) for v in values): raise ValueError('type'); return sum(values) / len(values)",
+    "starterCode": "def safe_mean(values: list[float]) -> float:\n    # TODO: lanza ValueError si la lista está vacía\n    # TODO: valida que todos los elementos sean int o float\n    return 0.0\n",
+    "solutionCode": "def safe_mean(values: list[float]) -> float:\n    if not values:\n        raise ValueError(\"empty input\")\n    if not all(isinstance(v, (int, float)) for v in values):\n        raise ValueError(\"non-numeric item\")\n    return sum(values) / len(values)\n",
+    "checks": [
+      { "pattern": "if\\s+not\\s+values", "label": "Validar lista vacía (if not values)" },
+      { "pattern": "raise\\s+ValueError", "label": "Lanzar ValueError explícito" },
+      { "pattern": "sum\\(values\\)\\s*/\\s*len\\(values\\)", "label": "Calcular sum(values) / len(values)" }
+    ]
+  },
+  {
+    "id": "AI02",
+    "language": "yaml",
+    "concepts": [
+      { "term": "uv.lock / hashes", "desc": "Fija versiones exactas y hashes criptográficos para builds reproducibles." },
+      { "term": "CI congelado", "desc": "En CI usar `--frozen` o `--locked` para impedir resolución flotante." },
+      { "term": "Cero secretos en Git", "desc": "Nunca incluir tokens o .env reales; usar .env.example con placeholders." }
+    ],
+    "doDont": {
+      "good": "Fijar versión exacta de Python, usar `uv sync --frozen` en CI y auditar lockfiles.",
+      "bad": "Ejecutar `pip install -U` en producción o subir `.venv/` al repositorio."
+    },
+    "mission": "Completa el bloque de CI reproducible fijando `--frozen` en `uv sync` y ejecutando `pytest` sin red externa.",
+    "hint": "run: uv sync --frozen --no-dev && uv run pytest -q",
+    "starterCode": "steps:\n  - name: Install reproducible deps\n    run: uv sync # TODO: añade flag congelado\n  - name: Run tests\n    run: # TODO: ejecuta pytest\n",
+    "solutionCode": "steps:\n  - name: Install reproducible deps\n    run: uv sync --frozen\n  - name: Run tests\n    run: uv run pytest -q\n",
+    "checks": [
+      { "pattern": "uv\\s+sync\\s+--frozen", "label": "Usar uv sync --frozen" },
+      { "pattern": "pytest", "label": "Ejecutar pytest en CI" }
+    ]
+  },
+  {
+    "id": "AI03",
+    "language": "python",
+    "concepts": [
+      { "term": "Producto escalar", "desc": "Mide alineación direccional entre vectores de embedding." },
+      { "term": "Norma L2", "desc": "Normalizar vectores permite comparar similitud coseno en [-1, 1]." },
+      { "term": "Estabilidad numérica", "desc": "Proteger el denominador con `eps = 1e-12` evita NaN ante vectores cero." }
+    ],
+    "doDont": {
+      "good": "Comprobar normas antes de dividir y proteger con epsilon acotado.",
+      "bad": "Dividir `np.dot(a, b) / (norm(a) * norm(b))` sin validar vector nulo."
+    },
+    "mission": "Implementa `cosine_similarity(a, b)` usando `np.dot`, `np.linalg.norm` y protección contra norma cero.",
+    "hint": "denom = np.linalg.norm(a) * np.linalg.norm(b); if denom < 1e-12: return 0.0; return float(np.dot(a, b) / denom)",
+    "starterCode": "import numpy as np\n\ndef cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:\n    # TODO: calcula denom usando np.linalg.norm\n    # TODO: protege contra denom < 1e-12\n    return 0.0\n",
+    "solutionCode": "import numpy as np\n\ndef cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:\n    denom = float(np.linalg.norm(a) * np.linalg.norm(b))\n    if denom < 1e-12:\n        return 0.0\n    return float(np.dot(a, b) / denom)\n",
+    "checks": [
+      { "pattern": "np\\.linalg\\.norm", "label": "Calcular norma L2 con np.linalg.norm" },
+      { "pattern": "1e-12|eps", "label": "Proteger denominador con epsilon" },
+      { "pattern": "np\\.dot\\(\\s*a\\s*,\\s*b\\s*\\)", "label": "Calcular producto escalar np.dot(a, b)" }
+    ]
+  },
+  {
+    "id": "AI04",
+    "language": "python",
+    "concepts": [
+      { "term": "Bootstrap CI", "desc": "Estima intervalos de confianza sin asumir normalidad estricta." },
+      { "term": "Calibración", "desc": "Un modelo bien calibrado alinea su probabilidad predicha con la frecuencia real." },
+      { "term": "Semilla fija", "desc": "Usar `np.random.default_rng(seed)` para evaluaciones reproducibles." }
+    ],
+    "doDont": {
+      "good": "Reportar media + intervalo de confianza al 95% con generador determinista.",
+      "bad": "Decidir un despliegue mirando solo el promedio puntual en pocas muestras."
+    },
+    "mission": "Completa `bootstrap_ci(scores, n_boot=500)` usando `np.random.default_rng(42)` y `np.percentile(..., [2.5, 97.5])`.",
+    "hint": "rng = np.random.default_rng(42); sample = rng.choice(scores, size=len(scores), replace=True); return np.percentile(means, [2.5, 97.5])",
+    "starterCode": "import numpy as np\n\ndef bootstrap_ci(scores: np.ndarray, n_boot: int = 500) -> tuple[float, float]:\n    # TODO: inicializa el generador determinista de NumPy con semilla 42\n    means = []\n    for _ in range(n_boot):\n        # TODO: muestrea con reemplazo usando rng.choice\n        pass\n    # TODO: calcula los percentiles 2.5 y 97.5\n    return (0.0, 0.0)\n",
+    "solutionCode": "import numpy as np\n\ndef bootstrap_ci(scores: np.ndarray, n_boot: int = 500) -> tuple[float, float]:\n    rng = np.random.default_rng(42)\n    means = [float(np.mean(rng.choice(scores, size=len(scores), replace=True))) for _ in range(n_boot)]\n    lo, hi = np.percentile(means, [2.5, 97.5])\n    return (float(lo), float(hi))\n",
+    "checks": [
+      { "pattern": "default_rng\\(", "label": "Usar np.random.default_rng determinista" },
+      { "pattern": "replace\\s*=\\s*True", "label": "Muestrear con reemplazo (replace=True)" },
+      { "pattern": "np\\.percentile", "label": "Calcular percentiles [2.5, 97.5]" }
+    ]
+  },
+  {
+    "id": "AI05",
+    "language": "python",
+    "concepts": [
+      { "term": "Out-of-time split", "desc": "En series o eventos, train siempre debe ser estrictamente anterior a test." },
+      { "term": "Group isolation", "desc": "Un mismo user_id no debe aparecer en train y test cuando predices nuevos usuarios." },
+      { "term": "Cero transformaciones globales", "desc": "Nunca imputar ni escalar el dataframe completo antes de dividir." }
+    ],
+    "doDont": {
+      "good": "Ordenar por `created_at`, cortar por fecha límite y verificar intersección vacía.",
+      "bad": "Hacer `df.fillna(df.mean())` antes del split train/test."
+    },
+    "mission": "Completa `temporal_split(df, cutoff)` para separar `train` (< cutoff) y `test` (>= cutoff) verificando con `assert` que no hay solapamiento.",
+    "hint": "train = df[df['created_at'] < cutoff]; test = df[df['created_at'] >= cutoff]; assert train['created_at'].max() < test['created_at'].min()",
+    "starterCode": "def temporal_split(df, cutoff: str):\n    # TODO: filtra el bloque de entrenamiento anterior a la fecha de corte\n    # TODO: filtra el bloque de prueba desde la fecha de corte\n    # TODO: añade una aserción para verificar que no haya fuga temporal\n    return df, df\n",
+    "solutionCode": "def temporal_split(df, cutoff: str):\n    train = df[df[\"created_at\"] < cutoff].copy()\n    test = df[df[\"created_at\"] >= cutoff].copy()\n    assert train[\"created_at\"].max() < test[\"created_at\"].min()\n    return train, test\n",
+    "checks": [
+      { "pattern": "<\\s*cutoff", "label": "Filtrar train < cutoff" },
+      { "pattern": ">=\\s*cutoff", "label": "Filtrar test >= cutoff" },
+      { "pattern": "assert\\s+", "label": "Invariante assert anti-fuga temporal" }
+    ]
+  },
+  {
+    "id": "AI06",
+    "language": "python",
+    "concepts": [
+      { "term": "Class weight", "desc": "Penaliza errores en la clase minoritaria sin duplicar registros artificialmente." },
+      { "term": "PR-AUC", "desc": "Más informativa que ROC-AUC o accuracy cuando positivos < 5%." },
+      { "term": "Regularización", "desc": "C / L2 controlan sobreajuste en alta dimensionalidad." }
+    ],
+    "doDont": {
+      "good": "Usar `LogisticRegression(class_weight='balanced')` y evaluar `average_precision_score`.",
+      "bad": "Celebrar 99% de accuracy en un dataset con 99% de negativos."
+    },
+    "mission": "Configura `LogisticRegression` con `class_weight='balanced'`, entrena sobre `X_train, y_train` y calcula `average_precision_score` usando `predict_proba`.",
+    "hint": "model = LogisticRegression(class_weight='balanced', max_iter=1000); model.fit(X_train, y_train); probs = model.predict_proba(X_val)[:, 1]; return average_precision_score(y_val, probs)",
+    "starterCode": "from sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import average_precision_score\n\ndef train_imbalanced(X_train, y_train, X_val, y_val) -> float:\n    # TODO: instancia LogisticRegression con class_weight='balanced'\n    # TODO: entrena y evalúa average_precision_score con predict_proba\n    return 0.0\n",
+    "solutionCode": "from sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import average_precision_score\n\ndef train_imbalanced(X_train, y_train, X_val, y_val) -> float:\n    model = LogisticRegression(class_weight=\"balanced\", max_iter=1000)\n    model.fit(X_train, y_train)\n    probs = model.predict_proba(X_val)[:, 1]\n    return float(average_precision_score(y_val, probs))\n",
+    "checks": [
+      { "pattern": "class_weight\\s*=\\s*['\"]balanced['\"]", "label": "Configurar class_weight='balanced'" },
+      { "pattern": "predict_proba", "label": "Obtener probabilidades con predict_proba" },
+      { "pattern": "average_precision_score", "label": "Evaluar PR-AUC con average_precision_score" }
+    ]
+  },
+  {
+    "id": "AI07",
+    "language": "python",
+    "concepts": [
+      { "term": "Population Stability Index (PSI)", "desc": "Cuantifica desplazamiento entre distribución de entrenamiento y producción." },
+      { "term": "Segmentación por cohorte", "desc": "El F1 global puede ocultar fallos graves en un segmento específico." },
+      { "term": "Holdout intocable", "desc": "El ajuste de hiperparámetros nunca debe tocar el set de evaluación final." }
+    ],
+    "doDont": {
+      "good": "Calcular PSI con clipping de ceros (`1e-6`) y disparar alerta si `psi >= 0.2`.",
+      "bad": "Reentrenar usando métricas del test set o ignorar drift sin etiquetas."
+    },
+    "mission": "Implementa `compute_psi(expected, actual)` protegiendo proporciones con `np.clip(..., 1e-6, 1.0)` y devolviendo la suma `(a - e) * np.log(a / e)`.",
+    "hint": "e = np.clip(expected, 1e-6, 1.0); a = np.clip(actual, 1e-6, 1.0); return float(np.sum((a - e) * np.log(a / e)))",
+    "starterCode": "import numpy as np\n\ndef compute_psi(expected: np.ndarray, actual: np.ndarray) -> float:\n    # TODO: aplica np.clip para evitar log(0)\n    # TODO: calcula sum((a - e) * np.log(a / e))\n    return 0.0\n",
+    "solutionCode": "import numpy as np\n\ndef compute_psi(expected: np.ndarray, actual: np.ndarray) -> float:\n    e = np.clip(expected, 1e-6, 1.0)\n    a = np.clip(actual, 1e-6, 1.0)\n    return float(np.sum((a - e) * np.log(a / e)))\n",
+    "checks": [
+      { "pattern": "np\\.clip", "label": "Proteger ceros con np.clip" },
+      { "pattern": "np\\.log", "label": "Calcular razón logarítmica con np.log" },
+      { "pattern": "np\\.sum", "label": "Sumar contribuciones PSI con np.sum" }
+    ]
+  },
+  {
+    "id": "AI08",
+    "language": "python",
+    "concepts": [
+      { "term": "Pipeline / ColumnTransformer", "desc": "Encapsula imputación, encoding y modelo en un único artefacto serializable." },
+      { "term": "handle_unknown='ignore'", "desc": "Evita caídas 500 cuando llega una categoría nueva en producción." },
+      { "term": "Paridad train-serving", "desc": "Mismo objeto Pipeline en entrenamiento y FastAPI." }
+    ],
+    "doDont": {
+      "good": "Encapsular `SimpleImputer` + `StandardScaler` + `OneHotEncoder(handle_unknown='ignore')` dentro de `Pipeline`.",
+      "bad": "Reimplementar fórmulas de normalización manualmente en la API."
+    },
+    "mission": "Construye un `ColumnTransformer` dentro de `Pipeline` con `SimpleImputer(strategy='median')` y `OneHotEncoder(handle_unknown='ignore')`.",
+    "hint": "ColumnTransformer([('num', SimpleImputer(strategy='median'), num_cols), ('cat', OneHotEncoder(handle_unknown='ignore'), cat_cols)])",
+    "starterCode": "from sklearn.compose import ColumnTransformer\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import OneHotEncoder\n\ndef build_preprocessor(num_cols: list[str], cat_cols: list[str]) -> Pipeline:\n    # TODO: crea ColumnTransformer con SimpleImputer(strategy='median') y OneHotEncoder(handle_unknown='ignore')\n    return Pipeline(steps=[])\n",
+    "solutionCode": "from sklearn.compose import ColumnTransformer\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import OneHotEncoder\n\ndef build_preprocessor(num_cols: list[str], cat_cols: list[str]) -> Pipeline:\n    prep = ColumnTransformer(\n        transformers=[\n            (\"num\", SimpleImputer(strategy=\"median\"), num_cols),\n            (\"cat\", OneHotEncoder(handle_unknown=\"ignore\"), cat_cols),\n        ]\n    )\n    return Pipeline(steps=[(\"prep\", prep)])\n",
+    "checks": [
+      { "pattern": "ColumnTransformer", "label": "Usar ColumnTransformer" },
+      { "pattern": "SimpleImputer\\(strategy\\s*=\\s*['\"]median['\"]\\)", "label": "Imputar con median" },
+      { "pattern": "handle_unknown\\s*=\\s*['\"]ignore['\"]", "label": "Configurar handle_unknown='ignore'" }
+    ]
+  },
+  {
+    "id": "AI09",
+    "language": "python",
+    "concepts": [
+      { "term": "zero_grad() -> backward() -> clip -> step()", "desc": "Orden estricto para evitar acumulación accidental de gradientes." },
+      { "term": "clip_grad_norm_", "desc": "Acota la norma L2 de gradientes para prevenir explosión a NaN." },
+      { "term": "torch.no_grad()", "desc": "Desactiva grafo de autograd en inferencia/validación para ahorrar VRAM." }
+    ],
+    "doDont": {
+      "good": "Limpiar gradientes con `optimizer.zero_grad(set_to_none=True)` y recortar norma antes de `step()`.",
+      "bad": "Olvidar `zero_grad()` o ejecutar validación sin `torch.no_grad()`."
+    },
+    "mission": "Completa el paso de entrenamiento en PyTorch con `optimizer.zero_grad(set_to_none=True)`, `loss.backward()`, `clip_grad_norm_(model.parameters(), 1.0)` y `optimizer.step()`.",
+    "hint": "optimizer.zero_grad(set_to_none=True); loss.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0); optimizer.step()",
+    "starterCode": "import torch\n\ndef train_step(model, optimizer, loss_fn, x, y) -> float:\n    # TODO: limpia gradientes\n    pred = model(x)\n    loss = loss_fn(pred, y)\n    # TODO: backward, clip_grad_norm_ a 1.0 y optimizer.step()\n    return float(loss.item())\n",
+    "solutionCode": "import torch\n\ndef train_step(model, optimizer, loss_fn, x, y) -> float:\n    optimizer.zero_grad(set_to_none=True)\n    pred = model(x)\n    loss = loss_fn(pred, y)\n    loss.backward()\n    torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)\n    optimizer.step()\n    return float(loss.item())\n",
+    "checks": [
+      { "pattern": "zero_grad\\(", "label": "Limpiar gradientes con zero_grad()" },
+      { "pattern": "loss\\.backward\\(\\)", "label": "Ejecutar loss.backward()" },
+      { "pattern": "clip_grad_norm_", "label": "Aplicar clip_grad_norm_" },
+      { "pattern": "optimizer\\.step\\(\\)", "label": "Actualizar pesos con optimizer.step()" }
+    ]
+  },
+  {
+    "id": "AI10",
+    "language": "python",
+    "concepts": [
+      { "term": "Presupuesto de tokens", "desc": "Reservar espacio para system prompt + contexto + max_output_tokens antes de llamar al LLM." },
+      { "term": "Tokenizador real", "desc": "Palabras != tokens; texto técnico o español consume más tokens que inglés." },
+      { "term": "Overflow explícito", "desc": "Rechazar o resumir controladamente en lugar de truncar instrucciones críticas." }
+    ],
+    "doDont": {
+      "good": "Validar `prompt_tokens + max_output_tokens <= context_window` y rechazar con error explícito si excede.",
+      "bad": "Cortar el string `prompt[:4000]` arriesgando perder restricciones de seguridad."
+    },
+    "mission": "Completa `enforce_token_budget(tokens, max_output, window=4096)` lanzando `ValueError` si `len(tokens) + max_output > window`.",
+    "hint": "if len(tokens) + max_output > window: raise ValueError('context window exceeded'); return len(tokens)",
+    "starterCode": "def enforce_token_budget(tokens: list[int], max_output: int, window: int = 4096) -> int:\n    # TODO: valida que len(tokens) + max_output <= window\n    return len(tokens)\n",
+    "solutionCode": "def enforce_token_budget(tokens: list[int], max_output: int, window: int = 4096) -> int:\n    if len(tokens) + max_output > window:\n        raise ValueError(\"context window exceeded\")\n    return len(tokens)\n",
+    "checks": [
+      { "pattern": "len\\(tokens\\)\\s*\\+\\s*max_output\\s*>\\s*window", "label": "Verificar suma de entrada + salida contra ventana" },
+      { "pattern": "raise\\s+ValueError", "label": "Rechazar overflow con ValueError" }
+    ]
+  },
+  {
+    "id": "AI11",
+    "language": "sql",
+    "concepts": [
+      { "term": "ACL pre-retrieval", "desc": "Filtrar `tenant_id` y `allowed_roles` dentro del WHERE SQL antes de entregar chunks al LLM." },
+      { "term": "pgvector HNSW", "desc": "Índice aproximado para distancia coseno (`<=>`); comparar siempre recall contra búsqueda exacta." },
+      { "term": "Rol SQL no privilegiado", "desc": "La app RAG nunca conecta como superusuario que salta RLS." }
+    ],
+    "doDont": {
+      "good": "Aplicar `WHERE tenant_id = $1 AND deleted_at IS NULL` junto con el operador `<=>` y `LIMIT $3`.",
+      "bad": "Traer Top-20 global de pgvector y filtrar por tenant en Python."
+    },
+    "mission": "Completa la consulta `pgvector` segura filtrando por `tenant_id = $1`, `deleted_at IS NULL` y ordenando por distancia coseno `<=> $2`.",
+    "hint": "WHERE tenant_id = $1 AND deleted_at IS NULL ORDER BY embedding <=> $2 LIMIT 8;",
+    "starterCode": "SELECT id, document_id, content,\n       1 - (embedding <=> $2) AS score\nFROM document_chunks\n-- TODO: agrega filtro obligatorio de tenant_id = $1 y deleted_at IS NULL\n-- TODO: ordena por embedding <=> $2 y limita a 8\n",
+    "solutionCode": "SELECT id, document_id, content,\n       1 - (embedding <=> $2) AS score\nFROM document_chunks\nWHERE tenant_id = $1\n  AND deleted_at IS NULL\nORDER BY embedding <=> $2\nLIMIT 8;\n",
+    "checks": [
+      { "pattern": "WHERE\\s+tenant_id\\s*=\\s*\\$1", "label": "Filtrar por tenant_id = $1 en SQL" },
+      { "pattern": "deleted_at\\s+IS\\s+NULL", "label": "Excluir chunks borrados (deleted_at IS NULL)" },
+      { "pattern": "ORDER\\s+BY\\s+embedding\\s*<=>\\s*\\$2", "label": "Ordenar por distancia coseno <=>" },
+      { "pattern": "LIMIT\\s+\\d+", "label": "Acotar resultados con LIMIT" }
+    ]
+  },
+  {
+    "id": "AI12",
+    "language": "python",
+    "concepts": [
+      { "term": "Abstención verificada", "desc": "Si ningún chunk supera el umbral mínimo de score, responder sin inventar." },
+      { "term": "Citas resolubles", "desc": "Cada citation_id emitido debe existir en los chunks autorizados recuperados." },
+      { "term": "Hybrid RRF", "desc": "Combinar búsqueda léxica (FTS) + vectorial mejora términos exactos." }
+    ],
+    "doDont": {
+      "good": "Validar umbral mínimo y comprobar que todas las citas pertenecen a `allowed_ids`.",
+      "bad": "Aceptar citas generadas por el LLM sin verificar si existen en el contexto."
+    },
+    "mission": "Completa `verify_rag_citations(answer_citations, chunks, min_score=0.65)` devolviendo `False` si ningún chunk supera `min_score` o si hay citas inventadas.",
+    "hint": "valid_ids = {c['id'] for c in chunks if c['score'] >= min_score}; return bool(valid_ids) and set(answer_citations).issubset(valid_ids)",
+    "starterCode": "def verify_rag_citations(answer_citations: list[str], chunks: list[dict], min_score: float = 0.65) -> bool:\n    # TODO: obtén los IDs de chunks con score >= min_score\n    # TODO: retorna True solo si hay al menos 1 chunk válido y todas las citas están en ese conjunto\n    return False\n",
+    "solutionCode": "def verify_rag_citations(answer_citations: list[str], chunks: list[dict], min_score: float = 0.65) -> bool:\n    valid_ids = {c[\"id\"] for c in chunks if c.get(\"score\", 0.0) >= min_score}\n    if not valid_ids or not answer_citations:\n        return False\n    return set(answer_citations).issubset(valid_ids)\n",
+    "checks": [
+      { "pattern": ">=\\s*min_score", "label": "Aplicar umbral mínimo de score" },
+      { "pattern": "issubset\\(", "label": "Verificar que toda cita pertenece a chunks válidos" }
+    ]
+  },
+  {
+    "id": "AI13",
+    "language": "python",
+    "concepts": [
+      { "term": "Allowlist de tools", "desc": "El agente solo puede invocar herramientas explícitamente autorizadas para su rol." },
+      { "term": "Human-in-the-loop", "desc": "Acciones mutantes o destructivas exigen confirmación humana." },
+      { "term": "Step budget", "desc": "Acotar `max_steps` corta bucles infinitos y gasto descontrolado." }
+    ],
+    "doDont": {
+      "good": "Validar tool en `ALLOWED_TOOLS`, chequear `requires_approval` y respetar `max_steps`.",
+      "bad": "Conceder credenciales globales de escritura al agente sin confirmación."
+    },
+    "mission": "Completa `authorize_tool_call(tool_name, step, max_steps, approved)` rechazando si `step >= max_steps`, si `tool_name` no está en `ALLOWED_TOOLS` o si es mutante sin `approved`.",
+    "hint": "if step >= max_steps: return False; if tool_name not in ALLOWED_TOOLS: return False; if tool_name in MUTATING_TOOLS and not approved: return False; return True",
+    "starterCode": "ALLOWED_TOOLS = {\"search_docs\", \"create_ticket\"}\nMUTATING_TOOLS = {\"create_ticket\"}\n\ndef authorize_tool_call(tool_name: str, step: int, max_steps: int, approved: bool) -> bool:\n    # TODO: corta si step >= max_steps\n    # TODO: rechaza si tool_name no está en ALLOWED_TOOLS\n    # TODO: exige approved=True para MUTATING_TOOLS\n    return False\n",
+    "solutionCode": "ALLOWED_TOOLS = {\"search_docs\", \"create_ticket\"}\nMUTATING_TOOLS = {\"create_ticket\"}\n\ndef authorize_tool_call(tool_name: str, step: int, max_steps: int, approved: bool) -> bool:\n    if step >= max_steps:\n        return False\n    if tool_name not in ALLOWED_TOOLS:\n        return False\n    if tool_name in MUTATING_TOOLS and not approved:\n        return False\n    return True\n",
+    "checks": [
+      { "pattern": "step\\s*>=\\s*max_steps", "label": "Limitar iteraciones con max_steps" },
+      { "pattern": "not\\s+in\\s+ALLOWED_TOOLS", "label": "Validar allowlist ALLOWED_TOOLS" },
+      { "pattern": "MUTATING_TOOLS\\s+and\\s+not\\s+approved", "label": "Exigir aprobación en tools mutantes" }
+    ]
+  },
+  {
+    "id": "AI14",
+    "language": "python",
+    "concepts": [
+      { "term": "Golden dataset versionado", "desc": "Incluye casos nominales, abstención y ataques de prompt injection." },
+      { "term": "Gate Go/No-Go", "desc": "Un PR de prompt/modelo falla en CI si `faithfulness` o `recall` caen bajo el umbral." },
+      { "term": "Determinismo", "desc": "Fijar temperatura 0 y esquema estricto para pruebas reproducibles." }
+    ],
+    "doDont": {
+      "good": "Evaluar Recall@K y Faithfulness contra dataset versionado y bloquear si cae debajo del gate.",
+      "bad": "Aprobar cambios de prompt probando 2 preguntas manualmente."
+    },
+    "mission": "Completa `eval_release_gate(metrics)` devolviendo `True` solo si `recall_at_5 >= 0.85`, `faithfulness >= 0.90` y `injection_leak_rate == 0.0`.",
+    "hint": "return metrics['recall_at_5'] >= 0.85 and metrics['faithfulness'] >= 0.90 and metrics['injection_leak_rate'] == 0.0",
+    "starterCode": "def eval_release_gate(metrics: dict[str, float]) -> bool:\n    # TODO: verifica recall_at_5 >= 0.85, faithfulness >= 0.90 e injection_leak_rate == 0.0\n    return False\n",
+    "solutionCode": "def eval_release_gate(metrics: dict[str, float]) -> bool:\n    return (\n        metrics.get(\"recall_at_5\", 0.0) >= 0.85\n        and metrics.get(\"faithfulness\", 0.0) >= 0.90\n        and metrics.get(\"injection_leak_rate\", 1.0) == 0.0\n    )\n",
+    "checks": [
+      { "pattern": "recall_at_5.*>=\\s*0\\.85", "label": "Validar recall_at_5 >= 0.85" },
+      { "pattern": "faithfulness.*>=\\s*0\\.9", "label": "Validar faithfulness >= 0.90" },
+      { "pattern": "injection_leak_rate.*==\\s*0\\.0", "label": "Exigir 0.0 fugas de prompt injection" }
+    ]
+  },
+  {
+    "id": "AI15",
+    "language": "python",
+    "concepts": [
+      { "term": "Backpressure", "desc": "Cuando la cola está llena, rechazar rápido con HTTP 429/503 en lugar de agotar memoria." },
+      { "term": "Timeouts estrictos", "desc": "Evita hilos/conexiones colgadas ante proveedores lentos." },
+      { "term": "No bloquear el event loop", "desc": "Inferencia CPU/GPU va en worker dedicado o `asyncio.wait_for`." }
+    ],
+    "doDont": {
+      "good": "Acotar concurrencia con `asyncio.Semaphore` + `asyncio.wait_for(timeout=...)` y devolver 429/503.",
+      "bad": "Ejecutar inferencia bloqueante sin timeout dentro de `async def`."
+    },
+    "mission": "Completa el endpoint FastAPI usando `asyncio.wait_for(..., timeout=5.0)` y devolviendo `HTTPException(status_code=504)` si expira.",
+    "hint": "try: return await asyncio.wait_for(run_inference(req), timeout=5.0)\nexcept asyncio.TimeoutError: raise HTTPException(status_code=504, detail='inference timeout')",
+    "starterCode": "import asyncio\nfrom fastapi import HTTPException\n\nasync def infer_handler(req, run_inference):\n    # TODO: usa asyncio.wait_for con timeout=5.0 y captura TimeoutError -> HTTPException(504)\n    return await run_inference(req)\n",
+    "solutionCode": "import asyncio\nfrom fastapi import HTTPException\n\nasync def infer_handler(req, run_inference):\n    try:\n        return await asyncio.wait_for(run_inference(req), timeout=5.0)\n    except asyncio.TimeoutError as exc:\n        raise HTTPException(status_code=504, detail=\"inference timeout\") from exc\n",
+    "checks": [
+      { "pattern": "asyncio\\.wait_for\\(", "label": "Acotar ejecución con asyncio.wait_for" },
+      { "pattern": "TimeoutError", "label": "Capturar asyncio.TimeoutError" },
+      { "pattern": "HTTPException\\(status_code\\s*=\\s*504", "label": "Responder HTTP 504 fail-fast" }
+    ]
+  },
+  {
+    "id": "AI16",
+    "language": "python",
+    "concepts": [
+      { "term": "Redacción de PII", "desc": "Nunca registrar prompts crudos, correos ni documentos de identidad en logs/OTel." },
+      { "term": "Baja cardinalidad", "desc": "Etiquetas Prometheus acotadas (model, status); nunca user_id o request_id." },
+      { "term": "Trazabilidad de versión", "desc": "Registrar `prompt_version` y `model_id` para diagnosticar regresiones." }
+    ],
+    "doDont": {
+      "good": "Emitir atributos `gen_ai.model`, `prompt_version`, `token_count` y redactar PII.",
+      "bad": "Loguear el prompt completo del usuario o poner `user_id` como label en Prometheus."
+    },
+    "mission": "Completa `build_safe_span_attrs(model, prompt_version, tokens)` omitiendo el texto crudo del prompt y validando que no exista la clave `raw_prompt`.",
+    "hint": "return {'gen_ai.model': model, 'prompt_version': prompt_version, 'token_count': int(tokens)}",
+    "starterCode": "def build_safe_span_attrs(model: str, prompt_version: str, tokens: int) -> dict:\n    # TODO: retorna atributos OTel seguros SIN incluir el texto del prompt ni PII\n    return {\"raw_prompt\": \"\"}\n",
+    "solutionCode": "def build_safe_span_attrs(model: str, prompt_version: str, tokens: int) -> dict:\n    return {\n        \"gen_ai.model\": model,\n        \"prompt_version\": prompt_version,\n        \"token_count\": int(tokens),\n    }\n",
+    "checks": [
+      { "pattern": "gen_ai\\.model", "label": "Incluir atributo gen_ai.model" },
+      { "pattern": "prompt_version", "label": "Incluir prompt_version" },
+      { "pattern": "^(?!.*raw_prompt).*$", "flags": "s", "label": "Eliminar raw_prompt de la telemetría" }
+    ]
+  },
+  {
+    "id": "AI17",
+    "language": "python",
+    "concepts": [
+      { "term": "Deserialización segura", "desc": "Evitar `pickle` / `torch.load(..., weights_only=False)` sobre artefactos externos." },
+      { "term": "Pinning por digest", "desc": "Verificar SHA-256 de pesos y datasets antes de cargarlos." },
+      { "term": "Separación de datos e instrucciones", "desc": "Tratar todo documento recuperado como dato no confiable (OWASP LLM01)." }
+    ],
+    "doDont": {
+      "good": "Verificar `hashlib.sha256` contra el digest esperado y usar `weights_only=True`.",
+      "bad": "Cargar checkpoints `.bin`/`.pkl` descargados sin validar firma ni hash."
+    },
+    "mission": "Completa `verify_artifact_sha256(payload_bytes, expected_sha256)` usando `hashlib.sha256` y `hmac.compare_digest` en tiempo constante.",
+    "hint": "actual = hashlib.sha256(payload_bytes).hexdigest(); return hmac.compare_digest(actual, expected_sha256)",
+    "starterCode": "import hashlib\nimport hmac\n\ndef verify_artifact_sha256(payload_bytes: bytes, expected_sha256: str) -> bool:\n    # TODO: calcula sha256 hexdigest y compara en tiempo constante con hmac.compare_digest\n    return False\n",
+    "solutionCode": "import hashlib\nimport hmac\n\ndef verify_artifact_sha256(payload_bytes: bytes, expected_sha256: str) -> bool:\n    actual = hashlib.sha256(payload_bytes).hexdigest()\n    return hmac.compare_digest(actual, expected_sha256)\n",
+    "checks": [
+      { "pattern": "hashlib\\.sha256", "label": "Calcular hash con hashlib.sha256" },
+      { "pattern": "hmac\\.compare_digest", "label": "Comparar en tiempo constante con hmac.compare_digest" }
+    ]
+  },
+  {
+    "id": "AI18",
+    "language": "python",
+    "concepts": [
+      { "term": "Reserva atómica FinOps", "desc": "Descontar presupuesto máximo estimado atómicamente antes de invocar el LLM." },
+      { "term": "Conciliación", "desc": "Devolver al saldo la diferencia entre tokens reservados y tokens reales consumidos." },
+      { "term": "SLOs y degradación", "desc": "Definir modelo fallback económico cuando se acerca el límite de cuota." }
+    ],
+    "doDont": {
+      "good": "Reservar con lock/operación atómica antes de la llamada y reembolsar el excedente al terminar.",
+      "bad": "Leer saldo, llamar al LLM y restar después (race condition bajo concurrencia)."
+    },
+    "mission": "Completa `reserve_budget(balances, tenant_id, estimated_cost)` usando `lock` para evitar race conditions y rechazando con `False` si `balances[tenant_id] < estimated_cost`.",
+    "hint": "with lock:\n    if balances.get(tenant_id, 0) < estimated_cost: return False\n    balances[tenant_id] -= estimated_cost\n    return True",
+    "starterCode": "def reserve_budget(balances: dict[str, int], tenant_id: str, estimated_cost: int, lock) -> bool:\n    # TODO: usa `with lock:` para verificar saldo >= estimated_cost y descontar atómicamente\n    return False\n",
+    "solutionCode": "def reserve_budget(balances: dict[str, int], tenant_id: str, estimated_cost: int, lock) -> bool:\n    with lock:\n        current = balances.get(tenant_id, 0)\n        if current < estimated_cost:\n            return False\n        balances[tenant_id] = current - estimated_cost\n        return True\n",
+    "checks": [
+      { "pattern": "with\\s+lock\\s*:", "label": "Proteger sección crítica con `with lock:`" },
+      { "pattern": "<\\s*estimated_cost", "label": "Validar saldo suficiente antes de descontar" },
+      { "pattern": "-=\\s*estimated_cost|=\\s*current\\s*-\\s*estimated_cost", "label": "Descontar presupuesto atómicamente" }
+    ]
+  }
+]

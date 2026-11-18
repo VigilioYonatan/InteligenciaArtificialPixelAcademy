@@ -1,0 +1,8 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.0/schema.json",
+  "root": true,
+  "files": {"includes": ["src/**", "tests/**", "scripts/**", "vite.config.ts", "!**/node_modules/**"]},
+  "formatter": {"enabled": false},
+  "linter": {"enabled": true, "rules": {"recommended": true}},
+  "assist": {"actions": {"source": {"organizeImports": "off"}}}
+}

@@ -1,0 +1,11 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>GoPixel - Offline Smoke Fixture</title></head><body><div id="app"></div><script>
+/* Test fixture isolated in tests/fixtures/ for smoke-offline.test.mjs (not a full offline build). */
+const P={locale:'es'};
+function render(){
+ const h=location.hash;
+ const labels={es:'GoPixel Academy',ja:'Go入門',zh:'框架'};
+ const value=h.includes('senior')?'GoPixel Senior S01 S02 S03 S04 S05 S06 S07 S08 S09 S10 S11 S12 S13 S14 S15 S16 S17 S18':h.includes('frameworks')?'框架':h.includes('learn/basic')?'Go入門':labels[P.locale]||labels.es;
+ document.getElementById('app').innerHTML=`<h1>${value}</h1>`;
+}
+render();
+</script></body></html>

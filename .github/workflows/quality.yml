@@ -1,0 +1,54 @@
+name: quality-and-devsecops
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend-and-ai-labs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NODE_OPTIONS: --max-old-space-size=4096
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run lint:ci
+      - run: npm run check:content
+      - run: npm run typecheck
+      - run: npm run test:ai
+      - run: npm run test:security
+      - run: npm run test:ui
+      - run: npm run build
+      - run: python -m unittest discover -s labs-ai-native -t labs-ai-native -v
+      - run: python scripts/verify-preservation.py
+      - run: npm audit --omit=dev --audit-level=high
+      - name: Run headless E2E against built SPA
+        run: |
+          npx vite preview --port 4173 --strictPort &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID 2>/dev/null || true" EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
+          node scripts/test-master-e2e.mjs

@@ -1,0 +1,59 @@
+{
+  "id": "senior-capstone-ai-platform",
+  "version": 1,
+  "language": "es",
+  "title": "Capstone Senior AI: Plataforma RAG Multi-Tenant, Citas e Idempotencia FinOps",
+  "summary": "Laboratorio Python ejecutable que integra aislamiento ACL por tenant/usuario/documento, verificación determinista de citas, idempotencia por request_id y reserva atómica de presupuesto FinOps.",
+  "steps": [
+    {
+      "id": "acl",
+      "title": "1. Aislamiento Multi-Tenant y ACL Documental",
+      "detail": "Filtra deleted_at, tenant_id y allowed_roles/visibility en cada consulta antes de permitir que ningún chunk entre en el contexto del modelo.",
+      "test": "TestRagAclEvaluator / TestS01RagAcl",
+      "area": "Seguridad IA"
+    },
+    {
+      "id": "citations",
+      "title": "2. Citas Verificables y Abstención Segura",
+      "detail": "Valida determinísticamente que cada citation_id pertenezca al conjunto autorizado recuperado; si falla o está vacío, responde abstained.",
+      "test": "TestCapstoneAiPlatform / test_fabricated_citation_rejected",
+      "area": "Grounding"
+    },
+    {
+      "id": "idempotency",
+      "title": "3. Idempotencia por request_id",
+      "detail": "Memoriza respuestas y recibos por request_id para que los reintentos de red no cobren doble presupuesto ni ejecuten acciones duplicadas.",
+      "test": "TestCapstoneAiPlatform / TestS14Idempotency",
+      "area": "Arquitectura"
+    },
+    {
+      "id": "finops",
+      "title": "4. Reserva Atómica de Presupuesto FinOps",
+      "detail": "Descuenta el costo estimado atómicamente antes de invocar inferencia y bloquea solicitudes si el saldo disponible del tenant es insuficiente.",
+      "test": "TestAtomicBudgetLedger / TestCapstoneAiPlatform",
+      "area": "FinOps"
+    },
+    {
+      "id": "evals",
+      "title": "5. Splits Temporales y Drift PSI",
+      "detail": "Garantiza cortes estrictamente cronológicos en datasets de evaluación para evitar leakage futuro y cálculo estable de PSI sin NaN.",
+      "test": "TestTemporalGuard",
+      "area": "Evals"
+    },
+    {
+      "id": "release",
+      "title": "6. Release Gate Go/No-Go (32 Controles)",
+      "detail": "Evalúa con criterio fail-closed: cualquier control obligatorio en estado FAIL o NOT_RUN produce dictamen obligatorio NO-GO.",
+      "test": "TestS18GoNoGo",
+      "area": "Operación"
+    }
+  ],
+  "command": "python -m unittest discover -s labs-ai-native -t labs-ai-native -v",
+  "boundaries": [
+    "Ejecución local en Python estándar sin dependencias externas pesadas ni llamadas reales a GPUs o APIs comerciales.",
+    "La reserva en memoria ilustra la invariante; en producción debe ejecutarse dentro de transacción SQL o script atómico en Redis/Valkey.",
+    "La evaluación offline de fixtures valida regresiones de lógica, pero no sustituye pruebas de carga ni auditoría de seguridad en vivo.",
+    "Las claves y roles de prueba son sintéticos; jamás almacenes secretos reales ni PII en trazas o datasets de ejemplo.",
+    "La SPA en GitHub Pages ofrece descarga del paquete .zip y evaluación determinista; no ejecuta Python dentro del navegador."
+  ]
+}

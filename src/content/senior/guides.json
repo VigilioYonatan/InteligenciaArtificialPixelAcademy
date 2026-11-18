@@ -1,0 +1,560 @@
+[
+  {
+    "id": "S01",
+    "slug": "s01_rag_acl",
+    "title": "Fuga Cross-Tenant y Cross-User en Hybrid RAG",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "RLS o WHERE por tenant_id no distingue roles internos como RRHH o dirección. Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Los chunks prohibidos nunca deben entrar en la ventana del modelo. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s01_rag_acl verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Hybrid RAG devuelve salarios ejecutivos a un empleado estándar Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Sin prueba negativa cross-user/cross-tenant hay riesgo directo de fuga. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def filter_authorized_chunks(chunks: list[dict], tenant_id: str, user_roles: set[str]) -> list[dict]:\n    \"\"\"Enforces tenant + user/document ACL before any chunk enters LLM context.\"\"\"\n    return [\n        c for c in chunks\n        if not c.get(\"deleted_at\")\n        and c.get(\"tenant_id\") == tenant_id\n        and (c.get(\"visibility\") == \"tenant_public\" or bool(set(c.get(\"allowed_roles\", [])) & user_roles))\n    ]\n",
+    "referenceTest": "import unittest\nfrom s01_rag_acl.lab import filter_authorized_chunks\n\nclass TestS01RagAcl(unittest.TestCase):\n    def test_blocks_cross_tenant_and_unauthorized_roles(self):\n        chunks = [\n            {\"id\": \"c1\", \"tenant_id\": \"t1\", \"visibility\": \"restricted\", \"allowed_roles\": [\"hr_exec\"]},\n            {\"id\": \"c2\", \"tenant_id\": \"t1\", \"visibility\": \"tenant_public\", \"allowed_roles\": []},\n            {\"id\": \"c3\", \"tenant_id\": \"t2\", \"visibility\": \"tenant_public\", \"allowed_roles\": []},\n        ]\n        res = filter_authorized_chunks(chunks, \"t1\", {\"employee\"})\n        self.assertEqual([c[\"id\"] for c in res], [\"c2\"])\n",
+    "command": "python -m unittest discover -s labs-ai-native/s01_rag_acl -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S02",
+    "slug": "s02_arch_routing",
+    "title": "Sobreingeniería Agéntica frente a SQL + Hybrid RAG",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Los estados transaccionales exactos exigen SQL/API tipada, no similitud semántica."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "La complejidad agéntica debe justificarse por evidencia cuantificada. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s02_arch_routing verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Enjambre de 5 agentes tarda 14s para consultar un saldo Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Se mide exactitud, latencia y costo por respuesta válida. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def choose_execution_path(query_type: str) -> str:\n    \"\"\"Routes exact transactional lookups to SQL/API and documentary queries to Hybrid RAG.\"\"\"\n    if query_type == \"transactional_state\":\n        return \"authorized_sql_api\"\n    if query_type == \"document_policy\":\n        return \"hybrid_rag_with_citations\"\n    return \"abstain_or_clarify\"\n",
+    "referenceTest": "import unittest\nfrom s02_arch_routing.lab import choose_execution_path\n\nclass TestS02Routing(unittest.TestCase):\n    def test_routes_transactional_queries_to_sql(self):\n        self.assertEqual(choose_execution_path(\"transactional_state\"), \"authorized_sql_api\")\n        self.assertEqual(choose_execution_path(\"document_policy\"), \"hybrid_rag_with_citations\")\n",
+    "command": "python -m unittest discover -s labs-ai-native/s02_arch_routing -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S03",
+    "slug": "s03_prompt_injection",
+    "title": "Exfiltración vía Prompt Injection Indirecta y Tool Calling",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Cualquier documento recuperado es dato no confiable (OWASP LLM). Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Los controles efectivos viven en servidor y en permisos de tools, no solo en el prompt."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s03_prompt_injection verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "PDF malicioso intenta disparar webhook externo Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Acciones mutables/irreversibles requieren HITL e idempotencia. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "ALLOWED_TOOLS = {\"search_policies\", \"get_claim_status\"}\n\ndef authorize_tool_call(tool_name: str, user_roles: set[str], source_is_untrusted: bool) -> bool:\n    \"\"\"Never allows untrusted document text to unlock privileged or unlisted tools.\"\"\"\n    if source_is_untrusted and tool_name not in ALLOWED_TOOLS:\n        return False\n    return tool_name in ALLOWED_TOOLS and (\"reader\" in user_roles or \"admin\" in user_roles)\n",
+    "referenceTest": "import unittest\nfrom s03_prompt_injection.lab import authorize_tool_call\n\nclass TestS03PromptInjection(unittest.TestCase):\n    def test_blocks_unlisted_outbound_tool_from_pdf(self):\n        self.assertFalse(authorize_tool_call(\"send_webhook\", {\"admin\"}, True))\n        self.assertTrue(authorize_tool_call(\"search_policies\", {\"reader\"}, True))\n",
+    "command": "python -m unittest discover -s labs-ai-native/s03_prompt_injection -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S04",
+    "slug": "s04_semantic_cache",
+    "title": "Envenenamiento y Contaminación de Caché Semántico Multi-Tenant",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Sin tenant_id ni acl_scope_hash, un usuario sin permisos hereda respuestas ajenas."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "KEYS * / DEL con wildcard bloquea o falla silenciosamente; usa epoch/versión por tenant."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s04_semantic_cache verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Usuario sin permisos recibe resumen de contrato revocado desde caché Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "La revocación de permisos exige invalidación determinista del caché. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "import hashlib\n\ndef build_cache_key(pipeline_ver: str, tenant_id: str, acl_roles: list[str], query: str) -> str:\n    acl_sig = hashlib.sha256(\",\".join(sorted(acl_roles)).encode()).hexdigest()[:12]\n    q_sig = hashlib.sha256(query.strip().lower().encode()).hexdigest()[:16]\n    return f\"rag:{pipeline_ver}:{tenant_id}:{acl_sig}:{q_sig}\"\n",
+    "referenceTest": "import unittest\nfrom s04_semantic_cache.lab import build_cache_key\n\nclass TestS04SemanticCache(unittest.TestCase):\n    def test_cache_keys_isolate_tenants_and_roles(self):\n        k1 = build_cache_key(\"v2\", \"t1\", [\"hr\"], \"Bonus policy\")\n        k2 = build_cache_key(\"v2\", \"t1\", [\"intern\"], \"Bonus policy\")\n        k3 = build_cache_key(\"v2\", \"t2\", [\"hr\"], \"Bonus policy\")\n        self.assertNotEqual(k1, k2)\n        self.assertNotEqual(k1, k3)\n",
+    "command": "python -m unittest discover -s labs-ai-native/s04_semantic_cache -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S05",
+    "slug": "s05_finops_retry_storm",
+    "title": "Agotamiento de Presupuesto FinOps por Reintentos y Loops",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Loops de grafo × reintentos HTTP generan amplificación cuadrática de costo. Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Los dashboards y YAMLs observan o documentan; el bloqueo requiere reserva atómica previa."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s05_finops_retry_storm verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Pico de $4,800 en 40 minutos durante errores 429/503 Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Jitter + tope de intentos + circuit breaker evitan thundering herd. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def next_attempt_allowed(attempt: int, max_retries: int, budget_remaining_usd: float, est_usd: float) -> bool:\n    \"\"\"Bounds retry storms and enforces positive remaining budget.\"\"\"\n    return attempt <= max_retries and est_usd > 0 and budget_remaining_usd >= est_usd\n",
+    "referenceTest": "import unittest\nfrom s05_finops_retry_storm.lab import next_attempt_allowed\n\nclass TestS05RetryStorm(unittest.TestCase):\n    def test_stops_retries_at_cap_and_zero_budget(self):\n        self.assertTrue(next_attempt_allowed(1, 2, 1.0, 0.25))\n        self.assertFalse(next_attempt_allowed(3, 2, 1.0, 0.25))\n        self.assertFalse(next_attempt_allowed(1, 2, 0.1, 0.25))\n",
+    "command": "python -m unittest discover -s labs-ai-native/s05_finops_retry_storm -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S06",
+    "slug": "s06_hnsw_acl_recall",
+    "title": "Caída de Recall@K en HNSW con Filtros ACL Selectivos",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "El post-filtering sobre HNSW descarta candidatos fuera del tenant tras explorar ef_search nodos."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Iterative scans o particionado garantizan cobertura sin romper el aislamiento. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s06_hnsw_acl_recall verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Tenants pequeños reciben 0 resultados con HNSW activo Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "HNSW consume mucha RAM y añade complejidad; comparar siempre contra búsqueda exacta."
+      }
+    ],
+    "referenceSource": "def should_enable_iterative_scan(tenant_corpus_ratio: float, exact_hits: int, hnsw_hits: int) -> bool:\n    \"\"\"Detects post-filter HNSW recall collapse on small tenants.\"\"\"\n    return tenant_corpus_ratio < 0.05 and exact_hits > 0 and hnsw_hits == 0\n",
+    "referenceTest": "import unittest\nfrom s06_hnsw_acl_recall.lab import should_enable_iterative_scan\n\nclass TestS06HnswRecall(unittest.TestCase):\n    def test_detects_small_tenant_recall_collapse(self):\n        self.assertTrue(should_enable_iterative_scan(0.003, 6, 0))\n        self.assertFalse(should_enable_iterative_scan(0.40, 6, 6))\n",
+    "command": "python -m unittest discover -s labs-ai-native/s06_hnsw_acl_recall -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S07",
+    "slug": "s07_embedding_mismatch",
+    "title": "Mezcla Silenciosa de Modelos de Embedding",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Misma dimensión no implica mismo espacio vectorial; SQL calcula cosenos sin sentido."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Blue-green / shadow reindexing evita degradación silenciosa. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s07_embedding_mismatch verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Recall@5 cae de 89% a 11% tras actualizar encoder sin errores SQL Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Versionar el modelo previene consultas incompatibles. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def validate_vector_compatibility(index_model: str, query_model: str, index_dim: int, query_dim: int) -> None:\n    if index_model != query_model or index_dim != query_dim:\n        raise ValueError(f\"Incompatible vector space: {index_model}({index_dim}) vs {query_model}({query_dim})\")\n",
+    "referenceTest": "import unittest\nfrom s07_embedding_mismatch.lab import validate_vector_compatibility\n\nclass TestS07EmbeddingMismatch(unittest.TestCase):\n    def test_rejects_model_mismatch_even_with_same_dimension(self):\n        with self.assertRaises(ValueError):\n            validate_vector_compatibility(\"embed-v1\", \"embed-v2\", 1024, 1024)\n",
+    "command": "python -m unittest discover -s labs-ai-native/s07_embedding_mismatch -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S08",
+    "slug": "s08_otel_pii_redaction",
+    "title": "Fuga de PII y Secretos en Trazas OpenTelemetry / Langfuse",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "La observabilidad no debe convertirse en una fuga masiva de PII ni secretos. Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Prometheus requiere labels de baja cardinalidad (modelo, feature, status). Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s08_otel_pii_redaction verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Spans OpenTelemetry exponen historias clínicas y tokens Bearer Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Las plataformas de trazas almacenan metadatos sensibles y deben estar autenticadas."
+      }
+    ],
+    "referenceSource": "import re\n\nPII_RX = re.compile(r\"(Bearer\\s+[A-Za-z0-9._-]+|\\b\\d{8}\\b|[\\w.+-]+@[\\w-]+\\.[\\w.-]+)\")\n\ndef redact_span_attributes(attrs: dict) -> dict:\n    \"\"\"Strips raw prompts and redacts PII/tokens before exporting OTel spans.\"\"\"\n    safe = {k: v for k, v in attrs.items() if k not in {\"gen_ai.prompt\", \"gen_ai.completion\"}}\n    for k, v in list(safe.items()):\n        if isinstance(v, str):\n            safe[k] = PII_RX.sub(\"[REDACTED]\", v)\n    return safe\n",
+    "referenceTest": "import unittest\nfrom s08_otel_pii_redaction.lab import redact_span_attributes\n\nclass TestS08OtelPii(unittest.TestCase):\n    def test_strips_raw_prompt_and_redacts_tokens(self):\n        out = redact_span_attributes({\"gen_ai.prompt\": \"secret\", \"note\": \"Bearer abc.123 user@corp.com\"})\n        self.assertNotIn(\"gen_ai.prompt\", out)\n        self.assertNotIn(\"Bearer abc.123\", out[\"note\"])\n        self.assertNotIn(\"user@corp.com\", out[\"note\"])\n",
+    "command": "python -m unittest discover -s labs-ai-native/s08_otel_pii_redaction -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S09",
+    "slug": "s09_citation_grounding",
+    "title": "Alucinación de Citas e Identificadores Inventados",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Zod/JSON Schema valida forma; el servidor debe verificar la existencia real de cada cita."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Citas no resolubles rompen la trazabilidad y engañan al usuario. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s09_citation_grounding verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Respuesta con JSON válido cita cláusula inexistente NORM-994 Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Evaluar faithfulness y precisión de citas detecta alucinaciones antes del deploy."
+      }
+    ],
+    "referenceSource": "def verify_resolvable_citations(cited_ids: list[str], retrieved_ids: set[str]) -> bool:\n    \"\"\"Requires non-empty citations all present in the authorized retrieved set.\"\"\"\n    return len(cited_ids) > 0 and all(cid in retrieved_ids for cid in cited_ids)\n",
+    "referenceTest": "import unittest\nfrom s09_citation_grounding.lab import verify_resolvable_citations\n\nclass TestS09Citations(unittest.TestCase):\n    def test_rejects_fabricated_clause_ids(self):\n        self.assertFalse(verify_resolvable_citations([\"NORM-994\"], {\"DOC-12\"}))\n        self.assertTrue(verify_resolvable_citations([\"DOC-12\"], {\"DOC-12\", \"DOC-13\"}))\n",
+    "command": "python -m unittest discover -s labs-ai-native/s09_citation_grounding -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S10",
+    "slug": "s10_db_pool_isolation",
+    "title": "Saturación de Pool PostgreSQL durante Ingesta Masiva",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Concurrencia sin cota agota max_connections y bloquea el tráfico online. Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Aislar colas, pools y límites protege el SLO p95 en vivo. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s10_db_pool_isolation verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Reindexación masiva dispara p95 de consultas en vivo a 19s Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "La deduplicación idempotente ahorra cómputo y DB IO. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def allocate_worker_concurrency(max_db_conns: int, reserved_online_conns: int) -> int:\n    \"\"\"Caps ingestion worker concurrency so live RAG traffic keeps reserved DB connections.\"\"\"\n    available = max(1, max_db_conns - reserved_online_conns)\n    return min(8, available)\n",
+    "referenceTest": "import unittest\nfrom s10_db_pool_isolation.lab import allocate_worker_concurrency\n\nclass TestS10DbIsolation(unittest.TestCase):\n    def test_reserves_capacity_for_online_rag(self):\n        self.assertEqual(allocate_worker_concurrency(40, 35), 5)\n        self.assertEqual(allocate_worker_concurrency(100, 70), 8)\n",
+    "command": "python -m unittest discover -s labs-ai-native/s10_db_pool_isolation -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S11",
+    "slug": "s11_mcp_sandboxing",
+    "title": "Escalada de Privilegios y Path Traversal en Servidor MCP",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "MCP debe heredar scopes mínimos del usuario y nunca ejecutar bajo clave maestra global."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Solo la canonicalización real verifica que el destino final sigue dentro del sandbox."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s11_mcp_sandboxing verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Servidor MCP lee ../.env usando token de administrador compartido Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Los audit logs registran eventos sin filtrar credenciales ni PII. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "from pathlib import Path\n\ndef safe_mcp_resolve(workspace_root: str, requested: str) -> Path:\n    root = Path(workspace_root).resolve()\n    target = (root / requested).resolve()\n    if target != root and root not in target.parents:\n        raise PermissionError(\"MCP path escape blocked\")\n    return target\n",
+    "referenceTest": "import tempfile, unittest\nfrom pathlib import Path\nfrom s11_mcp_sandboxing.lab import safe_mcp_resolve\n\nclass TestS11McpSandbox(unittest.TestCase):\n    def test_blocks_parent_traversal(self):\n        with tempfile.TemporaryDirectory() as d:\n            with self.assertRaises(PermissionError):\n                safe_mcp_resolve(d, \"../.env\")\n            ok = safe_mcp_resolve(d, \"docs/spec.md\")\n            self.assertEqual(ok, Path(d).resolve() / \"docs\" / \"spec.md\")\n",
+    "command": "python -m unittest discover -s labs-ai-native/s11_mcp_sandboxing -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S12",
+    "slug": "s12_evals_temporal_leakage",
+    "title": "Data Leakage Temporal y Sesgo en Pipelines de Evaluación",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Sin particionado cronológico se produce data leakage temporal e infla métricas falsas."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Los jueces LLM tienen sesgos de longitud/estilo y deben calibrarse con humanos. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s12_evals_temporal_leakage verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Evaluación offline marca 97% pero fallan casos reales en producción Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "PSI y métricas de abstención/grounding alertan cambios de distribución. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def is_chronological_split(train_dates: list[str], eval_dates: list[str]) -> bool:\n    \"\"\"Ensures every evaluation sample occurs strictly after all training/index cutoff dates.\"\"\"\n    if not train_dates or not eval_dates:\n        return False\n    return max(train_dates) < min(eval_dates)\n",
+    "referenceTest": "import unittest\nfrom s12_evals_temporal_leakage.lab import is_chronological_split\n\nclass TestS12Temporal(unittest.TestCase):\n    def test_rejects_overlapping_future_dates(self):\n        self.assertTrue(is_chronological_split([\"2026-01-01\", \"2026-02-01\"], [\"2026-03-01\"]))\n        self.assertFalse(is_chronological_split([\"2026-01-01\", \"2026-04-01\"], [\"2026-03-01\"]))\n",
+    "command": "python -m unittest discover -s labs-ai-native/s12_evals_temporal_leakage -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S13",
+    "slug": "s13_rerank_p99_latency",
+    "title": "Degradación de Latencia p99 por Reranking No Acotado",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Un cross-encoder evalúa pares (query, chunk) y debe recibir un top-N acotado. Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Si no aporta ganancia neta medida, es complejidad y latencia innecesarias. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s13_rerank_p99_latency verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "TTFT p99 alcanza 11.2 segundos por rerank de 200 chunks Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "SSE entrega tokens progresivamente reduciendo el TTFT percibido. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def cap_rerank_and_context(candidates: list[str], max_rerank: int = 20, max_context: int = 6) -> tuple[list[str], int]:\n    \"\"\"Bounds cross-encoder fan-out and final context chunks to protect p99 latency.\"\"\"\n    reranked_pool = candidates[:max_rerank]\n    return reranked_pool[:max_context], len(reranked_pool)\n",
+    "referenceTest": "import unittest\nfrom s13_rerank_p99_latency.lab import cap_rerank_and_context\n\nclass TestS13RerankLatency(unittest.TestCase):\n    def test_caps_candidates_and_final_context(self):\n        selected, pool_len = cap_rerank_and_context([f\"c{i}\" for i in range(200)])\n        self.assertEqual(pool_len, 20)\n        self.assertEqual(len(selected), 6)\n",
+    "command": "python -m unittest discover -s labs-ai-native/s13_rerank_p99_latency -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S14",
+    "slug": "s14_hitl_idempotency",
+    "title": "Doble Cobro y Acciones Duplicadas en Agentes Transaccionales",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Una clave aleatoria por reintento provoca ejecuciones duplicadas. Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "HITL + permisos en servidor + idempotencia protegen operaciones críticas. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s14_hitl_idempotency verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Reintento de LangGraph tras timeout emite dos reembolsos reales Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Procesos reglados (pagos/aprobaciones) deben seguir workflows explícitos. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "class IdempotentToolExecutor:\n    def __init__(self) -> None:\n        self._applied: dict[str, dict] = {}\n\n    def run_once(self, idempotency_key: str, fn) -> dict:\n        if idempotency_key in self._applied:\n            return self._applied[idempotency_key]\n        res = fn()\n        self._applied[idempotency_key] = res\n        return res\n",
+    "referenceTest": "import unittest\nfrom s14_hitl_idempotency.lab import IdempotentToolExecutor\n\nclass TestS14Idempotency(unittest.TestCase):\n    def test_executes_side_effect_exactly_once_for_same_key(self):\n        ex = IdempotentToolExecutor()\n        calls = 0\n        def refund():\n            nonlocal calls\n            calls += 1\n            return {\"refund_id\": \"r1\"}\n        r1 = ex.run_once(\"step-991\", refund)\n        r2 = ex.run_once(\"step-991\", refund)\n        self.assertEqual(calls, 1)\n        self.assertEqual(r1, r2)\n",
+    "command": "python -m unittest discover -s labs-ai-native/s14_hitl_idempotency -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S15",
+    "slug": "s15_data_residency",
+    "title": "Residencia de Datos, Failover Multi-Región y Soberanía",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "El cumplimiento legal y de privacidad prevalece sobre un failover no autorizado. Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Los tiers gratuitos suelen retener prompts para entrenamiento si no se auditan. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s15_data_residency verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Failover 503 envió expedientes regulados a endpoint público con retención Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "Minimización de PII y ACL estricta reducen la superficie de riesgo. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def select_compliant_endpoint(endpoints: list[dict], required_region: str) -> dict | None:\n    \"\"\"Selects healthy failover endpoints only within approved region and zero-retention policy.\"\"\"\n    for ep in endpoints:\n        if ep.get(\"healthy\") and ep.get(\"region\") == required_region and not ep.get(\"trains_on_data\", True):\n            return ep\n    return None\n",
+    "referenceTest": "import unittest\nfrom s15_data_residency.lab import select_compliant_endpoint\n\nclass TestS15DataResidency(unittest.TestCase):\n    def test_never_falls_back_to_non_compliant_region_or_training_tier(self):\n        eps = [\n            {\"id\": \"us-free\", \"region\": \"us\", \"healthy\": True, \"trains_on_data\": True},\n            {\"id\": \"eu-2\", \"region\": \"eu\", \"healthy\": True, \"trains_on_data\": False},\n        ]\n        chosen = select_compliant_endpoint(eps, \"eu\")\n        self.assertEqual(chosen[\"id\"], \"eu-2\")\n",
+    "command": "python -m unittest discover -s labs-ai-native/s15_data_residency -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S16",
+    "slug": "s16_vllm_serving_oom",
+    "title": "Saturación de VRAM y Seguridad en Serving Local (Ollama / vLLM)",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "FinOps exige contabilizar TCO completo de infraestructura local y capacidad ociosa."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "OWASP LLM exige red privada + autenticación en todos los endpoints IA. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s16_vllm_serving_oom verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Nodo vLLM cae por OOM y expone puerto 8000 sin autenticación Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "El KV-cache crece con concurrencia × longitud de contexto. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def admit_inference_request(active_reqs: int, max_concurrency: int, auth_valid: bool) -> tuple[bool, int]:\n    \"\"\"Enforces authentication and bounded concurrency to prevent GPU OOM.\"\"\"\n    if not auth_valid:\n        return False, 401\n    if active_reqs >= max_concurrency:\n        return False, 429\n    return True, 200\n",
+    "referenceTest": "import unittest\nfrom s16_vllm_serving_oom.lab import admit_inference_request\n\nclass TestS16VllmServing(unittest.TestCase):\n    def test_requires_auth_and_caps_concurrency(self):\n        self.assertEqual(admit_inference_request(0, 16, False), (False, 401))\n        self.assertEqual(admit_inference_request(16, 16, True), (False, 429))\n        self.assertEqual(admit_inference_request(4, 16, True), (True, 200))\n",
+    "command": "python -m unittest discover -s labs-ai-native/s16_vllm_serving_oom -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S17",
+    "slug": "s17_gdpr_vector_erasure",
+    "title": "Borrado Incompleto GDPR / Derecho al Olvido en Vectores y Caché",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "El derecho al olvido exige limpiar fuente, chunks, índice vectorial y cachés. Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Los tests de borrado y revocación son obligatorios en el gate de seguridad. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s17_gdpr_vector_erasure verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Cliente borrado sigue apareciendo en respuestas RAG desde chunks huérfanos Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "El linaje document_id permite borrar o reindexar de forma atómica. Documenta las métricas objetivo, umbrales de fallo cerrado (NO-GO) y plan de rollback en tu ADR."
+      }
+    ],
+    "referenceSource": "def erase_document_artifacts(doc_id: str, chunks_store: list[dict], cache: dict[str, str]) -> tuple[list[dict], dict[str, str]]:\n    \"\"\"Atomically purges chunks and cache references linked to an erased document.\"\"\"\n    remaining_chunks = [c for c in chunks_store if c.get(\"document_id\") != doc_id]\n    remaining_cache = {k: v for k, v in cache.items() if doc_id not in v}\n    return remaining_chunks, remaining_cache\n",
+    "referenceTest": "import unittest\nfrom s17_gdpr_vector_erasure.lab import erase_document_artifacts\n\nclass TestS17GdprErasure(unittest.TestCase):\n    def test_purges_all_chunks_and_cached_references(self):\n        chunks = [{\"id\": \"1\", \"document_id\": \"d44\"}, {\"id\": \"2\", \"document_id\": \"d99\"}]\n        cache = {\"k1\": \"cite:d44\", \"k2\": \"cite:d99\"}\n        c_left, cache_left = erase_document_artifacts(\"d44\", chunks, cache)\n        self.assertEqual(len(c_left), 1)\n        self.assertNotIn(\"k1\", cache_left)\n",
+    "command": "python -m unittest discover -s labs-ai-native/s17_gdpr_vector_erasure -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  },
+  {
+    "id": "S18",
+    "slug": "s18_release_go_nogo",
+    "title": "Auditoría Integral Go/No-Go de Plataforma IA (32 Controles)",
+    "sections": [
+      {
+        "title": "Concepto y contexto",
+        "body": "Regla Vigilio: NOT_RUN en controles críticos de ACL o FinOps equivale a NO-GO. Aplica este principio en arquitectura de IA en producción para proteger seguridad, exactitud y latencia."
+      },
+      {
+        "title": "Invariantes de diseño",
+        "body": "Nunca declarar PASS sin ejecución reproducible real. Cada invariante debe comprobarse en servidor de forma determinista antes de invocar modelos o herramientas."
+      },
+      {
+        "title": "Pruebas y evidencias",
+        "body": "Ejecuta pruebas unitarias deterministas en Python sobre s18_release_go_nogo verificando casos negativos de seguridad, citas o presupuesto."
+      },
+      {
+        "title": "Fallo frecuente",
+        "body": "Presión de negocio para lanzar mañana tras 3 demos sin tests ACL ni FinOps Evita confiar en controles meramente declarativos o prompts sin validación de backend ni telemetría."
+      },
+      {
+        "title": "Defensa de arquitectura (ADR)",
+        "body": "La matriz de 32 controles cubre calidad, seguridad, observabilidad, costo y operación."
+      }
+    ],
+    "referenceSource": "REQUIRED_CONTROLS = (\n    \"cross_tenant_acl\",\n    \"citation_verification\",\n    \"prompt_injection_tests\",\n    \"finops_atomic_cap\",\n    \"gdpr_erasure\",\n    \"otel_no_pii\",\n)\n\ndef release_decision(gate_results: dict[str, str]) -> str:\n    \"\"\"Fails closed: every mandatory control must be explicitly PASS.\"\"\"\n    for ctrl in REQUIRED_CONTROLS:\n        if gate_results.get(ctrl) != \"PASS\":\n            return \"NO-GO\"\n    return \"GO\"\n",
+    "referenceTest": "import unittest\nfrom s18_release_go_nogo.lab import REQUIRED_CONTROLS, release_decision\n\nclass TestS18GoNoGo(unittest.TestCase):\n    def test_blocks_release_when_any_control_is_not_run_or_fail(self):\n        partial = {k: \"PASS\" for k in REQUIRED_CONTROLS}\n        partial[\"cross_tenant_acl\"] = \"NOT_RUN\"\n        self.assertEqual(release_decision(partial), \"NO-GO\")\n        all_pass = {k: \"PASS\" for k in REQUIRED_CONTROLS}\n        self.assertEqual(release_decision(all_pass), \"GO\")\n",
+    "command": "python -m unittest discover -s labs-ai-native/s18_release_go_nogo -t labs-ai-native -v",
+    "disclaimer": "Ejemplo nativo en Python (labs-ai-native): no se ejecuta en el navegador; descárgalo y verifica con unittest."
+  }
+]

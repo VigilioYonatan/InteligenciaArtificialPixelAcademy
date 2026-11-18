@@ -1,0 +1,380 @@
+[
+  {
+    "id": "SAI01",
+    "moduleId": "AI01",
+    "title": "Python y pensamiento algorítmico",
+    "level": "senior",
+    "scenario": "Un notebook de ingestión recibe un dataset JSON/CSV subido por un tercero antes de procesarlo en un worker.",
+    "question": "¿Qué frontera de ejecución protege mejor los secretos y la integridad del pipeline Python?",
+    "options": [
+      "Validar procedencia, limitar tamaño/esquema y procesar en sandbox sin secretos ni red",
+      "Ejecutarlo en el mismo contenedor del backend con acceso a variables de producción",
+      "Confiar en que pandas.read_csv() sanitiza automáticamente fórmulas y pickle"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los archivos externos son entrada no confiable: deben validarse por esquema/tamaño y ejecutarse sin credenciales ni acceso lateral.",
+    "evidence": [
+      "Rechazar archivos pickle/objetos arbitrarios y validar esquema con Pydantic",
+      "Ejecutar el parser con usuario sin privilegios y sin variables de entorno secretas",
+      "Prueba reproducible con payload malformado verificando rechazo fail-closed"
+    ],
+    "category": "Python"
+  },
+  {
+    "id": "SAI02",
+    "moduleId": "AI02",
+    "title": "Git, terminal y entornos",
+    "level": "senior",
+    "scenario": "El pipeline de entrenamiento en CI falla de forma intermitente porque pyproject.toml usa rangos flotantes (^ / >=).",
+    "question": "¿Cómo garantizas reproducibilidad determinista entre desarrollo local y CI/CD?",
+    "options": [
+      "Ejecutar pip install --upgrade en cada build para tener parches recientes",
+      "Fijar dependencias con lockfile (uv.lock / hashes) y verificar integridad en CI",
+      "Subir la carpeta .venv al repositorio Git para evitar instalaciones"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un lockfile con hashes fijados garantiza árboles de dependencias idénticos y auditables sin contaminar Git con binarios.",
+    "evidence": [
+      "Lockfile versionado (uv.lock) con hashes SHA-256 verificados en CI",
+      "Instalación congelada (--frozen / --locked) que falla si hay drift",
+      "Registro de versión exacta de Python y CUDA/CPU en el artefacto de build"
+    ],
+    "category": "Git / uv"
+  },
+  {
+    "id": "SAI03",
+    "moduleId": "AI03",
+    "title": "Álgebra lineal para IA",
+    "level": "senior",
+    "scenario": "El cálculo de similitud coseno en NumPy devuelve NaN en producción cuando un documento vacío produce un vector cero.",
+    "question": "¿Qué invariante numérica evita división por cero y sesgo de magnitud en producción?",
+    "options": [
+      "Reemplazar NaN por 1.0 silenciosamente para no romper la API",
+      "Normalizar L2 solo en el índice y omitir la normalización en la query",
+      "Aplicar norma L2 con epsilon acotado y rechazar o marcar vectores nulos antes del producto escalar"
+    ],
+    "correctIndex": 2,
+    "explanation": "Un vector nulo no tiene dirección definida; proteger el denominador con epsilon y validar la norma evita NaN silenciosos.",
+    "evidence": [
+      "Test unitario con vector cero y valores extremos verificando ausencia de NaN/Inf",
+      "Normalización L2 consistente en ingestión y consulta",
+      "Métrica de rechazo explícito para documentos sin texto indexable"
+    ],
+    "category": "NumPy"
+  },
+  {
+    "id": "SAI04",
+    "moduleId": "AI04",
+    "title": "Probabilidad y estadística",
+    "level": "senior",
+    "scenario": "Un nuevo modelo de scoring muestra +1.2% de accuracy en 200 muestras frente al modelo actual antes del despliegue.",
+    "question": "¿Qué criterio estadístico evita promover ruido muestral a producción?",
+    "options": [
+      "Evaluar intervalos de confianza, tamaño muestral mínimo y prueba pareada (McNemar/bootstrap) antes de promover",
+      "Promover inmediatamente porque cualquier mejora positiva en accuracy es suficiente",
+      "Repetir el muestreo aleatorio hasta que el p-valor sea menor a 0.05"
+    ],
+    "correctIndex": 0,
+    "explanation": "Sin potencia estadística ni prueba pareada, +1.2% en 200 casos suele ser varianza muestral y no una mejora real.",
+    "evidence": [
+      "Intervalo de confianza bootstrap al 95% sobre dataset holdout estratificado",
+      "Cálculo de potencia mínima y calibración (Brier score / ECE)",
+      "Regla Go/No-Go documentada con umbral mínimo de mejora significativa"
+    ],
+    "category": "SciPy"
+  },
+  {
+    "id": "SAI05",
+    "moduleId": "AI05",
+    "title": "Datos y exploración",
+    "level": "senior",
+    "scenario": "Un dataset de transacciones contiene múltiples filas por usuario y marcas temporales a lo largo de 12 meses.",
+    "question": "¿Qué estrategia de partición evita fuga temporal y contaminación entre train y test?",
+    "options": [
+      "Hacer train_test_split aleatorio simple después de imputar la media global",
+      "Separar por corte temporal estricto (out-of-time) y agrupar por entidad/usuario sin imputación previa",
+      "Duplicar la clase minoritaria con SMOTE antes de dividir train y test"
+    ],
+    "correctIndex": 1,
+    "explanation": "El split aleatorio o transformar antes de dividir filtra información futura y usuarios repetidos hacia el conjunto de validación.",
+    "evidence": [
+      "Verificación automatizada de intersección vacía de user_id y timestamps train < test",
+      "Fit de imputadores y escaladores exclusivamente sobre train",
+      "Reporte de distribución y nulos comparando train vs holdout"
+    ],
+    "category": "pandas"
+  },
+  {
+    "id": "SAI06",
+    "moduleId": "AI06",
+    "title": "ML supervisado",
+    "level": "senior",
+    "scenario": "Un clasificador de fraude alcanza 99.1% de accuracy en un dataset con 0.9% de casos positivos.",
+    "question": "¿Por qué accuracy es engañosa aquí y qué métrica + calibración debes optimizar?",
+    "options": [
+      "Un modelo que predice siempre 0 ya obtiene 99.1%; optimizar PR-AUC/F-beta y calibrar probabilidades",
+      "Aumentar epochs hasta lograr 100% de accuracy en entrenamiento",
+      "Eliminar 90% de los casos negativos en test para equilibrar el accuracy"
+    ],
+    "correctIndex": 0,
+    "explanation": "En clases muy desbalanceadas, PR-AUC, recall a FPR fijo y matriz de costo operativo reflejan el valor real mucho mejor que accuracy.",
+    "evidence": [
+      "Curva Precision-Recall (PR-AUC) y matriz de confusión con costo por error",
+      "Validación de umbral seleccionado sobre split de validación separado",
+      "Prueba de calibración de probabilidades antes de fijar reglas de negocio"
+    ],
+    "category": "scikit-learn"
+  },
+  {
+    "id": "SAI07",
+    "moduleId": "AI07",
+    "title": "Evaluación de ML",
+    "level": "senior",
+    "scenario": "El F1 offline es 0.92, pero tras 3 semanas en producción los falsos negativos se duplican en una región nueva.",
+    "question": "¿Qué mecanismo detecta data drift y degradación real cuando las etiquetas tardan semanas en llegar?",
+    "options": [
+      "Esperar al cierre trimestral para reentrenar con todos los datos históricos",
+      "Desactivar alertas si la latencia del endpoint está dentro del SLO",
+      "Monitorear PSI/KL de features, distribución de scores y muestrear etiquetado humano continuo"
+    ],
+    "correctIndex": 2,
+    "explanation": "El drift de entrada y de predicciones permite detectar cambios de población antes de tener etiquetas diferidas completas.",
+    "evidence": [
+      "Alertas de PSI/KS por feature crítica comparada contra ventana de entrenamiento",
+      "Segmentación de métricas por cohorte/región en el dashboard de evaluación",
+      "Runbook de rollback al modelo anterior ante caída confirmada de F1"
+    ],
+    "category": "scikit-learn"
+  },
+  {
+    "id": "SAI08",
+    "moduleId": "AI08",
+    "title": "Feature engineering",
+    "level": "senior",
+    "scenario": "El equipo entrena usando StandardScaler en un script y aplica normalización manual distinta en la API FastAPI.",
+    "question": "¿Cómo eliminas el training-serving skew en transformaciones de features?",
+    "options": [
+      "Documentar las fórmulas en un wiki para que backend las reimplemente",
+      "Empaquetar preprocessing y modelo en un único Pipeline/ColumnTransformer versionado con tests de paridad",
+      "Normalizar cada petición individualmente en inferencia usando su propio promedio"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un Pipeline serializado e idéntico en entrenamiento e inferencia, validado con vectores golden, elimina divergencias silenciosas.",
+    "evidence": [
+      "Pipeline único exportado con hash/versión junto a sus metadatos",
+      "Test de paridad golden-input verificando diferencia < 1e-6 entre batch y API",
+      "Manejo explícito de categorías desconocidas y valores nulos en runtime"
+    ],
+    "category": "scikit-learn"
+  },
+  {
+    "id": "SAI09",
+    "moduleId": "AI09",
+    "title": "Deep Learning",
+    "level": "senior",
+    "scenario": "Durante el fine-tuning en PyTorch, el loss diverge a NaN a partir de la época 4 en batches con textos largos.",
+    "question": "¿Qué combinación estabiliza el entrenamiento y facilita reproducir el fallo?",
+    "options": [
+      "Aplicar gradient clipping, warmup de learning rate, revisión de precisión mixta (bf16/fp16) y semilla determinista",
+      "Subir el learning rate x10 para salir rápido de mínimos locales",
+      "Omitir torch.no_grad() en validación para mantener los gradientes activos"
+    ],
+    "correctIndex": 0,
+    "explanation": "El gradient clipping + warmup + control de overflow en fp16 (o usar bf16) previenen explosiones de gradiente en secuencias largas.",
+    "evidence": [
+      "Registro de grad_norm por paso antes del clipping",
+      "Prueba de sobreajuste en 1 mini-batch verificando convergencia determinista",
+      "Checkpoint automático del último estado estable previo a NaN"
+    ],
+    "category": "PyTorch"
+  },
+  {
+    "id": "SAI10",
+    "moduleId": "AI10",
+    "title": "Transformers y NLP",
+    "level": "senior",
+    "scenario": "Un modelo recibe documentos de 18,000 tokens cuando su ventana efectiva de atención y presupuesto está acotada a 4,096.",
+    "question": "¿Qué estrategia evita truncamiento silencioso de instrucciones o pérdida de evidencia crítica?",
+    "options": [
+      "Truncar por el final sin avisar al usuario ni registrar tokens recortados",
+      "Medir tokens reales con el tokenizer del modelo, aplicar chunking/resumen acotado y fallar explícitamente si excede límite",
+      "Estimar 1 palabra = 1 token siempre para ahorrar tiempo de CPU"
+    ],
+    "correctIndex": 1,
+    "explanation": "Truncar silenciosamente puede cortar el contexto recuperado o las reglas de salida; contar tokens exactos y acotar presupuesto es obligatorio.",
+    "evidence": [
+      "Conteo exacto con el tokenizer oficial antes de invocar inferencia",
+      "Métrica de prompt_tokens / completion_tokens y alerta de truncamiento",
+      "Test con documento largo verificando preservación de system prompt y citas"
+    ],
+    "category": "PyTorch / HF"
+  },
+  {
+    "id": "SAI11",
+    "moduleId": "AI11",
+    "title": "Embeddings y vector search",
+    "level": "senior",
+    "scenario": "Una tabla pgvector multi-tenant tiene índice HNSW y aplica el filtro de permisos en el código de aplicación después de traer Top-10.",
+    "question": "¿Por qué falla este patrón y cuál es la arquitectura segura?",
+    "options": [
+      "Puede devolver 0 resultados autorizados o filtrar datos de otro tenant; aplicar tenant_id y ACL en SQL antes/dentro de la búsqueda",
+      "Aumentar ef_search a 1000 resuelve automáticamente el aislamiento entre tenants",
+      "Guardar el tenant_id dentro del texto del embedding garantiza privacidad"
+    ],
+    "correctIndex": 0,
+    "explanation": "El post-filtrado sobre Top-K degrada recall hasta cero y expone datos en tránsito; la autorización debe imponerse en SQL bajo rol restringido.",
+    "evidence": [
+      "Test cross-tenant/cross-user verificando 0 fragmentos ajenos retornados",
+      "Comparativa Recall@K exacta vs HNSW con filtros activos",
+      "Índice compuesto/particionado y rol SQL no privilegiado"
+    ],
+    "category": "pgvector"
+  },
+  {
+    "id": "SAI12",
+    "moduleId": "AI12",
+    "title": "RAG verificable",
+    "level": "senior",
+    "scenario": "Un asistente RAG responde con tono seguro inventando cláusulas de póliza cuando ningún documento recuperado contiene la respuesta.",
+    "question": "¿Qué diseño impone grounding verificable y abstención segura?",
+    "options": [
+      "Pedir en el prompt 'por favor no alucines' sin validar citas contra los chunks",
+      "Subir la temperature a 0.9 para que el modelo explore más respuestas",
+      "Exigir umbral mínimo de relevancia + verificación programática de citas resolubles + respuesta de abstención obligatoria"
+    ],
+    "correctIndex": 2,
+    "explanation": "Una instrucción en el prompt no basta: se requiere gate de relevancia, citas trazables a document_id/chunk_id autorizados y abstención verificada.",
+    "evidence": [
+      "Dataset de evaluación con >=20% de preguntas sin respuesta esperando abstención",
+      "Verificador automático de que cada cita pertenece al contexto autorizado",
+      "Métrica de faithfulness y tasa de alucinación medida en CI"
+    ],
+    "category": "Python / pgvector"
+  },
+  {
+    "id": "SAI13",
+    "moduleId": "AI13",
+    "title": "Agentes y herramientas",
+    "level": "senior",
+    "scenario": "Un agente con acceso a tools MCP recibe un correo externo que contiene texto oculto pidiendo exportar la base de clientes.",
+    "question": "¿Qué controles arquitectónicos frenan la ejecución no autorizada vía prompt injection indirecto?",
+    "options": [
+      "Separar datos recuperados de instrucciones, aplicar RBAC por usuario en cada tool y exigir aprobación humana para acciones mutantes",
+      "Confiar en una lista negra de palabras como 'ignore previous instructions'",
+      "Permitir al agente decidir dinámicamente qué credenciales de administrador usar"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las listas negras de regex son fáciles de evadir; la defensa real es mínimo privilegio en tools, límites de pasos y human-in-the-loop.",
+    "evidence": [
+      "Suite de pruebas adversariales de prompt injection indirecto en contexto",
+      "Esquema estricto de parámetros de tool con allowlist de acciones permitidas",
+      "Tope máximo de iteraciones/tokens y confirmación explícita en operaciones de escritura"
+    ],
+    "category": "LangGraph / MCP"
+  },
+  {
+    "id": "SAI14",
+    "moduleId": "AI14",
+    "title": "Prompt y evaluación",
+    "level": "senior",
+    "scenario": "Se modifica el system prompt y un desarrollador aprueba el PR tras probar 3 preguntas manualmente en el playground.",
+    "question": "¿Qué estándar de evaluación evita regresiones silenciosas antes de liberar cambios de prompt o modelo?",
+    "options": [
+      "Aprobar si el formato JSON parece válido en las 3 pruebas manuales",
+      "Ejecutar evaluación offline versionada (casos nominales, borde, abstención e inyección) bloqueando merge si cae la métrica",
+      "Usar el mismo LLM sin calibrar como único juez sin referencias humanas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Tres ejemplos manuales no detectan regresiones; se requiere un golden dataset versionado con umbrales bloqueantes en CI.",
+    "evidence": [
+      "Dataset offline versionado con splits de regresión y casos negativos",
+      "Comparativa delta vs baseline anterior (calidad, latencia p95, costo)",
+      "Validación estricta de esquema JSON en salida estructurada"
+    ],
+    "category": "Python / MLflow"
+  },
+  {
+    "id": "SAI15",
+    "moduleId": "AI15",
+    "title": "Serving e inferencia",
+    "level": "senior",
+    "scenario": "Una API FastAPI llama síncronamente al motor de inferencia dentro de un endpoint async, bloqueando el event loop bajo ráfagas.",
+    "question": "¿Cómo proteges la latencia P99 y evitas colapsos en cascada bajo picos de tráfico?",
+    "options": [
+      "Aumentar el timeout HTTP a 120 segundos para que ninguna petición falle",
+      "Desactivar healthchecks para que el balanceador no reinicie los pods",
+      "Usar cola acotada / workers dedicados, dynamic batching, timeouts estrictos y backpressure 429/503"
+    ],
+    "correctIndex": 2,
+    "explanation": "Bloquear el event loop o acumular peticiones sin límite dispara P99 y OOM; se necesita aislamiento de cómputo, colas acotadas y load shedding.",
+    "evidence": [
+      "Prueba de carga midiendo P50/P95/P99 y tasa de rechazo limpio 429/503",
+      "Timeouts propagados y circuit breaker hacia proveedores externos",
+      "Separación de procesos/threads para inferencia CPU/GPU respecto al loop async"
+    ],
+    "category": "FastAPI"
+  },
+  {
+    "id": "SAI16",
+    "moduleId": "AI16",
+    "title": "MLOps y LLMOps",
+    "level": "senior",
+    "scenario": "Al depurar trazas OpenTelemetry de un pipeline LLM en producción, se descubre que los spans exportan prompts completos con DNI y correos.",
+    "question": "¿Qué política de observabilidad mantiene trazabilidad útil sin filtrar PII ni disparar costos?",
+    "options": [
+      "Desactivar completamente todo logging y métricas en producción",
+      "Redactar/hashear PII en el borde, no loguear prompts completos por defecto y mantener labels de baja cardinalidad",
+      "Guardar prompts completos en texto plano solo en Prometheus labels"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las etiquetas de alta cardinalidad rompen Prometheus y los prompts en logs filtran PII; se trazan metadatos, IDs de correlación y métricas acotadas.",
+    "evidence": [
+      "Política de redacción verificada en tests automatizados de logging/spans",
+      "Métricas OTel con labels acotados (model, status, route, nunca user_id/prompt)",
+      "Trazabilidad de versión de prompt, modelo e índice por trace_id"
+    ],
+    "category": "MLflow / OpenTelemetry"
+  },
+  {
+    "id": "SAI17",
+    "moduleId": "AI17",
+    "title": "Seguridad y DevSecOps IA",
+    "level": "senior",
+    "scenario": "Un pipeline de CI descarga modelos desde un hub público sin verificar digest ni escanear dependencias Python.",
+    "question": "¿Qué controles de cadena de suministro (supply chain) mitigan ejecución remota y modelos alterados?",
+    "options": [
+      "Fijar commit SHA/digest del modelo, preferir safetensors sobre pickle y ejecutar SAST + escaneo de dependencias/secretos en CI",
+      "Usar siempre tag :latest para recibir mejoras de pesos automáticamente",
+      "Desactivar el escaneo de secretos si el repositorio es privado"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los archivos .pkl/.bin pueden ejecutar código al deserializarse; fijar digests, usar safetensors y escanear lockfiles cierra la superficie.",
+    "evidence": [
+      "Prohibición de torch.load sin weights_only=True / uso verificado de safetensors",
+      "Pinning por digest SHA-256 de modelos e imágenes base OCI",
+      "Reportes de pip-audit/Trivy y secret scanning en cada PR"
+    ],
+    "category": "OWASP / CI"
+  },
+  {
+    "id": "SAI18",
+    "moduleId": "AI18",
+    "title": "FinOps y arquitectura Senior",
+    "level": "senior",
+    "scenario": "Un tenant lanza 50 peticiones concurrentes a un flujo agéntico caro, superando en minutos su presupuesto mensual configurado solo en YAML.",
+    "question": "¿Cómo haces cumplir límites de gasto FinOps reales bajo concurrencia?",
+    "options": [
+      "Enviar un correo de alerta al día siguiente cuando llegue la factura",
+      "Verificar el saldo solo al finalizar la respuesta del LLM",
+      "Implementar reserva atómica de presupuesto por tenant antes de invocar el modelo, con conciliación posterior y degradación"
+    ],
+    "correctIndex": 2,
+    "explanation": "Un YAML declarativo o chequeos no atómicos sufren race conditions bajo ráfagas; la reserva atómica previa garantiza tope estricto de gasto.",
+    "evidence": [
+      "Test de concurrencia (N peticiones simultáneas) validando que el gasto nunca excede la cuota",
+      "Métrica de costo por respuesta útil y tasa de acierto de caché con ACL",
+      "ADR documentando SLOs, modelo fallback económico y criterio de degradación"
+    ],
+    "category": "Vigilio Docs"
+  }
+]

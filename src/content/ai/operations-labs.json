@@ -1,0 +1,308 @@
+[
+  {
+    "id": "SAI01",
+    "incident": "ALERTA: Worker de ingestión cayó con OOMKilled tras recibir un payload JSON anidado de 45 MB.",
+    "causes": [
+      "Ausencia de límite de tamaño/profundidad en frontera de entrada",
+      "Falta de índice HNSW",
+      "Temperatura LLM muy alta"
+    ],
+    "causeCorrect": 0,
+    "mitigations": [
+      "Reiniciar worker en bucle",
+      "Rechazar payloads > límite antes de parsear y validar esquema en streaming/sandbox",
+      "Subir RAM a 128 GB"
+    ],
+    "mitigationCorrect": 1,
+    "explanation": "Sin cota de tamaño previa al parsing, un payload malicioso agota la RAM."
+  },
+  {
+    "id": "SAI02",
+    "incident": "INCIDENTE: Despliegue del viernes rompió inferencia en producción mientras local seguía en verde.",
+    "causes": [
+      "Exceso de workers",
+      "Dependencia flotante instaló major incompatible en build",
+      "Prompt muy corto"
+    ],
+    "causeCorrect": 1,
+    "mitigations": [
+      "Desactivar tests",
+      "Editar archivos en el pod vivo",
+      "Congelar uv.lock con hashes, usar --frozen en CI y hacer rollback al digest previo"
+    ],
+    "mitigationCorrect": 2,
+    "explanation": "El drift de dependencias se evita con lockfiles congelados y artefactos inmutables."
+  },
+  {
+    "id": "SAI03",
+    "incident": "INCIDENTE: 3% de búsquedas vectoriales devuelven HTTP 500 ValueError: Out of range float values (NaN).",
+    "causes": [
+      "Timeout de TLS",
+      "Falta lockfile",
+      "Documentos vacíos generan vectores norma 0 y NaN en coseno"
+    ],
+    "causeCorrect": 2,
+    "mitigations": [
+      "Filtrar documentos vacíos en ingestión y proteger norma con epsilon",
+      "Ignorar HTTP 500 en Nginx",
+      "Cambiar a int8"
+    ],
+    "mitigationCorrect": 0,
+    "explanation": "Validar norma > epsilon y rechazar textos vacíos elimina los NaN."
+  },
+  {
+    "id": "SAI04",
+    "incident": "INCIDENTE: Modelo promovido con +1% accuracy en 80 muestras degradó conversión real un -4%.",
+    "causes": [
+      "Promoción sin potencia estadística ni intervalo de confianza",
+      "Leakage de credenciales",
+      "OOM en Redis"
+    ],
+    "causeCorrect": 0,
+    "mitigations": [
+      "Subir batch_size",
+      "Rollback inmediato y exigir CI bootstrap + prueba canary antes de promover",
+      "Recortar el dataset"
+    ],
+    "mitigationCorrect": 1,
+    "explanation": "Sin potencia muestral suficiente, +1% era ruido."
+  },
+  {
+    "id": "SAI05",
+    "incident": "INCIDENTE: Modelo de riesgo tuvo F1=0.95 en staging y F1=0.58 el día 1 en producción.",
+    "causes": [
+      "Falta GPU",
+      "Data leakage por imputación/split aleatorio mezclando fechas futuras",
+      "Fuga de PII en logs"
+    ],
+    "causeCorrect": 1,
+    "mitigations": [
+      "Duplicar datos",
+      "Bajar threshold a 0.05",
+      "Reconstruir pipeline con split temporal estricto y fit exclusivo en train"
+    ],
+    "mitigationCorrect": 2,
+    "explanation": "El leakage temporal infla métricas offline que colapsan en producción."
+  },
+  {
+    "id": "SAI06",
+    "incident": "ALERTA: Sistema antifraude dejó pasar el 94% de fraudes reales pese a reportar 99% accuracy.",
+    "causes": [
+      "Error de DNS",
+      "Fuga de memoria CUDA",
+      "Optimización por accuracy en clase minoritaria (0.8%)"
+    ],
+    "causeCorrect": 2,
+    "mitigations": [
+      "Usar class_weight/cost-matrix, optimizar PR-AUC y recalibrar umbral en validación",
+      "Aumentar epochs",
+      "Borrar logs"
+    ],
+    "mitigationCorrect": 0,
+    "explanation": "En eventos raros se debe optimizar PR-AUC y costo por error."
+  },
+  {
+    "id": "SAI07",
+    "incident": "ALERTA: PSI de variable `monto_credito` subió a 0.45 tras cambio de moneda en app móvil.",
+    "causes": [
+      "Data drift upstream no detectado por cambios de escala/esquema",
+      "Saturación de CPU",
+      "Prompt injection"
+    ],
+    "causeCorrect": 0,
+    "mitigations": [
+      "Silenciar alerta PSI",
+      "Activar alerta PSI, validar contrato de unidad en ingesta y activar fallback/reentrenamiento",
+      "Subir replicas"
+    ],
+    "mitigationCorrect": 1,
+    "explanation": "Cambios de formato upstream degradan silenciosamente las predicciones."
+  },
+  {
+    "id": "SAI08",
+    "incident": "INCIDENTE: Nuevo código postal provocó 100% de errores 500 en el microservicio de scoring.",
+    "causes": [
+      "Fuga FinOps",
+      "Encoder sin manejo de categorías desconocidas ni Pipeline unificado",
+      "Tokenizador lento"
+    ],
+    "causeCorrect": 1,
+    "mitigations": [
+      "Reiniciar pods",
+      "Bloquear el código postal",
+      "Desplegar Pipeline con handle_unknown='ignore' y test de paridad golden-input"
+    ],
+    "mitigationCorrect": 2,
+    "explanation": "Los encoders en producción deben tolerar categorías inéditas."
+  },
+  {
+    "id": "SAI09",
+    "incident": "INCIDENTE: Job de fine-tuning nocturno de 6 horas falló con NaN en la época 4 sin guardar estado.",
+    "causes": [
+      "Error en CORS",
+      "Fuga cross-tenant",
+      "Explosión de gradientes sin clipping ni checkpoints intermedios"
+    ],
+    "causeCorrect": 2,
+    "mitigations": [
+      "Activar clip_grad_norm_, warmup, bf16 y checkpoints periódicos",
+      "Subir learning rate",
+      "Quitar validación"
+    ],
+    "mitigationCorrect": 0,
+    "explanation": "Gradient clipping + checkpoints permiten estabilidad y recuperación rápida."
+  },
+  {
+    "id": "SAI10",
+    "incident": "ALERTA: Tasa de JSON inválido en extracción subió de 1% a 38% al procesar contratos largos.",
+    "causes": [
+      "Truncamiento silencioso cortó las instrucciones finales de esquema",
+      "Falta uv.lock",
+      "Caída de PostgreSQL"
+    ],
+    "causeCorrect": 0,
+    "mitigations": [
+      "Subir temperature a 1.0",
+      "Validar presupuesto de tokens previo, chunking acotado y salida estructurada",
+      "Omitir validación JSON"
+    ],
+    "mitigationCorrect": 1,
+    "explanation": "Superar la ventana de contexto amputó las reglas de formato."
+  },
+  {
+    "id": "SAI11",
+    "incident": "CRÍTICO: Auditoría detecta que un usuario vio fragmentos de otro tenant en trazas de retrieval.",
+    "causes": [
+      "Falta de gradient clipping",
+      "Post-filtrado en aplicación tras búsqueda vectorial global",
+      "Alto batch_size"
+    ],
+    "causeCorrect": 1,
+    "mitigations": [
+      "Subir ef_search",
+      "Ocultar logs",
+      "Mover filtro tenant_id/ACL al WHERE SQL bajo rol restringido y añadir test cross-tenant"
+    ],
+    "mitigationCorrect": 2,
+    "explanation": "El aislamiento multi-tenant debe aplicarse dentro de la base de datos."
+  },
+  {
+    "id": "SAI12",
+    "incident": "INCIDENTE: Asistente legal citó un artículo inexistente causando reclamo formal.",
+    "causes": [
+      "Puerto equivocado",
+      "Falta PyTorch",
+      "Ausencia de gate de relevancia, verificación de citas y abstención"
+    ],
+    "causeCorrect": 2,
+    "mitigations": [
+      "Imponer umbral mínimo, verificar IDs de citas contra chunks y forzar abstención",
+      "Pedir cortesía en el prompt",
+      "Subir top_k a 100"
+    ],
+    "mitigationCorrect": 0,
+    "explanation": "Las citas deben validarse programáticamente antes de responder."
+  },
+  {
+    "id": "SAI13",
+    "incident": "CRÍTICO: Agente de soporte intentó enviar datos internos a un webhook externo tras leer un ticket.",
+    "causes": [
+      "Prompt injection indirecto + tool sin allowlist ni egress deny",
+      "Falta bootstrap CI",
+      "Drift en edad"
+    ],
+    "causeCorrect": 0,
+    "mitigations": [
+      "Usar regex 'ignore'",
+      "Separar datos de instrucciones, restringir tools + red saliente y exigir aprobación humana",
+      "Aumentar max_steps"
+    ],
+    "mitigationCorrect": 1,
+    "explanation": "Egress deny y menor privilegio contienen la exfiltración."
+  },
+  {
+    "id": "SAI14",
+    "incident": "INCIDENTE: Actualización menor de prompt rompió la extracción de fechas en 40% de facturas.",
+    "causes": [
+      "Falta GPU",
+      "Despliegue sin suite de regresión offline en CI",
+      "OOM en Docker"
+    ],
+    "causeCorrect": 1,
+    "mitigations": [
+      "Quitar fechas",
+      "Editar en vivo",
+      "Rollback de prompt_version y añadir casos de factura al golden dataset bloqueante en CI"
+    ],
+    "mitigationCorrect": 2,
+    "explanation": "Versionar prompts y evaluar regresiones en CI evita caídas silenciosas."
+  },
+  {
+    "id": "SAI15",
+    "incident": "INCIDENTE: Picos de tráfico dispararon P99 a 24s y provocaron reinicios en cascada.",
+    "causes": [
+      "Pickle corrupto",
+      "Falta uv.lock",
+      "Event loop bloqueado + cola sin cota ni circuit breaker"
+    ],
+    "causeCorrect": 2,
+    "mitigations": [
+      "Cola acotada, rechazo rápido 429/503, workers dedicados y timeouts propagados",
+      "Subir timeout a 120s",
+      "Quitar healthchecks"
+    ],
+    "mitigationCorrect": 0,
+    "explanation": "Backpressure y timeouts acotados evitan colapsos en cascada."
+  },
+  {
+    "id": "SAI16",
+    "incident": "ALERTA: Prometheus cayó por OOM y auditoría halló DNIs en spans de OpenTelemetry.",
+    "causes": [
+      "user_id como label (alta cardinalidad) + raw_prompt sin redactar",
+      "Falta HNSW",
+      "División por cero"
+    ],
+    "causeCorrect": 0,
+    "mitigations": [
+      "Aumentar retención a 1 año",
+      "Purgar labels de alta cardinalidad y activar redacción de PII en el colector/SDK",
+      "Apagar alertas"
+    ],
+    "mitigationCorrect": 1,
+    "explanation": "Solo emitir métricas de baja cardinalidad y spans sin PII."
+  },
+  {
+    "id": "SAI17",
+    "incident": "CRÍTICO: Escáner de seguridad detecta archivo `.pkl` externo ejecutando subproceso al cargarse.",
+    "causes": [
+      "Falta class_weight",
+      "Deserialización pickle sin sandbox ni verificación de digest",
+      "Drift PSI"
+    ],
+    "causeCorrect": 1,
+    "mitigations": [
+      "Subir RAM",
+      "Ignorar alerta",
+      "Bloquear pickle, migrar a safetensors, verificar SHA-256 y correr non-root"
+    ],
+    "mitigationCorrect": 2,
+    "explanation": "Solo formatos seguros (safetensors) con hash verificado deben cargarse."
+  },
+  {
+    "id": "SAI18",
+    "incident": "ALERTA: Un tenant consumió 3x su cuota mensual en 4 minutos durante una ráfaga.",
+    "causes": [
+      "Falta bootstrap CI",
+      "Error en CSS",
+      "Chequeo de presupuesto no atómico sufrió race condition"
+    ],
+    "causeCorrect": 2,
+    "mitigations": [
+      "Implementar reserva atómica previa + conciliación y degradación a modelo económico",
+      "Enviar factura manual",
+      "Subir timeout"
+    ],
+    "mitigationCorrect": 0,
+    "explanation": "La reserva atómica previa garantiza cumplimiento estricto del tope FinOps."
+  }
+]

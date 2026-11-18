@@ -1,0 +1,6 @@
+[project]
+name = "aipixel-ai-native-labs"
+version = "1.0.0"
+description = "Reproducible Python Senior Labs for AIPixel Architecture Academy (RAG ACL, Evals, LangGraph, FinOps)"
+requires-python = ">=3.10"
+dependencies = []

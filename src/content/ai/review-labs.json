@@ -1,0 +1,308 @@
+[
+  {
+    "id": "SAI01",
+    "diff": "- data = json.loads(raw_body)\n+ data = pickle.loads(raw_body)",
+    "risks": [
+      "Deserialización insegura (RCE vía pickle sobre entrada externa)",
+      "Fuga de memoria por float64",
+      "Falta de paginación"
+    ],
+    "riskCorrect": 0,
+    "fixes": [
+      "Comprimir raw_body con gzip",
+      "Mantener json.loads() y validar esquema estricto con Pydantic",
+      "Usar eval(raw_body)"
+    ],
+    "fixCorrect": 1,
+    "explanation": "pickle.loads sobre input externo permite ejecución arbitraria de código."
+  },
+  {
+    "id": "SAI02",
+    "diff": "- RUN uv sync --frozen --no-dev\n+ RUN pip install --upgrade -r requirements.txt",
+    "risks": [
+      "Aumenta el tamaño del favicon",
+      "Versiones flotantes rompen reproducibilidad y cadena de suministro",
+      "Rompe rutas hash"
+    ],
+    "riskCorrect": 1,
+    "fixes": [
+      "Ejecutar pip install -U en CMD",
+      "Borrar requirements.txt",
+      "Restaurar uv sync --frozen usando uv.lock con hashes"
+    ],
+    "fixCorrect": 2,
+    "explanation": "pip install --upgrade instala versiones no auditadas distintas en cada build."
+  },
+  {
+    "id": "SAI03",
+    "diff": "def cos(a, b):\n-  denom = max(np.linalg.norm(a) * np.linalg.norm(b), 1e-12)\n+  denom = np.linalg.norm(a) * np.linalg.norm(b)\n   return float(np.dot(a, b) / denom)",
+    "risks": [
+      "Prompt injection",
+      "Sobreajuste de regresión",
+      "División por cero -> NaN ante vectores vacíos"
+    ],
+    "riskCorrect": 2,
+    "fixes": [
+      "Validar norma > 1e-12 o retornar 0.0 explícitamente para vectores nulos",
+      "Convertir a float16",
+      "Eliminar np.dot"
+    ],
+    "fixCorrect": 0,
+    "explanation": "Sin epsilon ni chequeo de norma cero, un vector nulo genera NaN."
+  },
+  {
+    "id": "SAI04",
+    "diff": "- ci = bootstrap_ci(holdout_scores)\n- if ci[0] > baseline_upper:\n+ if candidate_scores.mean() > baseline_scores.mean():\n     promote_model()",
+    "risks": [
+      "Promoción por ruido muestral sin significancia estadística",
+      "Fuga de secretos",
+      "Deadlock de asyncio"
+    ],
+    "riskCorrect": 0,
+    "fixes": [
+      "Promover si mean() > 0.5",
+      "Comparar intervalos de confianza / prueba pareada sobre tamaño muestral suficiente",
+      "Usar solo 10 muestras"
+    ],
+    "fixCorrect": 1,
+    "explanation": "Comparar solo medias puntuales promueve regresiones aleatorias."
+  },
+  {
+    "id": "SAI05",
+    "diff": "+ df['income'] = df['income'].fillna(df['income'].mean())\n  train, test = temporal_split(df, '2026-06-01')",
+    "risks": [
+      "Error de sintaxis Python",
+      "Data leakage al calcular la media global antes del split temporal",
+      "Pérdida de citas RAG"
+    ],
+    "riskCorrect": 1,
+    "fixes": [
+      "Eliminar el split",
+      "Usar shuffle=True",
+      "Dividir train/test primero y ajustar SimpleImputer solo sobre train"
+    ],
+    "fixCorrect": 2,
+    "explanation": "Imputar antes del split filtra estadística del futuro hacia entrenamiento."
+  },
+  {
+    "id": "SAI06",
+    "diff": "- metric = average_precision_score(y_val, probs)\n+ metric = accuracy_score(y_val, preds)",
+    "risks": [
+      "CORS abierto",
+      "Overflow en GPU",
+      "Accuracy oculta colapso en clase minoritaria desbalanceada"
+    ],
+    "riskCorrect": 2,
+    "fixes": [
+      "Evaluar PR-AUC (average_precision_score) / F-beta y matriz de costo",
+      "Subir learning rate",
+      "Quitar y_val"
+    ],
+    "fixCorrect": 0,
+    "explanation": "En desbalanceo extremo, accuracy premia predecir siempre la mayoría."
+  },
+  {
+    "id": "SAI07",
+    "diff": "- psi = compute_psi(train_dist, prod_dist)\n+ # drift monitoring disabled for latency",
+    "risks": [
+      "Ceguera ante data drift cuando las etiquetas llegan con semanas de retraso",
+      "Inyección SQL",
+      "Fuga de tokens"
+    ],
+    "riskCorrect": 0,
+    "fixes": [
+      "Esperar 6 meses",
+      "Calcular PSI de forma asíncrona en batch/stream sin bloquear la ruta crítica",
+      "Usar accuracy de train"
+    ],
+    "fixCorrect": 1,
+    "explanation": "El cálculo de drift debe correr fuera del request path, nunca desactivarse."
+  },
+  {
+    "id": "SAI08",
+    "diff": "- enc = OneHotEncoder(handle_unknown='ignore')\n+ enc = OneHotEncoder(handle_unknown='error')",
+    "risks": [
+      "Leakage temporal",
+      "Caída HTTP 500 en producción ante cualquier categoría nueva",
+      "Race condition FinOps"
+    ],
+    "riskCorrect": 1,
+    "fixes": [
+      "Eliminar OneHotEncoder",
+      "Reentrenar en cada request",
+      "Usar handle_unknown='ignore' o categoría explícita 'UNKNOWN' en Pipeline"
+    ],
+    "fixCorrect": 2,
+    "explanation": "handle_unknown='error' convierte nuevos valores de negocio en caídas 500."
+  },
+  {
+    "id": "SAI09",
+    "diff": "def validate(model, loader):\n-  with torch.no_grad():\n+  if True:\n     preds = [model(x) for x in loader]",
+    "risks": [
+      "Fuga de PII",
+      "División por cero",
+      "Fuga de VRAM / OOM por retener grafo de autograd en validación"
+    ],
+    "riskCorrect": 2,
+    "fixes": [
+      "Envolver inferencia de validación en `with torch.no_grad():`",
+      "Aumentar batch_size x4",
+      "Llamar loss.backward()"
+    ],
+    "fixCorrect": 0,
+    "explanation": "Sin no_grad(), cada batch de validación acumula tensores en el grafo."
+  },
+  {
+    "id": "SAI10",
+    "diff": "- if token_count(prompt) + max_out > WINDOW: raise ValueError('too_long')\n+ prompt = prompt[:4000]",
+    "risks": [
+      "Truncamiento silencioso amputando instrucciones finales o formato JSON",
+      "Pickle RCE",
+      "Deadlock en Redis"
+    ],
+    "riskCorrect": 0,
+    "fixes": [
+      "Cortar a 1000 chars",
+      "Contar tokens reales con tokenizer y aplicar resumen acotado o rechazo 413",
+      "Omitir max_out"
+    ],
+    "fixCorrect": 1,
+    "explanation": "Cortar por caracteres ignora tokens reales y mutila el prompt."
+  },
+  {
+    "id": "SAI11",
+    "diff": "- WHERE tenant_id = $1 AND deleted_at IS NULL\n+ -- tenant filtered in Python after LIMIT 10",
+    "risks": [
+      "Explosión de gradientes",
+      "Exposición cross-tenant y colapso de recall por post-filtrado",
+      "Leakage de features"
+    ],
+    "riskCorrect": 1,
+    "fixes": [
+      "Quitar índice HNSW",
+      "Subir LIMIT a 15 en Python",
+      "Mantener tenant_id y ACL dentro del WHERE SQL antes de LIMIT"
+    ],
+    "fixCorrect": 2,
+    "explanation": "La autorización de documentos debe ejecutarse dentro de la consulta SQL."
+  },
+  {
+    "id": "SAI12",
+    "diff": "- cache_key = f'{tenant_id}:{role}:{hash(q)}'\n+ cache_key = f'{hash(q)}'",
+    "risks": [
+      "Error de sintaxis YAML",
+      "OOM en PyTorch",
+      "Fuga grave de respuestas privadas entre tenants/usuarios vía caché"
+    ],
+    "riskCorrect": 2,
+    "fixes": [
+      "Incluir tenant_id y alcance ACL/permisos en la clave de caché",
+      "Desactivar TLS",
+      "Subir TTL a 30 días"
+    ],
+    "fixCorrect": 0,
+    "explanation": "Una caché compartida sin scope de permisos filtra documentos confidenciales."
+  },
+  {
+    "id": "SAI13",
+    "diff": "- if tool in MUTATING and not user_approved: return deny()\n+ execute_tool(tool, args)",
+    "risks": [
+      "Ejecución no autorizada de acciones destructivas vía prompt injection",
+      "Fuga de VRAM",
+      "Drift de PSI"
+    ],
+    "riskCorrect": 0,
+    "fixes": [
+      "Aumentar temperature",
+      "Validar allowlist RBAC, límites max_steps y aprobación human-in-the-loop",
+      "Registrar solo en consola"
+    ],
+    "fixCorrect": 1,
+    "explanation": "Tools mutantes sin aprobación permiten abuso directo ante inyección indirecta."
+  },
+  {
+    "id": "SAI14",
+    "diff": "  # CI Gate\n- pytest tests/evals_gate.py\n+ echo 'manual check ok'",
+    "risks": [
+      "RCE por pickle",
+      "Mergear regresiones de prompt/modelo sin gate reproducible",
+      "División por cero"
+    ],
+    "riskCorrect": 1,
+    "fixes": [
+      "Desactivar CI",
+      "Probar 1 chat manual",
+      "Ejecutar suite offline versionada bloqueante en CI con umbrales mínimos"
+    ],
+    "fixCorrect": 2,
+    "explanation": "Sin gate automático, cualquier cambio de prompt rompe calidad o seguridad."
+  },
+  {
+    "id": "SAI15",
+    "diff": "@app.post('/predict')\nasync def predict(req: Req):\n+  return heavy_sync_model(req)",
+    "risks": [
+      "Pickle RCE",
+      "Fuga cross-tenant",
+      "Bloqueo total del event loop async de FastAPI disparando latencia P99"
+    ],
+    "riskCorrect": 2,
+    "fixes": [
+      "Mover inferencia a worker/cola acotada con timeout y backpressure 429/503",
+      "Subir timeout a 300s",
+      "Usar global lock"
+    ],
+    "fixCorrect": 0,
+    "explanation": "Llamadas síncronas pesadas dentro de async def congelan todas las peticiones."
+  },
+  {
+    "id": "SAI16",
+    "diff": "- span.set_attribute('gen_ai.model', model)\n+ span.set_attribute('user.prompt', raw_prompt)\n+ metric.labels(user_id=uid).inc()",
+    "risks": [
+      "Fuga de PII en trazas y explosión de cardinalidad en Prometheus",
+      "NaN en coseno",
+      "Overflow fp16"
+    ],
+    "riskCorrect": 0,
+    "fixes": [
+      "Guardar en S3 público",
+      "Redactar PII, omitir raw_prompt y usar labels de baja cardinalidad",
+      "Quitar OTel"
+    ],
+    "fixCorrect": 1,
+    "explanation": "Prompts crudos filtran datos personales y user_id colapsa series temporales."
+  },
+  {
+    "id": "SAI17",
+    "diff": "- state = torch.load(path, weights_only=True)\n+ state = torch.load(path, weights_only=False)",
+    "risks": [
+      "Colapso de recall",
+      "Ejecución remota de código al cargar pesos externos vía pickle",
+      "Fuga FinOps"
+    ],
+    "riskCorrect": 1,
+    "fixes": [
+      "Ignorar checksum",
+      "Correr como root",
+      "Exigir safetensors o weights_only=True + verificación SHA-256"
+    ],
+    "fixCorrect": 2,
+    "explanation": "weights_only=False habilita deserialización arbitraria de objetos Python."
+  },
+  {
+    "id": "SAI18",
+    "diff": "- with lock: reserve_atomic(tenant, cost)\n+ if get_balance(tenant) >= cost: call_llm(); deduct(tenant, cost)",
+    "risks": [
+      "Data leakage",
+      "Bloqueo de event loop",
+      "Race condition FinOps permitiendo sobregasto ilimitado bajo ráfagas"
+    ],
+    "riskCorrect": 2,
+    "fixes": [
+      "Reservar presupuesto máximo atómicamente antes de invocar y conciliar después",
+      "Facturar a fin de mes",
+      "Subir límite YAML"
+    ],
+    "fixCorrect": 0,
+    "explanation": "Chequear saldo sin reserva atómica falla ante peticiones concurrentes."
+  }
+]
