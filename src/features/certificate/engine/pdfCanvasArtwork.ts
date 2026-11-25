@@ -18,8 +18,8 @@ interface ThemeTokens {
 }
 
 function readLiveThemeTokens(): ThemeTokens {
-  const styles = getComputedStyle(document.documentElement);
-  const read = (name: string, fallback: string) => styles.getPropertyValue(name).trim() || fallback;
+  const s = getComputedStyle(document.documentElement);
+  const read = (name: string, fallback: string) => s.getPropertyValue(name).trim() || fallback;
   return {
     bgCanvas: read('--surface-canvas', '#050810'),
     bgSurface: read('--surface-default', '#0a0a0a'),
@@ -34,43 +34,32 @@ function readLiveThemeTokens(): ThemeTokens {
   };
 }
 
-function roundBox(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-  fill?: string,
-  stroke?: string,
-  lw = 2,
-): void {
+function roundBox(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number, fill?: string, stroke?: string, lw = 2): void {
   ctx.beginPath();
   ctx.roundRect(x, y, w, h, r);
-  if (fill) {
-    ctx.fillStyle = fill;
-    ctx.fill();
-  }
-  if (stroke) {
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = lw;
-    ctx.stroke();
-  }
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.stroke(); }
 }
 
-function drawText(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  font: string,
-  color: string,
-  align: CanvasTextAlign = 'left',
-): void {
+function drawText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, font: string, color: string, align: CanvasTextAlign = 'left'): void {
   ctx.fillStyle = color;
   ctx.font = font;
   ctx.textAlign = align;
   ctx.fillText(text, x, y);
+}
+
+function drawWrappedCenter(ctx: CanvasRenderingContext2D, text: string, cx: number, startY: number, maxW: number, lh: number, font: string, color: string): void {
+  ctx.font = font;
+  ctx.fillStyle = color;
+  ctx.textAlign = 'center';
+  let line = '';
+  let y = startY;
+  for (const w of text.split(/\s+/)) {
+    const candidate = line ? `${line} ${w}` : w;
+    if (ctx.measureText(candidate).width > maxW && line) { ctx.fillText(line, cx, y); line = w; y += lh; }
+    else line = candidate;
+  }
+  if (line) ctx.fillText(line, cx, y);
 }
 
 function drawCorners(ctx: CanvasRenderingContext2D, color: string): void {
@@ -168,7 +157,10 @@ function drawSignature(ctx: CanvasRenderingContext2D, tokens: ThemeTokens): void
   ctx.restore();
 }
 
-export function renderCertificateCanvas(status: CertificateStatus): HTMLCanvasElement {
+export function renderCertificateCanvas(
+  status: CertificateStatus,
+  logoImage: CanvasImageSource | null = null,
+): HTMLCanvasElement {
   const tokens = readLiveThemeTokens();
   const canvas = document.createElement('canvas');
   canvas.width = CERT_CANVAS_WIDTH;
@@ -184,10 +176,14 @@ export function renderCertificateCanvas(status: CertificateStatus): HTMLCanvasEl
   drawCorners(ctx, tokens.gold);
   drawWatermark(ctx, status, tokens.textPrimary);
 
-  roundBox(ctx, 134, 134, 92, 92, 16, tokens.brand);
-  drawText(ctx, 'AI', 158, 194, '700 42px "Space Grotesk", "DM Sans", sans-serif', tokens.bgCanvas);
-  drawText(ctx, 'AIPIXEL ARCHITECTURE', 252, 174, '700 28px "JetBrains Mono", monospace', tokens.gold);
-  drawText(ctx, 'ACADEMY · RAG · AGENTS · FINOPS', 252, 212, '500 22px "JetBrains Mono", monospace', tokens.textMuted);
+  roundBox(ctx, 134, 130, 100, 100, 18, '#080c16', tokens.gold, 2.5);
+  if (logoImage) {
+    ctx.drawImage(logoImage, 142, 138, 84, 84);
+  } else {
+    drawText(ctx, 'AI', 160, 196, '700 42px "Space Grotesk", "DM Sans", sans-serif', tokens.gold);
+  }
+  drawText(ctx, 'AIPIXEL ARCHITECTURE', 258, 172, '700 28px "JetBrains Mono", monospace', tokens.gold);
+  drawText(ctx, 'POR VIGILIO SERVICES · SENIOR MODE', 258, 210, '600 21px "JetBrains Mono", monospace', tokens.textMuted);
 
   roundBox(ctx, 1730, 146, 336, 62, 31, tokens.bgRaised, tokens.green, 2.5);
   drawText(ctx, `VERIFICADO 100% · ${status.track.code}`, 1898, 185, '700 22px "JetBrains Mono", monospace', tokens.green, 'center');
@@ -211,8 +207,8 @@ export function renderCertificateCanvas(status: CertificateStatus): HTMLCanvasEl
   ctx.lineTo(1740, 668);
   ctx.stroke();
 
-  drawText(ctx, `Por completar satisfactoriamente el 100% de la ruta ${status.track.title},`, cx, 760, '400 32px "DM Sans", sans-serif', tokens.textSecondary, 'center');
-  drawText(ctx, status.track.summary.slice(0, 86), cx, 814, '400 28px "DM Sans", sans-serif', tokens.textSecondary, 'center');
+  drawText(ctx, `Por completar satisfactoriamente el 100% de la ruta ${status.track.title}.`, cx, 756, '400 32px "DM Sans", sans-serif', tokens.textSecondary, 'center');
+  drawWrappedCenter(ctx, status.track.summary, cx, 814, 1460, 40, '400 28px "DM Sans", sans-serif', tokens.textSecondary);
 
   const metrics: readonly [string, string][] = [
     [`${status.track.hours}`, 'HORAS'],
@@ -232,6 +228,6 @@ export function renderCertificateCanvas(status: CertificateStatus): HTMLCanvasEl
 
   drawSignature(ctx, tokens);
   drawText(ctx, 'Yonatan Vigilio · Dirección Académica', 1805, 1372, '700 24px "DM Sans", sans-serif', tokens.textPrimary, 'center');
-  drawText(ctx, 'AIPIXEL ARCHITECTURE ACADEMY', 1805, 1404, '600 18px "JetBrains Mono", monospace', tokens.textMuted, 'center');
+  drawText(ctx, 'VIGILIO SERVICES · AIPIXEL ACADEMY', 1805, 1404, '600 18px "JetBrains Mono", monospace', tokens.textMuted, 'center');
   return canvas;
 }

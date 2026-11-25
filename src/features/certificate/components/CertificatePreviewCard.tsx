@@ -30,17 +30,19 @@ export function CertificatePreviewCard({ status }: CertificatePreviewCardProps) 
 
         <header class="cert-diploma-top">
           <div class="cert-brand-lockup">
-            <img
-              src={asset('mascot/favicon.png')}
-              class="cert-brand-logo"
-              alt=""
-              aria-hidden="true"
-              width="38"
-              height="38"
-            />
+            <span class="cert-brand-emblem" aria-hidden="true">
+              <img
+                src={asset('mascot/favicon.png')}
+                class="cert-brand-logo"
+                alt=""
+                aria-hidden="true"
+                width="42"
+                height="42"
+              />
+            </span>
             <div>
               <div class="cert-brand-title">AIPIXEL ARCHITECTURE</div>
-              <div class="cert-brand-sub">ACADEMY · RAG · AGENTS · FINOPS</div>
+              <div class="cert-brand-sub">POR VIGILIO SERVICES · SENIOR MODE</div>
             </div>
           </div>
           <div class="cert-top-pills">

@@ -24,12 +24,32 @@ async function canvasToJpegBytes(canvas: HTMLCanvasElement): Promise<Uint8Array>
   return bytes;
 }
 
+async function loadBrandLogo(): Promise<HTMLImageElement | null> {
+  if (typeof Image === 'undefined') return null;
+  const base = import.meta.env.BASE_URL || '/';
+  return new Promise((resolve) => {
+    const img = new Image();
+    const timer = window.setTimeout(() => resolve(null), 1500);
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      window.clearTimeout(timer);
+      resolve(img.naturalWidth > 0 ? img : null);
+    };
+    img.onerror = () => {
+      window.clearTimeout(timer);
+      resolve(null);
+    };
+    img.src = `${base}assets/mascot/favicon.png`;
+  });
+}
+
 export async function generateCertificatePdfBytes(status: CertificateStatus): Promise<Uint8Array | null> {
   if (!status.isUnlocked) return null;
-  if (document.fonts?.ready) {
-    await document.fonts.ready;
-  }
-  const canvas = renderCertificateCanvas(status);
+  const [logoImg] = await Promise.all([
+    loadBrandLogo(),
+    document.fonts?.ready ?? Promise.resolve(),
+  ]);
+  const canvas = renderCertificateCanvas(status, logoImg);
   const jpegBytes = await canvasToJpegBytes(canvas);
   return buildPdfFromJpeg(jpegBytes, CERT_CANVAS_WIDTH, CERT_CANVAS_HEIGHT);
 }

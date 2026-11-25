@@ -100,7 +100,7 @@ export function VigilioSignatureSvg() {
         />
       </svg>
       <div class="cert-signature-name">Yonatan Vigilio · Dirección Académica</div>
-      <div class="cert-signature-org">AIPIXEL ARCHITECTURE ACADEMY</div>
+      <div class="cert-signature-org">VIGILIO SERVICES · AIPIXEL ACADEMY</div>
     </div>
   );
 }

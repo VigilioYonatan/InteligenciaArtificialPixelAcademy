@@ -30,10 +30,17 @@ export function AppShell({ page, prefs, t, onUpdatePrefs, children }: AppShellPr
         Skip to content
       </a>
       <header class="site-header">
-        <a class="brand" href="#/" aria-label="AIPixel Architecture Academy">
-          <img src={asset('mascot/favicon.png')} alt="" width="40" height="40" class="brand-axon" />
+        <a class="brand" href="#/" aria-label="AIPixel Architecture Academy — Por Vigilio Services">
+          <span class="brand-emblem" aria-hidden="true">
+            <img src={asset('mascot/favicon.png')} alt="" width="40" height="40" class="brand-axon" />
+          </span>
           <span class="brand-text">
-            <span class="brand-name">AI<span class="brand-cyan">Pixel</span></span>
+            <span class="brand-top-row">
+              <span class="brand-name">
+                AI<span class="brand-cyan">Pixel</span>
+              </span>
+              <span class="brand-senior-pill">SENIOR</span>
+            </span>
             <small class="brand-arch">ARCHITECTURE ACADEMY</small>
             <small class="brand-byline">Por Vigilio Services</small>
           </span>
@@ -97,7 +104,7 @@ export function AppShell({ page, prefs, t, onUpdatePrefs, children }: AppShellPr
       </main>
       <footer class="site-footer">
         <div class="footer-inner">
-          <span>© EngineerAI Pixel Academy · Axon AI Mascot (Original Pixel Art)</span>
+          <span>© AIPixel Architecture Academy · Por Vigilio Services · Axon AI</span>
           <span>100% AI Architecture & Software Engineering</span>
           <div class="footer-links">
             <a href="#/progress">{t('progress')}</a>

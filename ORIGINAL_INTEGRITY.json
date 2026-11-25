@@ -570,6 +570,7 @@
     "src/features/progress/types/progress.types.ts",
     "src/features/progress/constants/progress.constants.ts",
     "src/features/progress/persistence/progress.repository.ts",
-    "src/app/AppShell.tsx"
+    "src/app/AppShell.tsx",
+    "index.html"
   ]
 }
