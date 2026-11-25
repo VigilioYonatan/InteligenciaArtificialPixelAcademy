@@ -242,7 +242,7 @@ export function SeniorModuleHub({
 
       <div class="senior-lab-grid">
         <div class="senior-lab-main">
-          {cinemaDeck && <AxonPlayer deck={cinemaDeck} locale={locale} compact />}
+          {cinemaDeck && <AxonPlayer key={cinemaDeck.id} deck={cinemaDeck} locale={locale} compact />}
           {/* Production Scenario Card */}
           <section class="card">
             <div class="panel-title">

@@ -161,11 +161,20 @@ Un error clásico en cursos de IA es enviar términos como `pgvector`, `<=>`, `R
 - [x] **1.3** Generar y masterizar los briefings restantes Senior (`S07`–`S18`) y los `7` briefings restantes de Frameworks (`F02`–`F08`) totalizando **30 pistas `.mp3` (`10,339.8 KB`)**.
 - [x] **1.4** Completar auditoría E2E de los `30` videos del Lote 1 en desktop (`1440×960`) y móvil (`390×844` sin desbordamiento).
 
-### Fase 2 · Cobertura Troncal Completa del Curso (35 Videos Adicionales → **65 Videos Totales — `~22.1 MB`**)
-- [ ] **2.1** Generar guiones conversacionales a 2 voces y pizarras `StageVisual` para `B02`–`B12` (`11` videos Básico).
-- [ ] **2.2** Generar guiones conversacionales y pizarras para `I01`–`I12` (`12` videos Intermedio).
-- [ ] **2.3** Generar guiones conversacionales y pizarras para `A01`–`A12` (`12` videos Avanzado).
-- [ ] **2.4** Ejecutar gates completos (`cinema-integrity.test.mjs`, `lint:ci`, `typecheck`, `test:ui`, E2E headless en desktop y móvil `390×844`, `verify-preservation.py`).
+### Fase 2 · Cobertura Troncal Completa del Curso (35 Videos Adicionales → **65 Videos Totales — `22.7 MB` verificados**)
+- [x] **2.1** Generar guiones conversacionales a 2 voces y pizarras `StageVisual` para `B02`–`B12` (`11` videos Básico) en `src/features/cinema/data/batch2-scripts.json`.
+- [x] **2.2** Generar guiones conversacionales y pizarras para `I01`–`I12` (`12` videos Intermedio).
+- [x] **2.3** Generar guiones conversacionales y pizarras para `A01`–`A12` (`12` videos Avanzado) y sintetizar/masterizar todas las `65` pistas MP3 (`22,749.4 KB` totales).
+- [x] **2.4** Ejecutar gates completos (`cinema-integrity.test.mjs`, `lint:ci`, `typecheck`, `test:ui`, E2E headless en desktop y móvil `390×844`, `verify-preservation.py`).
 
-### Fase 3 · Extensión Exhaustiva Opcional (+50 Videos → **115 Videos Totales — `~39.1 MB`**)
-- [ ] **3.1** Cápsulas individuales para sub-unidades `2..5` de `F01`–`F08` (`32` videos) y ruta `AI01`–`AI18` (`18` videos).
+### Fase 3 · Extensión Exhaustiva Opcional (+50 Videos → **115 Videos Totales — `105/115` Activos**)
+- [ ] **3.1** Ruta `AI01`–`AI18` (`18` videos en `AILessonPage`) + sub-unidades `2..5` de `F01`–`F08` (`32` videos).
+  - [x] **3.1a** Videos `AI01`–`AI05` (Python fail-closed, `uv --frozen`, Álgebra NumPy, Bootstrap CI, Out-of-time split).
+  - [x] **3.1b** Videos `AI06`–`AI10` (`class_weight` + PR-AUC, Drift `PSI`, Pipeline `ColumnTransformer`, PyTorch `zero_grad/clip/no_grad`, Transformers token budget).
+  - [x] **3.1c** Videos `AI11`–`AI15` (`pgvector` ACL pre-retrieval, citas resolubles, allowlist/HITL/budget en herramientas, gate Go/No-Go evals, FastAPI `asyncio.wait_for` + 504).
+  - [x] **3.1d** Videos `AI16`–`AI18` + `F01-2..3` (OTel sin PII, DevSecOps `hmac.compare_digest` + SHA-256, FinOps `with lock:`, `F01` Unidades 2 y 3).
+  - [x] **3.1e** Videos `F01-4..5` + `F02-2..4` (`recursionLimit`/`thread_id`, HITL `interrupt()`, SQL vector `$2`, `ANY(allowed_principals)`, Hybrid FTS `@@ plainto_tsquery`).
+  - [x] **3.1f** Videos `F02-5` + `F03-2..5` (`hnsw.iterative_scan`, NestJS `actor.tenantId`, puerto `KnowledgeRetriever`, `budget.reserve`, SSE `controller.abort()`).
+  - [x] **3.1g** Videos `F04-2..5` + `F05-2` (`hashlib.sha256` ingesta, `await asyncio.sleep()`, rerank slice `[:20]`, PyTorch `weights_only=True`, MCP path jail `resolve()` + `sep`).
+  - [x] **3.1h** Videos `F05-3..5` + `F06-2..3` (MCP scopes JWT, `ToolArgsSchema.parse`, audit log sin secretos, eval citas `authorizedRetrieved`, casos negativos `abstained` — **105 videos totales**).
+  - [ ] **3.1i** Últimos `10` videos: `F06-4..5` + `F07-2..5` + `F08-2..5`.

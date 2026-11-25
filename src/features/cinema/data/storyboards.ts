@@ -1,6 +1,8 @@
 import type { CinemaDeck, CinemaScene, SpeakerRole, StudioAudioMeta } from '../types/cinema.types';
 import rawManifest from './audio-manifest.json';
-import rawScripts from './batch1-scripts.json';
+import rawBatch1Scripts from './batch1-scripts.json';
+import rawBatch2Scripts from './batch2-scripts.json';
+import rawBatch3Scripts from './batch3-scripts.json';
 
 type RawManifestMap = Record<
   string,
@@ -23,7 +25,11 @@ interface RawDeckSpec {
 }
 
 const manifest = rawManifest as RawManifestMap;
-const scriptSpecs = rawScripts as RawDeckSpec[];
+const scriptSpecs = [
+  ...(rawBatch1Scripts as RawDeckSpec[]),
+  ...(rawBatch2Scripts as RawDeckSpec[]),
+  ...(rawBatch3Scripts as RawDeckSpec[]),
+];
 
 function studioAudio(id: string): StudioAudioMeta | undefined {
   const item = manifest[id];

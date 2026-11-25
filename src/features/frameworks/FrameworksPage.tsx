@@ -48,6 +48,7 @@ export function FrameworksPage({
 
   if (m && activeUnit) {
     const unitTitle = curr?.units[locale]?.[activeUnit.unit - 1] || `Unit ${activeUnit.unit}`;
+    const unitCinemaDeck = getCinemaDeck(`${m.id}-${activeUnit.unit}`);
     return (
       <div class="content-page">
         <div class="breadcrumbs">
@@ -62,6 +63,7 @@ export function FrameworksPage({
           title={unitTitle}
           subtitle={m.title[locale]}
         />
+        {unitCinemaDeck && <AxonPlayer key={unitCinemaDeck.id} deck={unitCinemaDeck} locale={locale} compact />}
         <div class="framework-detail">
           <AiArchitectureDiagram
             moduleId={`${m.id}-${activeUnit.unit}`}
@@ -155,7 +157,7 @@ export function FrameworksPage({
           title={m.title[locale]}
           subtitle={m.summary[locale]}
         />
-        {fwDeck && <AxonPlayer deck={fwDeck} locale={locale} compact />}
+        {fwDeck && <AxonPlayer key={fwDeck.id} deck={fwDeck} locale={locale} compact />}
         <div class="framework-detail">
           <AiArchitectureDiagram
             moduleId={m.id}

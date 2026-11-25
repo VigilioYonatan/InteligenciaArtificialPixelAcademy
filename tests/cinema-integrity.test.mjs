@@ -11,24 +11,40 @@ import {
 
 const root = process.cwd();
 
-test('Axon Cinema Batch 1 (30 decks): all studio-mastered MP3 files exist, are bounded (<500 KB), and match valid Axon poses', () => {
+test('Axon Cinema Batch 1 + 2 + 3 (105 decks): all studio-mastered MP3 files exist, are bounded (<500 KB), and match valid Axon poses', () => {
   const manifestPath = resolve(root, 'src/features/cinema/data/audio-manifest.json');
-  const scriptsPath = resolve(root, 'src/features/cinema/data/batch1-scripts.json');
+  const batch1Path = resolve(root, 'src/features/cinema/data/batch1-scripts.json');
+  const batch2Path = resolve(root, 'src/features/cinema/data/batch2-scripts.json');
+  const batch3Path = resolve(root, 'src/features/cinema/data/batch3-scripts.json');
   assert.equal(existsSync(manifestPath), true, 'audio-manifest.json must exist');
-  assert.equal(existsSync(scriptsPath), true, 'batch1-scripts.json must exist');
+  assert.equal(existsSync(batch1Path), true, 'batch1-scripts.json must exist');
+  assert.equal(existsSync(batch2Path), true, 'batch2-scripts.json must exist');
+  assert.equal(existsSync(batch3Path), true, 'batch3-scripts.json must exist');
 
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-  const scripts = JSON.parse(readFileSync(scriptsPath, 'utf8'));
+  const batch1 = JSON.parse(readFileSync(batch1Path, 'utf8'));
+  const batch2 = JSON.parse(readFileSync(batch2Path, 'utf8'));
+  const batch3 = JSON.parse(readFileSync(batch3Path, 'utf8'));
+  const scripts = [...batch1, ...batch2, ...batch3];
 
   const expectedIds = [
     'home-intro',
     'senior-overview',
     'arena3d-intro',
-    'b01',
+    ...Array.from({ length: 12 }, (_, i) => `b${String(i + 1).padStart(2, '0')}`),
+    ...Array.from({ length: 12 }, (_, i) => `i${String(i + 1).padStart(2, '0')}`),
+    ...Array.from({ length: 12 }, (_, i) => `a${String(i + 1).padStart(2, '0')}`),
     ...Array.from({ length: 18 }, (_, i) => `senior-s${String(i + 1).padStart(2, '0')}`),
     ...Array.from({ length: 8 }, (_, i) => `f${String(i + 1).padStart(2, '0')}`),
+    ...Array.from({ length: 18 }, (_, i) => `ai${String(i + 1).padStart(2, '0')}`),
+    ...['f01', 'f02', 'f03', 'f04', 'f05'].flatMap((fw) => [2, 3, 4, 5].map((u) => `${fw}-${u}`)),
+    'f06-2',
+    'f06-3',
   ];
-  assert.equal(scripts.length, 30, 'Batch 1 must define exactly 30 decks');
+  assert.equal(batch1.length, 30, 'Batch 1 must define exactly 30 decks');
+  assert.equal(batch2.length, 35, 'Batch 2 must define exactly 35 decks');
+  assert.equal(batch3.length, 40, 'Batch 3 must define 40 decks (AI01-AI18 + F01..F05 units 2..5 + F06-2..3)');
+  assert.equal(scripts.length, 105, 'Combined cinema decks must equal 105');
 
   for (const id of expectedIds) {
     const entry = manifest[id];

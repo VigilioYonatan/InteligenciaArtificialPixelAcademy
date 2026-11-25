@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'preact/hooks';
 import { CodeEditorShell } from '../../shared/ui/CodeEditorShell';
 import { Button, Card, Icon } from '../../shared/ui/primitives';
+import { AxonPlayer } from '../cinema/AxonPlayer';
+import { getCinemaDeck } from '../cinema/data/storyboards';
 import { AiArchitectureDiagram } from '../learning/AiArchitectureDiagram';
+import type { Locale } from '../learning/types/learning.types';
 import { markModuleCompleted, updateDraft } from '../progress/model/progress.signal';
 import { validateAILessonCode, type AILessonValidationResult } from './lesson-validator.mjs';
 import type { AICurriculumItem, AII18nBundle, AILessonSpec } from './types/ai.types';
@@ -14,6 +17,7 @@ export function AILessonPage({
   fontSize,
   isCompleted,
   seniorEnabled = false,
+  locale = 'es',
 }: {
   copy: AII18nBundle;
   moduleItem?: AICurriculumItem;
@@ -22,6 +26,7 @@ export function AILessonPage({
   fontSize: 'sm' | 'md' | 'lg';
   isCompleted: boolean;
   seniorEnabled?: boolean;
+  locale?: Locale;
 }) {
   const [code, setCode] = useState<string>(draftCode ?? lesson?.starterCode ?? '');
   const [showHint, setShowHint] = useState(false);
@@ -46,6 +51,7 @@ export function AILessonPage({
 
   const loc = copy.modules[moduleItem.id];
   const seniorId = `S${moduleItem.id}`;
+  const cinemaDeck = getCinemaDeck(moduleItem.id);
 
   const onCheck = () => {
     const res = validateAILessonCode(lesson, code);
@@ -78,10 +84,12 @@ export function AILessonPage({
         <b>Stack:</b> {moduleItem.stack} · <b>{copy.levelLabels[moduleItem.level]}</b>
       </p>
 
+      {cinemaDeck && <AxonPlayer key={cinemaDeck.id} deck={cinemaDeck} locale={locale} compact />}
+
       <AiArchitectureDiagram
         moduleId={moduleItem.id}
         stack={moduleItem.stack}
-        locale="es"
+        locale={locale}
       />
 
       <Card>

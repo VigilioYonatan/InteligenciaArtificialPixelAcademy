@@ -69,6 +69,7 @@ export function AIAcademy({
           fontSize={prefs.fontSize || 'md'}
           isCompleted={!!subId && prefs.completed.includes(subId)}
           seniorEnabled={prefs.seniorEnabled}
+          locale={locale}
         />
       ) : seniorTargetId && validLabKind ? (
         <AISeniorLabs caseId={seniorTargetId} labKind={validLabKind} backLabel={copy.backCatalog} />

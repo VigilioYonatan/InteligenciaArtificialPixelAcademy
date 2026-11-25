@@ -102,7 +102,7 @@ export function LessonPage({
       <PageHeading eyebrow={`${t('lesson')} ${m.id} · ${spec?.stack || 'AI Architecture'}`} title={m.title[locale]} subtitle={m.summary[locale]} />
       <div class="lesson-layout">
         <div class="lesson-main">
-          {cinemaDeck && <AxonPlayer deck={cinemaDeck} locale={locale} compact />}
+          {cinemaDeck && <AxonPlayer key={cinemaDeck.id} deck={cinemaDeck} locale={locale} compact />}
           <Card className="lesson-intro">
             <div class="lesson-intro-head">
               <div>

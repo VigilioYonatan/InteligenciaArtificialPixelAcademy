@@ -1,0 +1,5089 @@
+[
+  {
+    "id": "ai01",
+    "aliases": [
+      "AI01"
+    ],
+    "filename": "ai01.mp3",
+    "kicker": "AI ACADEMY AI01 · PYTHON FAIL-CLOSED",
+    "heading": "Python Algorítmico: Funciones Puras y Validación Estricta",
+    "scenes": [
+      {
+        "chapter": "01 · El Error Silencioso",
+        "title": "Devolver 0.0 Ante Una Lista Vacía O Con Basura",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Empezamos la ruta AI Academy en AI01. Nuestro script calcula la media de los puntajes, pero cuando llega una lista vacía o un string mezclado, devuelve cero silenciosamente y distorsiona el dashboard.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "silent-corruption.py",
+          "badge": "FAIL-OPEN BUG",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "safe_mean([]) -> retornó 0.0 en lugar de lanzar ValueError",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "safe_mean([1.0, 'N/A']) -> corrompió cálculo aguas abajo",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Alerta falsa: métrica cayó a 0% en producción",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Fail-Closed",
+        "title": "Validar Precondiciones Antes De Cualquier Cómputo",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "En ingeniería de IA nunca maquilles entradas corruptas con ceros mágicos. Aplica validación fail-closed: verifica primero que la lista no esté vacía y que cada elemento sea numérico antes de operar.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Check Non-Empty",
+              "sub": "if not values -> raise ValueError",
+              "state": "ok"
+            },
+            {
+              "label": "Type Guard",
+              "sub": "isinstance(v, (int, float)) y not bool",
+              "state": "ok"
+            },
+            {
+              "label": "Función Pura",
+              "sub": "Sin mutar lista ni estado global",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Integridad de Datos",
+          "metricBefore": "Retorna 0.0 silencioso",
+          "metricAfter": "ValueError explícito y auditable"
+        }
+      },
+      {
+        "chapter": "03 · La Trampa Bool",
+        "title": "¿Por Qué En Python True Cuenta Como Entero?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "¡Cierto! En Python bool hereda de int, así que sin excluir booleanos un True se colaría como uno en el promedio.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "PYTHON PURE FUNCTION GUARD",
+          "laneA": {
+            "name": "Trampa Python",
+            "steps": [
+              "isinstance(True, int) == True",
+              "Corrompe media",
+              "Bug oculto"
+            ]
+          },
+          "laneB": {
+            "name": "Guardia Exacta",
+            "steps": [
+              "not isinstance(x, bool)",
+              "finite numbers",
+              "Determinista"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Implementación Fail-Closed De safe_mean En Python",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Buen ojo Senior. Completa safe_mean en AI01 validando vacío, tipos reales y división segura sobre tu primer laboratorio en Python.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "safe_stats.py",
+          "before": [
+            "return sum(values) / len(values) if values else 0.0"
+          ],
+          "after": [
+            "if not values or any(isinstance(v, bool) or not isinstance(v, (int, float)) for v in values):",
+            "    raise ValueError('Se requiere lista no vacía de números'); return sum(values) / len(values)"
+          ],
+          "callout": "Fallar rápido y explícito evita semanas depurando métricas falsas."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai02",
+    "aliases": [
+      "AI02"
+    ],
+    "filename": "ai02.mp3",
+    "kicker": "AI ACADEMY AI02 · REPRODUCIBILIDAD UV",
+    "heading": "Git, Entornos Reproducibles con uv.lock y Cero Secretos",
+    "scenes": [
+      {
+        "chapter": "01 · En Mi PC Funciona",
+        "title": "Dependencias Sin Lockfile Rompen En CI O Producción",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI02 nuestro notebook corre perfecto en local, pero al desplegar en CI falla el entrenamiento porque pip instaló una versión nueva incompatible de una librería.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "DRIFT DE DEPENDENCIAS",
+          "laneA": {
+            "name": "Local Laptop",
+            "steps": [
+              "numpy 1.26",
+              "Corrió ayer",
+              "Sin lockfile"
+            ]
+          },
+          "laneB": {
+            "name": "CI Pipeline",
+            "steps": [
+              "uv sync abierto",
+              "Resolvió v2.x",
+              "Tests rotos + PII"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · CI Congelado",
+        "title": "Fijar Entorno Exacto Con uv sync --frozen y uv.lock",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Toda canalización de IA reproducible fija sus paquetes exactos por hash criptográfico. En CI usa uv sync --frozen para exigir que el árbol coincida bit a bit con uv.lock sin re-resolver versiones.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "ci-reproducible.yml",
+          "badge": "LOCKED ENV",
+          "lines": [
+            {
+              "prompt": "$",
+              "text": "uv sync --frozen --no-dev",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "Hashes verificados contra uv.lock (0 drift)",
+              "tone": "ok"
+            },
+            {
+              "prompt": "!",
+              "text": "Jamás commitear .env ni credenciales en Git",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · Secretos",
+        "title": "¿Por Qué Borrar Una Clave En El Siguiente Commit No Basta?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Porque si subimos un token en un commit anterior, queda en el historial de Git para siempre hasta rotar la credencial.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": ".gitignore + scan",
+              "sub": "Bloquea .env antes de stage",
+              "state": "ok"
+            },
+            {
+              "label": "uv.lock en Git",
+              "sub": "Mismos wheels y hashes",
+              "state": "ok"
+            },
+            {
+              "label": "--frozen en CI",
+              "sub": "Falla si lock desfasado",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Higiene de Repositorio IA",
+          "metricBefore": "pip freeze suelto + .env",
+          "metricAfter": "uv sync --frozen + 0 secretos"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Pipeline GitHub Actions Reproducible Con Flag Congelado",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. En el YAML de AI02 agrega el flag congelado a uv sync para asegurar entornos idénticos entre desarrolladores, CI y servidores.",
+        "visual": {
+          "kind": "code-diff",
+          "file": ".github/workflows/ai-ci.yml",
+          "before": [
+            "run: uv sync # puede mutar versiones respecto al lockfile"
+          ],
+          "after": [
+            "run: uv sync --frozen",
+            "run: uv run pytest -q"
+          ],
+          "callout": "Sin lockfile congelado no puedes reproducir un experimento ni un modelo."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai03",
+    "aliases": [
+      "AI03"
+    ],
+    "filename": "ai03.mp3",
+    "kicker": "AI ACADEMY AI03 · ÁLGEBRA VECTORIAL",
+    "heading": "Álgebra Lineal para IA: Producto Escalar y Norma L2",
+    "scenes": [
+      {
+        "chapter": "01 · El NaN Fatal",
+        "title": "Vector Cero Dividiendo Tu Similitud Coseno",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI03 implementamos similitud coseno con NumPy para comparar embeddings. Pero cuando un texto vacío produce un vector de ceros, la división lanza NaN y rompe todo el ranking.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "cosine-nan-crash.py",
+          "badge": "ZERO DIV ERROR",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "denom = np.linalg.norm(a) * np.linalg.norm(b) -> 0.0",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "np.dot(a, b) / 0.0 -> float('nan')",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "sorted() con NaN desordena todo el retrieval",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Geometría NumPy",
+        "title": "Producto Escalar Normalizado Por Normas L2",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "La similitud coseno mide el ángulo entre dos vectores independientemente de su magnitud. Calcula la norma L2 con np.linalg.norm y protege el denominador antes de dividir para evitar NaN.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "NUMERICALLY STABLE COSINE",
+          "laneA": {
+            "name": "Entrada",
+            "steps": [
+              "shape a == shape b",
+              "norm_a = norm(a)",
+              "norm_b = norm(b)"
+            ]
+          },
+          "laneB": {
+            "name": "Guardia",
+            "steps": [
+              "denom == 0 -> guard",
+              "dot / denom",
+              "clamp [-1, 1]"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Estabilidad",
+        "title": "¿Por Qué A Veces Da Uno Punto Cero Cero Cero Uno?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Por error numérico de punto flotante al multiplicar normas; por eso conviene acotar el resultado en rango menos uno a uno.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Check Shape",
+              "sub": "Vectores misma dimensión",
+              "state": "ok"
+            },
+            {
+              "label": "Check Zero Norm",
+              "sub": "Evita NaN / ZeroDivision",
+              "state": "ok"
+            },
+            {
+              "label": "Float Clipping",
+              "sub": "np.clip(sim, -1.0, 1.0)",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Estabilidad Numérica NumPy",
+          "metricBefore": "NaN silencioso o > 1.0",
+          "metricAfter": "Escalar estable en [-1, 1]"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Función cosine_similarity Robusta En NumPy",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa cosine_similarity usando np.linalg.norm, validando denominador mayor a cero y devolviendo float estable en Python.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "vector_math.py",
+          "before": [
+            "return float(np.dot(a, b) / (norm(a) * norm(b)))"
+          ],
+          "after": [
+            "denom = float(np.linalg.norm(a) * np.linalg.norm(b))",
+            "if denom == 0.0: raise ValueError('Norma cero'); return float(np.clip(np.dot(a, b) / denom, -1.0, 1.0))"
+          ],
+          "callout": "Todo el universo RAG y embeddings descansa sobre producto escalar estable."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai04",
+    "aliases": [
+      "AI04"
+    ],
+    "filename": "ai04.mp3",
+    "kicker": "AI ACADEMY AI04 · BOOTSTRAP & INCERTIDUMBRE",
+    "heading": "Probabilidad para IA: Bootstrap CI y Semilla Determinista",
+    "scenes": [
+      {
+        "chapter": "01 · El Promedio Engañoso",
+        "title": "Celebrar Un 82% De Precisión Con Solo Veinte Casos",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI04 un cambio de prompt pasó del ochenta al ochenta y dos por ciento en treinta preguntas de prueba. ¿Cómo sabemos si fue mejora real o puro azar muestral?",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "SIN INTERVALO DE CONFIANZA",
+          "laneA": {
+            "name": "Solo Media",
+            "steps": [
+              "n = 30 muestras",
+              "Dice 82% exacto",
+              "Ignora varianza"
+            ]
+          },
+          "laneB": {
+            "name": "Con Seed Libre",
+            "steps": [
+              "CI varía cada corrida",
+              "Tests CI flaky",
+              "Imposible auditar"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Bootstrap Calibrado",
+        "title": "Remuestreo Con Reemplazo e Intervalo Al 95%",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Usa bootstrap: remuestrea con reemplazo quinientas veces, calcula la media de cada réplica y toma los percentiles dos punto cinco y noventa y siete punto cinco. Y usa siempre un generador NumPy con semilla fija.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "eval_confidence.py",
+          "badge": "SEED = 42",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "rng = np.random.default_rng(42)",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "500 bootstrap resamples -> mean [0.71, 0.91]",
+              "tone": "cmd"
+            },
+            {
+              "prompt": "!",
+              "text": "Intervalos solapados -> NO hay mejora estadistica",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · Reproducibilidad",
+        "title": "¿Por Qué default_rng(42) En Lugar De np.random.seed Global?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Porque un generador local encapsulado no muta el estado global aleatorio ni contamina otros tests en paralelo.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "default_rng(42)",
+              "sub": "Generador local aislado",
+              "state": "ok"
+            },
+            {
+              "label": "Reemplazo n=len",
+              "sub": "rng.choice(scores, size=n)",
+              "state": "ok"
+            },
+            {
+              "label": "Percentile [2.5, 97.5]",
+              "sub": "IC 95% reproducible",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Rigor Estadístico en Evals",
+          "metricBefore": "Media puntual + azar",
+          "metricAfter": "IC 95% determinista en CI"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Cálculo De bootstrap_ci Reproducible Con NumPy",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exactísimo. Implementa bootstrap_ci en AI04 inicializando default_rng cuarenta y dos y devolviendo la tupla inferior y superior.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "bootstrap_metrics.py",
+          "before": [
+            "sample = np.random.choice(scores, len(scores)) # estado global"
+          ],
+          "after": [
+            "rng = np.random.default_rng(42)",
+            "means = [rng.choice(scores, size=len(scores), replace=True).mean() for _ in range(n_boot)]"
+          ],
+          "callout": "Reportar una métrica sin intervalo de confianza ni semilla es adivinar."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai05",
+    "aliases": [
+      "AI05"
+    ],
+    "filename": "ai05.mp3",
+    "kicker": "AI ACADEMY AI05 · CERO DATA LEAKAGE",
+    "heading": "Exploración en pandas: Out-of-Time Split y Aislamiento",
+    "scenes": [
+      {
+        "chapter": "01 · 99% Falso En Train",
+        "title": "Mezclar Futuro Y Pasado En Un Split Aleatorio",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI05 entrenamos un detector de fraude sacando un noventa y nueve por ciento en validación, pero al salir a producción se desplomó. Usamos train_test_split aleatorio sobre series temporales.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "TEMPORAL DATA LEAKAGE",
+          "laneA": {
+            "name": "Random Split",
+            "steps": [
+              "Train ve datos del futuro",
+              "Scaler en todo el df",
+              "Score falso 99%"
+            ]
+          },
+          "laneB": {
+            "name": "Producción",
+            "steps": [
+              "Solo conoce el pasado",
+              "Drift real oculto",
+              "Falla crítica"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Frontera Temporal",
+        "title": "Corte Out-of-Time + Transformadores Ajustados Solo En Train",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Para datos temporales aplica un out-of-time split estricto por fecha de corte: todo el entrenamiento queda antes del cutoff y la prueba desde el cutoff en adelante, validándolo con una aserción dura.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "temporal_split.py",
+          "badge": "ZERO LEAKAGE",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "train = df[df['event_date'] < cutoff].copy()",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "test  = df[df['event_date'] >= cutoff].copy()",
+              "tone": "ok"
+            },
+            {
+              "prompt": "!",
+              "text": "assert train['event_date'].max() < test['event_date'].min()",
+              "tone": "cmd"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Segunda Fuga",
+        "title": "¿Qué Pasa Con Estadísticas Globales O Grupos Repetidos?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "También debemos ajustar imputaciones o normalizaciones únicamente sobre train para nunca filtrar distribuciones del futuro.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Out-of-Time Cutoff",
+              "sub": "max(train) < min(test)",
+              "state": "ok"
+            },
+            {
+              "label": "Group Isolation",
+              "sub": "Sin usuario en train y test",
+              "state": "ok"
+            },
+            {
+              "label": "Fit Solo Train",
+              "sub": "transform() en test",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Integridad de Validación",
+          "metricBefore": "Random split con fuga",
+          "metricAfter": "Validación realista out-of-time"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Split Out-of-Time Verificado Con Aserción Estricta",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa temporal_split en AI05 separando antes y desde la fecha de corte y añade el assert que impide cualquier fuga temporal.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "data_split.py",
+          "before": [
+            "return train_test_split(df, test_size=0.2, random_state=42)"
+          ],
+          "after": [
+            "train, test = df[df['date'] < cutoff], df[df['date'] >= cutoff]",
+            "assert train['date'].max() < test['date'].min(); return train, test"
+          ],
+          "callout": "Un modelo evaluado con fuga temporal fracasa el primer día en producción."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai06",
+    "aliases": [
+      "AI06"
+    ],
+    "filename": "ai06.mp3",
+    "kicker": "AI ACADEMY AI06 · ML DESBALANCEADO",
+    "heading": "ML Supervisado: Class Weight, PR-AUC y Regularización",
+    "scenes": [
+      {
+        "chapter": "01 · La Ilusión Del 99%",
+        "title": "Accuracy Alto Con Cero Fraudes Detectados",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI06 entrenamos un detector de fraude donde solo el uno por ciento de las transacciones es fraudulenta. El modelo sacó noventa y nueve por ciento de accuracy diciendo siempre negativo y pasó sin atrapar ni un robo.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "imbalanced_trap.py",
+          "badge": "0% RECALL FRAUD",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "Dataset: 99% legítimo | 1% fraude severo",
+              "tone": "cmd"
+            },
+            {
+              "prompt": "!",
+              "text": "accuracy_score = 0.990 (siempre predice 0)",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Fraudes detectados = 0 | Pérdida financiera 100%",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Class Weight + PR-AUC",
+        "title": "Penalizar Errores Minoritarios Y Medir Con Average Precision",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Cuando las clases están desbalanceadas olvida el accuracy. Entrena con class_weight balanced para escalar la penalización de la clase minoritaria y evalúa con PR-AUC usando average_precision_score.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "BALANCED WEIGHTS + PR-AUC",
+          "laneA": {
+            "name": "Entrenamiento",
+            "steps": [
+              "class_weight='balanced'",
+              "Penaliza falsos negativos",
+              "Regularización L2"
+            ]
+          },
+          "laneB": {
+            "name": "Evaluación",
+            "steps": [
+              "predict_proba()[:, 1]",
+              "PR-AUC real",
+              "Umbral por costo"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Diferencia",
+        "title": "¿Por Qué PR-AUC Supera A ROC-AUC Bajo Desbalance Extremo?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Porque ROC-AUC diluye falsos positivos entre millones de negativos, mientras PR-AUC enfoca el foco directo sobre precisión y recall de la clase rara.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "class_weight='balanced'",
+              "sub": "Peso inverso a frecuencia",
+              "state": "ok"
+            },
+            {
+              "label": "Probabilidades",
+              "sub": "Score continuo [0, 1]",
+              "state": "ok"
+            },
+            {
+              "label": "PR-AUC (Val)",
+              "sub": "average_precision_score",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Detección Clase Minoritaria",
+          "metricBefore": "Accuracy 99% engañoso",
+          "metricAfter": "PR-AUC + recall real de fraude"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Entrenamiento Y Score Con LogisticRegression Balanceada",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa train_imbalanced en AI06 instanciando LogisticRegression con class_weight balanced y devolviendo average_precision_score sobre el conjunto de validación.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "imbalanced_clf.py",
+          "before": [
+            "clf = LogisticRegression().fit(X_train, y_train); return clf.score(X_val, y_val)"
+          ],
+          "after": [
+            "clf = LogisticRegression(class_weight='balanced', max_iter=1000).fit(X_train, y_train)",
+            "return float(average_precision_score(y_val, clf.predict_proba(X_val)[:, 1]))"
+          ],
+          "callout": "En problemas raros, las métricas promedio mienten: balancea pesos y mide PR-AUC."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai07",
+    "aliases": [
+      "AI07"
+    ],
+    "filename": "ai07.mp3",
+    "kicker": "AI ACADEMY AI07 · DRIFT & PSI",
+    "heading": "Evaluación ML: Population Stability Index y Holdout",
+    "scenes": [
+      {
+        "chapter": "01 · Degradación Callada",
+        "title": "El Servicio Sigue Respondiendo 200 OK Pero Sus Features Cambiaron",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI07 nuestro modelo de scoring empezó a rechazar buenos clientes tres meses después del lanzamiento. Los logs HTTP estaban en verde, pero la distribución de ingresos cambió drásticamente.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "silent_drift_monitor.log",
+          "badge": "DATA DRIFT",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "HTTP 200 OK | latencia P95 = 18ms (aparente calma)",
+              "tone": "muted"
+            },
+            {
+              "prompt": "!",
+              "text": "Bin con 0% en actual -> np.log(0) lanzó -inf / NaN",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "PSI = 0.42 (>= 0.25 -> shift severo no alertado)",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Fórmula PSI",
+        "title": "Comparar Esperado vs Actual Protegiendo Log(0)",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "El Population Stability Index compara cada bin entre entrenamiento y producción. Aplica np.clip con un épsilon pequeño antes de dividir y tomar el logaritmo para evitar NaN e infinitos.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "STABLE PSI + COHORTS",
+          "laneA": {
+            "name": "Cálculo Seguro",
+            "steps": [
+              "clip(1e-6, 1.0)",
+              "(actual - exp) * ln(a/e)",
+              "PSI < 0.1 Estable"
+            ]
+          },
+          "laneB": {
+            "name": "Umbrales",
+            "steps": [
+              "0.1..0.25 Alerta leve",
+              ">= 0.25 Reentrenar",
+              "Holdout intocable"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Regla De Oro",
+        "title": "¿Por Qué El Holdout Jamás Se Toca Para Ajustar Umbrales?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Y también debemos segmentar el drift y el F1 por cohorte, reservando un conjunto holdout intacto solo para la auditoría final.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "np.clip Epsilon",
+              "sub": "Cero divisiones por cero",
+              "state": "ok"
+            },
+            {
+              "label": "Por Cohorte",
+              "sub": "Detecta fallos en nichos",
+              "state": "ok"
+            },
+            {
+              "label": "Holdout Sellado",
+              "sub": "1 lectura antes de release",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Observabilidad Estadística",
+          "metricBefore": "Monitoreo solo HTTP",
+          "metricAfter": "PSI numérico estable + Holdout"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Implementación Numéricamente Segura De compute_psi",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exactísimo. Completa compute_psi en AI07 aplicando np.clip sobre ambos arreglos y sumando la contribución exacta de cada cubeta.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "drift_psi.py",
+          "before": [
+            "return float(np.sum((actual - expected) * np.log(actual / expected)))"
+          ],
+          "after": [
+            "e = np.clip(expected, 1e-6, 1.0); a = np.clip(actual, 1e-6, 1.0)",
+            "return float(np.sum((a - e) * np.log(a / e)))"
+          ],
+          "callout": "Vigila tus distribuciones con PSI antes de que tus usuarios detecten la caída."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai08",
+    "aliases": [
+      "AI08"
+    ],
+    "filename": "ai08.mp3",
+    "kicker": "AI ACADEMY AI08 · PIPELINE SKLEARN",
+    "heading": "Feature Engineering: ColumnTransformer y Serving Seguro",
+    "scenes": [
+      {
+        "chapter": "01 · Training-Serving Skew",
+        "title": "El Modelo Explota Con Un País O Categoría Nueva En Vivo",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI08 aplicamos one-hot manual en entrenamiento y otro código distinto en la API. Ayer llegó un usuario desde una región nueva y el codificador lanzó ValueError tumbando el servicio.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Scaler Manual",
+              "sub": "Parámetros distintos en API",
+              "state": "hot"
+            },
+            {
+              "label": "Categoría Inédita",
+              "sub": "ValueError: unknown category",
+              "state": "hot"
+            },
+            {
+              "label": "Caída En Vivo",
+              "sub": "500 Internal Server Error",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Training-Serving Skew",
+          "metricBefore": "Scripts separados",
+          "metricAfter": "Skew + Crash ante inéditos"
+        }
+      },
+      {
+        "chapter": "02 · Objeto Único",
+        "title": "Encapsular Imputación y Encoding En Un Pipeline Atómico",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "La paridad entrenamiento-serving exige un único artefacto serializado con Pipeline y ColumnTransformer. Configura OneHotEncoder con handle_unknown igual a ignore y SimpleImputer dentro del mismo flujo.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "UNIFIED SKLEARN PIPELINE",
+          "laneA": {
+            "name": "Numéricas",
+            "steps": [
+              "SimpleImputer(median)",
+              "StandardScaler()",
+              "Sin fuga de test"
+            ]
+          },
+          "laneB": {
+            "name": "Categóricas",
+            "steps": [
+              "Imputer('missing')",
+              "handle_unknown='ignore'",
+              "1 artefacto .joblib"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Seguridad",
+        "title": "¿Qué Pasa Si Faltan Valores Y Aparece Una Categoría Nueva Al Tiempo?",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Con un mini pipeline por tipo de columna, el imputer llena nulos con seguridad y el encoder transforma cualquier etiqueta nueva a ceros sin explotar.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "column_transformer.py",
+          "badge": "ZERO SKEW",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "pipe.fit(X_train, y_train) # estadísticas solo train",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "pipe.predict(X_live_unseen) -> 0 excepciones",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "Columnas alineadas exactamente por esquema",
+              "tone": "muted"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Preprocesador Robusto Con ColumnTransformer",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa el ColumnTransformer de AI08 conectando imputación, escalado y handle_unknown ignore en un pipeline único.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "feature_pipeline.py",
+          "before": [
+            "enc = OneHotEncoder() # lanza excepción en producción si llega valor nuevo"
+          ],
+          "after": [
+            "cat_pipe = Pipeline([('imp', SimpleImputer(strategy='constant')),",
+            "  ('ohe', OneHotEncoder(handle_unknown='ignore'))])"
+          ],
+          "callout": "Mismo preprocesamiento en train y serving elimina fallos silenciosos y 500s."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai09",
+    "aliases": [
+      "AI09"
+    ],
+    "filename": "ai09.mp3",
+    "kicker": "AI ACADEMY AI09 · PYTORCH TRAIN LOOP",
+    "heading": "Deep Learning en PyTorch: Gradientes, Clip y torch.no_grad()",
+    "scenes": [
+      {
+        "chapter": "01 · Gradientes Envenenados",
+        "title": "Olvidar zero_grad() O Dejar Que Un Pico Explote Los Pesos",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI09 entrenamos una red en PyTorch, pero la pérdida saltó a NaN en la quinta época. Al revisar el código faltaba limpiar gradientes y acotar gradientes explosivos.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "pytorch_nan_loop.py",
+          "badge": "EXPLODING GRADS",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "Epoch 5: loss = nan (gradientes acumulados sin limpiar)",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "Grad norm = 4,820.0 -> pesos saturados",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Validación sin torch.no_grad() agotó VRAM construyendo grafo",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · El Orden Sagrado",
+        "title": "zero_grad → backward → clip_grad_norm_ → step",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "gold",
+        "durationSec": 11,
+        "speech": "Respeta el orden exacto de cada paso de entrenamiento en PyTorch: limpia gradientes con optimizer.zero_grad, propaga error con loss.backward, recorta la norma con clip_grad_norm_ y actualiza pesos con optimizer.step.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "PYTORCH STEP INVARIANT",
+          "laneA": {
+            "name": "Train Step",
+            "steps": [
+              "1. zero_grad()",
+              "2. backward()",
+              "3. clip -> step()"
+            ]
+          },
+          "laneB": {
+            "name": "Eval / Infer",
+            "steps": [
+              "model.eval()",
+              "with torch.no_grad():",
+              "0 grafo guardado"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Inferencia",
+        "title": "¿Qué Diferencia Hay Entre model.eval() y torch.no_grad()?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "model.eval desactiva dropout y ajusta batchnorm, mientras torch.no_grad apaga el autograd para ahorrar memoria y tiempo.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "zero_grad(set_to_none=True)",
+              "sub": "Evita acumular batches",
+              "state": "ok"
+            },
+            {
+              "label": "clip_grad_norm_(max=1.0)",
+              "sub": "Frena explosión NaN",
+              "state": "ok"
+            },
+            {
+              "label": "eval() + no_grad()",
+              "sub": "Inferencia rápida y estable",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Estabilidad Deep Learning",
+          "metricBefore": "NaN + OOM en eval",
+          "metricAfter": "Convergencia limpia y acotada"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Ciclo De Entrenamiento Seguro Con Clipping De Gradientes",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Brillante. Completa train_step en AI09 manteniendo esa secuencia canónica para que tu red entrene estable desde el primer batch.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "train_step.py",
+          "before": [
+            "loss.backward(); optimizer.step() # acumula gradientes y sin clip"
+          ],
+          "after": [
+            "optimizer.zero_grad(); loss = loss_fn(model(x), y); loss.backward()",
+            "torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0); optimizer.step()"
+          ],
+          "callout": "El orden de zero_grad, backward, clip y step jamás se negocia."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai10",
+    "aliases": [
+      "AI10"
+    ],
+    "filename": "ai10.mp3",
+    "kicker": "AI ACADEMY AI10 · TRANSFORMERS & TOKENS",
+    "heading": "Transformers y NLP: Tokenización Real y Presupuesto de Ventana",
+    "scenes": [
+      {
+        "chapter": "01 · La Regla Del 0.75",
+        "title": "Estimar Tokens Dividiendo Palabras Corta Respuestas En Español",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI10 contamos espacios en el texto para calcular la ventana de contexto del Transformer. Al entrar código fuente y texto técnico, superamos el límite de cuatro mil noventa y seis tokens y el request falló.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "tokenizer_mismatch.log",
+          "badge": "CONTEXT OVERFLOW",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "text.split() dijo 2,900 'palabras' (subestima código)",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "Tokenizador BPE real contó 3,950 tokens + 512 out",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "4,462 > 4,096 -> ContextLengthExceeded",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Tokenizador Exacto",
+        "title": "Medir Tokens Reales + Sumar Margen De Generación",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Las heurísticas por palabras fallan en JSON, tildes y símbolos. Mide siempre la longitud exacta con el tokenizador del modelo y exige antes de llamar que input más max_output no exceda la ventana.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "EXACT TRANSFORMER BUDGET",
+          "laneA": {
+            "name": "Tokenizador Real",
+            "steps": [
+              "Subword BPE / SentencePiece",
+              "Incluye system + tags",
+              "len(tokens)"
+            ]
+          },
+          "laneB": {
+            "name": "Guardia Ventana",
+            "steps": [
+              "+ max_output reserve",
+              "<= window (4096)",
+              "Fallo o poda segura"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Previsión",
+        "title": "¿Qué Hacemos Cuando Realmente Excede La Ventana?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "En lugar de enviar y rezar o truncar el final sin avisar, lanzamos un error explícito o podamos el contexto antes de invocar al modelo.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Token Count Exacto",
+              "sub": "len(tokens) real del modelo",
+              "state": "ok"
+            },
+            {
+              "label": "Reserva Out + Window",
+              "sub": "len(tokens) + max_output <= W",
+              "state": "ok"
+            },
+            {
+              "label": "Overflow Explícito",
+              "sub": "raise ValueError fail-closed",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Control De Contexto Transformer",
+          "metricBefore": "Estimación heurística rota",
+          "metricAfter": "0 desbordamientos en inferencia"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Validador Determinista enforce_token_budget",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa enforce_token_budget en AI10 comprobando que len de tokens más max_output nunca supere window y devolviendo el presupuesto consumido.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "token_guard.py",
+          "before": [
+            "return len(tokens) # ignora max_output y window"
+          ],
+          "after": [
+            "if len(tokens) + max_output > window:",
+            "    raise ValueError('Token budget exceeded'); return len(tokens)"
+          ],
+          "callout": "Cerraste los 10 primeros módulos de AI Academy: Python, Stats, Sklearn y Transformers."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai11",
+    "aliases": [
+      "AI11"
+    ],
+    "filename": "ai11.mp3",
+    "kicker": "AI ACADEMY AI11 · PGVECTOR PRE-FILTER",
+    "heading": "Embeddings y Vector Search con ACL Pre-Retrieval",
+    "scenes": [
+      {
+        "chapter": "01 · La Fuga Vectorial",
+        "title": "Ordenar Por Distancia Sin Filtrar Tenant Ni Borrados",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI11 consultamos PostgreSQL con pgvector pidiendo los ocho chunks más cercanos. Como faltaba la condición del cliente y el borrado lógico, apareció un documento eliminado de otra empresa.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Sesión t_acme",
+          "claims": [
+            {
+              "key": "tenant_id",
+              "value": "$1 = 't_acme' OMITIDO",
+              "valid": false
+            },
+            {
+              "key": "deleted_at",
+              "value": "IS NULL OMITIDO",
+              "valid": false
+            }
+          ],
+          "indexLabel": "pgvector sin Pre-Filter",
+          "chunks": [
+            {
+              "id": "t_beta#4",
+              "text": "Contrato privado de Beta",
+              "note": "✗ Fuga cross-tenant top-1",
+              "blocked": true
+            },
+            {
+              "id": "del#99",
+              "text": "Archivo purgado ayer",
+              "note": "✗ Dato obsoleto filtrado",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Menor Privilegio",
+        "title": "WHERE Parametrizado + Rol SQL No Privilegiado",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Todo retrieval en pgvector requiere doble cinturón: filtro obligatorio en SQL parametrizado por tenant_id y deleted_at is null antes de aplicar LIMIT ocho, ejecutado con un rol de base no privilegiado.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "shielded",
+          "identityLabel": "App Role + Params",
+          "claims": [
+            {
+              "key": "tenant_id",
+              "value": "$1 obligatorio",
+              "valid": true
+            },
+            {
+              "key": "deleted_at",
+              "value": "IS NULL activo",
+              "valid": true
+            }
+          ],
+          "indexLabel": "ORDER BY embedding <=> $2 LIMIT 8",
+          "chunks": [
+            {
+              "id": "t_acme#1",
+              "text": "Política interna vigente",
+              "note": "✓ 1 - (<=> $2) autorizado"
+            },
+            {
+              "id": "t_beta#4",
+              "text": "Otro cliente / borrado",
+              "note": "🛡 Descartado antes Top-K",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Velocidad",
+        "title": "¿Por Qué Usamos Un Rol Sin BYPASSRLS En La App?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Porque el superusuario de PostgreSQL se salta las políticas de seguridad a nivel de fila; el servicio web siempre se conecta con privilegios mínimos.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "rls_pgvector_role.sql",
+          "badge": "LEAST PRIVILEGE",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "SET ROLE app_reader; -- sin superuser ni bypassrls",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "Similitud: 1 - (embedding <=> $2) AS score",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "Pre-filter tenant_id = $1 AND deleted_at IS NULL",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Consulta Parametrizada En document_chunks",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exactísimo. Completa la query SQL de AI11 agregando la cláusula de tenant y borrado lógico junto al ordenamiento por distancia coseno limitado a ocho.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "vector_search.sql",
+          "before": [
+            "SELECT id, content FROM document_chunks; -- sin WHERE ni ORDER BY"
+          ],
+          "after": [
+            "WHERE tenant_id = $1 AND deleted_at IS NULL",
+            "ORDER BY embedding <=> $2 LIMIT 8;"
+          ],
+          "callout": "ACL pre-retrieval en pgvector: primero autorizas filas, luego rankeas vectores."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai12",
+    "aliases": [
+      "AI12"
+    ],
+    "filename": "ai12.mp3",
+    "kicker": "AI ACADEMY AI12 · CITAS VERIFICADAS",
+    "heading": "RAG Verificable: Citas Resolubles y Abstención Segura",
+    "scenes": [
+      {
+        "chapter": "01 · Evidencia Débil",
+        "title": "Aceptar Chunks Con Score Bajo O Citas Inventadas",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI12 el modelo devolvió una respuesta muy convincente citando el fragmento c-99. Pero al auditarlo, todos los chunks recuperados tenían similitud de cero punto tres y c-99 ni siquiera existía.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Chunks Score 0.31",
+              "sub": "Debajo de min_score 0.65",
+              "state": "hot"
+            },
+            {
+              "label": "Cita [c-99]",
+              "sub": "No existe en recuperados",
+              "state": "hot"
+            },
+            {
+              "label": "Sin Abstención",
+              "sub": "Publicó alucinación",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Integridad de Grounding",
+          "metricBefore": "Acepta cualquier cita",
+          "metricAfter": "Citas falsas sin evidencia"
+        }
+      },
+      {
+        "chapter": "02 · Tres Condiciones",
+        "title": "Score Mínimo + Existencia + Cobertura Total De Citas",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Para aprobar citas en backend exige tres cosas: primero filtra chunks que alcancen min_score; segundo exige que exista al menos un chunk válido y que las citas no vengan vacías; y tercero comprueba que cada ID citado esté dentro de ese conjunto.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "VERIFIED CITATIONS OR ABSTAIN",
+          "laneA": {
+            "name": "Chunks Válidos",
+            "steps": [
+              "score >= min_score",
+              "No vacío",
+              "Set allowed_ids"
+            ]
+          },
+          "laneB": {
+            "name": "Veredicto",
+            "steps": [
+              "citations no vacío",
+              "all c in allowed_ids",
+              "Si falla -> abstención"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Abstención",
+        "title": "¿Qué Pasa Si No Hay Chunks Que Superen El Umbral?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Entonces el verificador devuelve falso de inmediato y el servicio responde con abstención controlada en lugar de inventar hechos.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "verify_rag_citations.py",
+          "badge": "ZERO HALLUCINATION",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "valid_ids = {c['id'] for c in chunks if c['score'] >= min_score}",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "return bool(valid_ids and answer_citations and all(c in valid_ids ...))",
+              "tone": "ok"
+            },
+            {
+              "prompt": "!",
+              "text": "Si retorna False -> activar política de abstención",
+              "tone": "muted"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Validador Puro verify_rag_citations En Python",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa verify_rag_citations en AI12 filtrando por min_score y asegurando que absolutamente todas las citas se puedan resolver.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "citation_guard.py",
+          "before": [
+            "return False # no valida umbral ni pertenencia de citas"
+          ],
+          "after": [
+            "valid = {c['id'] for c in chunks if c.get('score', 0) >= min_score}",
+            "return bool(valid and answer_citations) and all(c in valid for c in answer_citations)"
+          ],
+          "callout": "Sin chunk sobre el umbral y cita resoluble, la única salida segura es abstenerse."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai13",
+    "aliases": [
+      "AI13"
+    ],
+    "filename": "ai13.mp3",
+    "kicker": "AI ACADEMY AI13 · GUARDIA DE TOOLS",
+    "heading": "Agentes LangGraph y MCP: Allowlist, HITL y Step Budget",
+    "scenes": [
+      {
+        "chapter": "01 · Tool Mutante Libre",
+        "title": "Ejecutar create_ticket En Un Bucle Sin Aprobación",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI13 nuestro agente tiene dos herramientas: search_docs y create_ticket. Por un prompt malicioso intentó llamar una herramienta no listada y luego disparó cien tickets seguidos sin permiso humano.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "UNBOUNDED AGENT SIDE-EFFECTS",
+          "laneA": {
+            "name": "Tool Desconocida",
+            "steps": [
+              "drop_database()",
+              "Sin ALLOWED_TOOLS",
+              "Ejecución indebida"
+            ]
+          },
+          "laneB": {
+            "name": "Sin Presupuesto",
+            "steps": [
+              "step = 47...",
+              "create_ticket() x50",
+              "Sin aprobación HITL"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Tres Barreras",
+        "title": "Step Budget + Allowlist + HITL En Mutaciones",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Toda ejecución de herramienta pasa por tres compuertas síncronas en código: primero verifica step menor a max_steps; segundo valida que tool_name viva en ALLOWED_TOOLS; y si es mutante, exige approved igual a True.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "step < max_steps",
+              "sub": "Corta loops infinitos",
+              "state": "ok"
+            },
+            {
+              "label": "tool in ALLOWED",
+              "sub": "Bloquea tools ocultas",
+              "state": "ok"
+            },
+            {
+              "label": "MUTATING -> HITL",
+              "sub": "Exige approved == True",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Control De Agentes y MCP",
+          "metricBefore": "Tools libres sin tope",
+          "metricAfter": "Allowlist + HITL + Step Cap"
+        }
+      },
+      {
+        "chapter": "03 · Separación Clara",
+        "title": "¿Las Tools De Lectura También Piden Aprobación Humana?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "No si están dentro de ALLOWED_TOOLS y del presupuesto de pasos; solo MUTATING_TOOLS detiene la gráfica pidiendo aprobación.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "tool_policy.py",
+          "badge": "FAIL-CLOSED",
+          "lines": [
+            {
+              "prompt": "1",
+              "text": "step >= max_steps -> False (presupuesto agotado)",
+              "tone": "warn"
+            },
+            {
+              "prompt": "2",
+              "text": "tool_name not in ALLOWED_TOOLS -> False",
+              "tone": "warn"
+            },
+            {
+              "prompt": "3",
+              "text": "tool_name in MUTATING_TOOLS and not approved -> False",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Autorizador Determinista authorize_tool_call",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Correctísimo. Completa authorize_tool_call en AI13 aplicando esas tres validaciones en orden estricto para proteger tus agentes y servidores MCP.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "agent_authz.py",
+          "before": [
+            "return True # permite cualquier tool infinitas veces"
+          ],
+          "after": [
+            "if step >= max_steps or tool_name not in ALLOWED_TOOLS: return False",
+            "return (not tool_name in MUTATING_TOOLS) or bool(approved)"
+          ],
+          "callout": "Un agente sin allowlist, presupuesto de pasos e HITL es un riesgo operativo abierto."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai14",
+    "aliases": [
+      "AI14"
+    ],
+    "filename": "ai14.mp3",
+    "kicker": "AI ACADEMY AI14 · EVAL RELEASE GATE",
+    "heading": "Prompt y Evaluación: Golden Datasets y Gate Go/No-Go",
+    "scenes": [
+      {
+        "chapter": "01 · El Despliegue A Ciegas",
+        "title": "Mejorar La Fluidez Pero Romper Recall O Infiltración",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI14 cambiamos el system prompt y registramos una corrida en MLflow. El equipo celebró una respuesta más amable sin ver que el recall cayó y una inyección logró filtrarse.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "mlflow_eval_warning.log",
+          "badge": "NO-GO BLOCKER",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "recall_at_5 = 0.79 (umbral mínimo exigido: >= 0.85)",
+              "tone": "warn"
+            },
+            {
+              "prompt": ">",
+              "text": "faithfulness = 0.92 (OK >= 0.90)",
+              "tone": "ok"
+            },
+            {
+              "prompt": "x",
+              "text": "injection_leak_rate = 0.04 (EXIGE 0.0 estricto!)",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Tres Candados",
+        "title": "Umbrales Duros Antes De Promover A Producción",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Evalúa cada candidato sobre un Golden Dataset versionado con semilla determinista. Tu gate Go/No-Go solo aprueba si recall_at_5 alcanza cero punto ochenta y cinco, faithfulness cero punto noventa y la fuga de inyección es exactamente cero.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "AUTOMATED CI EVAL GATE",
+          "laneA": {
+            "name": "Calidad RAG",
+            "steps": [
+              "recall_at_5 >= 0.85",
+              "faithfulness >= 0.90",
+              "MLflow tracked"
+            ]
+          },
+          "laneB": {
+            "name": "Seguridad",
+            "steps": [
+              "injection_leak == 0.0",
+              "Golden v-pinned",
+              "Promueve o bloquea"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · Sin Excepciones",
+        "title": "¿Qué Pasa Si Falta Alguna Métrica En El Diccionario?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Si falta una métrica debemos fallar cerrado devolviendo False; un NO_RUN jamás puede colarse como aprobado.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Golden Set Pinned",
+              "sub": "Versión en Git / DVC",
+              "state": "ok"
+            },
+            {
+              "label": "Cero Tolerancia Leak",
+              "sub": "injection_leak_rate == 0.0",
+              "state": "ok"
+            },
+            {
+              "label": "Fail-Closed Gate",
+              "sub": "False si falta métrica",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Disciplina De Lanzamiento IA",
+          "metricBefore": "Subir prompts al tanteo",
+          "metricAfter": "Gate determinista en CI"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Implementación De eval_release_gate En Python",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Así se piensa en modo Senior. Completa eval_release_gate en AI14 validando las tres condiciones conjuntas con valores por defecto fail-closed.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "release_gate.py",
+          "before": [
+            "return metrics.get('faithfulness', 0) > 0.8"
+          ],
+          "after": [
+            "return metrics.get('recall_at_5', 0.0) >= 0.85",
+            "  and metrics.get('faithfulness', 0.0) >= 0.90 and metrics.get('injection_leak_rate', 1.0) == 0.0"
+          ],
+          "callout": "Un prompt es código en producción: si rompe tus evals o seguridad, no se despliega."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai15",
+    "aliases": [
+      "AI15"
+    ],
+    "filename": "ai15.mp3",
+    "kicker": "AI ACADEMY AI15 · SERVING ASÍNCRONO",
+    "heading": "Serving FastAPI: Timeouts Estrictos y Event Loop Libre",
+    "scenes": [
+      {
+        "chapter": "01 · Event Loop Congelado",
+        "title": "Inferencia Colgada Bloqueando Todas Las Peticiones De FastAPI",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI15 desplegamos un endpoint asíncrono en FastAPI. Cuando el modelo aguas abajo tardó cuarenta segundos o un proceso síncrono ocupó el hilo, toda la API dejó de responder hasta los healthchecks.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "BLOCKED EVENT LOOP + NO TIMEOUT",
+          "laneA": {
+            "name": "Request Lento",
+            "steps": [
+              "await run() sin tope",
+              "Espera 45s",
+              "Satura workers"
+            ]
+          },
+          "laneB": {
+            "name": "Otros Clientes",
+            "steps": [
+              "/health falla",
+              "Load balancer mata pod",
+              "Cascada 502"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Timeouts Reales",
+        "title": "asyncio.wait_for(5.0s) + Backpressure + HTTP 504",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "En serving profesional nunca esperas eternamente. Limita concurrencia con semáforo de backpressure, no bloquees el event loop con llamadas síncronas pesadas y envuelve run_inference con asyncio.wait_for a cinco segundos devolviendo quinientos cuatro si expira.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "fastapi_serving.py",
+          "badge": "BOUNDED 5.0S",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "try: return await asyncio.wait_for(run_inference(req), timeout=5.0)",
+              "tone": "ok"
+            },
+            {
+              "prompt": "!",
+              "text": "except TimeoutError -> raise HTTPException(status_code=504)",
+              "tone": "warn"
+            },
+            {
+              "prompt": ">",
+              "text": "healthcheck sigue en <2ms mientras tanto",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · Backpressure",
+        "title": "¿Qué Pasa Si Llegan Doscientas Peticiones A La Vez?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Con un límite de cola o semáforo rechazamos rápido el exceso antes de saturar GPU y memoria, manteniendo estable la latencia de quienes sí entraron.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "asyncio.Semaphore",
+              "sub": "Backpressure acotado",
+              "state": "ok"
+            },
+            {
+              "label": "wait_for(5.0)",
+              "sub": "Corta inferencia colgada",
+              "state": "ok"
+            },
+            {
+              "label": "HTTP 504 / 429",
+              "sub": "Degradación rápida y honesta",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Salud De API FastAPI",
+          "metricBefore": "Workers colgados + OOM",
+          "metricAfter": "P99 acotado + Event loop libre"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Handler Asíncrono Con wait_for y HTTPException 504",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa infer_handler en AI15 envolviendo la llamada en asyncio.wait_for con timeout de cinco segundos y convirtiendo TimeoutError en HTTPException quinientos cuatro.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "infer_router.py",
+          "before": [
+            "return await run_inference(req) # cuelga indefinidamente"
+          ],
+          "after": [
+            "try: return await asyncio.wait_for(run_inference(req), timeout=5.0)",
+            "except TimeoutError as err: raise HTTPException(status_code=504, detail='Timeout') from err"
+          ],
+          "callout": "Un buen servicio IA falla en cinco segundos con 504 antes que colgar tu clúster."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai16",
+    "aliases": [
+      "AI16"
+    ],
+    "filename": "ai16.mp3",
+    "kicker": "AI ACADEMY AI16 · TELEMETRÍA SIN PII",
+    "heading": "MLOps y LLMOps: Spans OpenTelemetry Redactados",
+    "scenes": [
+      {
+        "chapter": "01 · La Fuga En Trazas",
+        "title": "Guardar raw_prompt Y Alta Cardinalidad En Spans De Producción",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI16 instrumentamos OpenTelemetry y MLflow para rastrear costos y latencia. Pero un auditor descubrió correos y textos completos de clientes guardados en raw_prompt dentro de los spans.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "unsafe_otel_span.py",
+          "badge": "PII + CARDINALITY",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "span['raw_prompt'] = 'Soy Ana, DNI 4419...' -> Fuga PII",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "metric.label['user_id'] -> 2 millones de series (explosión)",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Violación de cumplimiento + factura APM disparada",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Telemetría Segura",
+        "title": "Atributos GenAI Estructurados Sin Texto Crudo",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Los spans de producción registran solo metadatos seguros y de baja cardinalidad: gen_ai.request.model, la versión exacta del prompt en Git y el conteo de tokens. Jamás serialices prompts ni respuestas crudas sin autorización explícita.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "model + prompt_version",
+              "sub": "Trazabilidad reproducible",
+              "state": "ok"
+            },
+            {
+              "label": "tokens + latencia",
+              "sub": "Sin textos ni emails",
+              "state": "ok"
+            },
+            {
+              "label": "Zero raw_prompt",
+              "sub": "PII redactado por defecto",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Observabilidad Compliant",
+          "metricBefore": "raw_prompt + user_id en métrica",
+          "metricAfter": "Spans GenAI seguros"
+        }
+      },
+      {
+        "chapter": "03 · La Cardinalidad",
+        "title": "¿Por Qué No Ponemos user_id Ni request_id En Métricas Prometheus?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Porque los IDs únicos deben vivir únicamente en spans distribuidos o logs estructurados, nunca multiplicando millones de series en contadores.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "LOW CARDINALITY METRICS + SAFE SPANS",
+          "laneA": {
+            "name": "Traces (OTel)",
+            "steps": [
+              "trace_id",
+              "prompt_version",
+              "0 PII / 0 raw_prompt"
+            ]
+          },
+          "laneB": {
+            "name": "Metrics",
+            "steps": [
+              "model tier",
+              "status class",
+              "Cero UUID tags"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Constructor Limpio build_safe_span_attrs",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa build_safe_span_attrs en AI16 devolviendo únicamente modelo, versión de prompt y tokens, eliminando por completo raw_prompt.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "otel_spans.py",
+          "before": [
+            "return {'raw_prompt': prompt_text, 'user_id': user_id}"
+          ],
+          "after": [
+            "return {'gen_ai.request.model': model, 'prompt.version': prompt_version,",
+            "        'gen_ai.usage.tokens': int(tokens)}"
+          ],
+          "callout": "Mide todo lo que necesites depurar sin filtrar ni un solo dato personal."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai17",
+    "aliases": [
+      "AI17"
+    ],
+    "filename": "ai17.mp3",
+    "kicker": "AI ACADEMY AI17 · DEVSECOPS & DIGEST",
+    "heading": "Seguridad DevSecOps IA: Deserialización Segura y Pinning SHA-256",
+    "scenes": [
+      {
+        "chapter": "01 · El Modelo Envenenado",
+        "title": "Cargar Artefactos Por Tag Flotante O pickle Sin Verificar Firma",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En AI17 descargamos pesos y transformadores desde un bucket usando la etiqueta latest y los cargamos con pickle sin revisar el hash. Un archivo alterado en tránsito ejecuta código remoto al deserializar.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Tag 'latest'",
+              "sub": "Sin digest SHA-256 fijado",
+              "state": "hot"
+            },
+            {
+              "label": "pickle.load()",
+              "sub": "Ejecución remota RCE",
+              "state": "hot"
+            },
+            {
+              "label": "Comparación '=='",
+              "sub": "Timing side-channel",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Supply Chain IA",
+          "metricBefore": "Deserialización insegura",
+          "metricAfter": "RCE + Sustitución silenciosa"
+        }
+      },
+      {
+        "chapter": "02 · Pinning Criptográfico",
+        "title": "Safetensors + Hash SHA-256 + hmac.compare_digest",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "En DevSecOps IA prohíbe pickle para artefactos externos y fija cada modelo o peso por su digest SHA-256 inmutable. Valida siempre la firma con hmac.compare_digest en tiempo constante antes de cargarlo.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "artifact_verifier.py",
+          "badge": "CONSTANT-TIME SHA256",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "actual = hashlib.sha256(payload_bytes).hexdigest()",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "return hmac.compare_digest(actual, expected_sha256.lower())",
+              "tone": "ok"
+            },
+            {
+              "prompt": "!",
+              "text": "Formato pesos: safetensors | Contenedores: @sha256:...",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · El Detalle",
+        "title": "¿Por Qué hmac.compare_digest En Lugar De Igualdad Simple?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Porque compare_digest evita ataques por tiempo que miden en qué byte falla primero una firma o token secreto.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "OWASP ML SUPPLY CHAIN GUARD",
+          "laneA": {
+            "name": "Integridad",
+            "steps": [
+              "sha256().hexdigest()",
+              "hmac.compare_digest",
+              "Abort si difiere"
+            ]
+          },
+          "laneB": {
+            "name": "Runtime",
+            "steps": [
+              "Cero pickle externo",
+              "Datos en untrusted_context",
+              "Menor privilegio"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Verificador Criptográfico verify_artifact_sha256",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa verify_artifact_sha256 en AI17 calculando el hexdigest SHA-256 y validándolo en tiempo constante contra el digest esperado.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "supply_chain_verify.py",
+          "before": [
+            "return False # carga modelo directo sin comprobar hash"
+          ],
+          "after": [
+            "digest = hashlib.sha256(payload_bytes).hexdigest()",
+            "return hmac.compare_digest(digest, expected_sha256.lower())"
+          ],
+          "callout": "Todo artefacto externo entra por digest verificado y cero deserialización ejecutable."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ai18",
+    "aliases": [
+      "AI18"
+    ],
+    "filename": "ai18.mp3",
+    "kicker": "AI ACADEMY AI18 · GRADUACIÓN FINOPS & SLO",
+    "heading": "FinOps y Arquitectura Senior: Reserva Atómica y Cierre AI Academy",
+    "scenes": [
+      {
+        "chapter": "01 · Última Línea De Defensa",
+        "title": "Picos De Concurrencia Sobregirando El Presupuesto Del Tenant",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Llegamos al módulo final dieciocho de AI Academy, AI18. Sin bloqueo mutuo ni reserva previa, dos peticiones concurrentes del mismo cliente leen el saldo a la vez y dejan la cuenta en negativo.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "CONCURRENT BUDGET OVERDRAFT",
+          "laneA": {
+            "name": "Thread 1",
+            "steps": [
+              "Lee saldo $10",
+              "Gasta $8",
+              "Saldo queda -$6"
+            ]
+          },
+          "laneB": {
+            "name": "Thread 2",
+            "steps": [
+              "Lee saldo $10",
+              "Gasta $8",
+              "Race condition TOCTOU"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Mutuo & Conciliación",
+        "title": "Reserva Atómica Bajo Lock + Conciliación + Degradación",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Usa `with lock:` para hacer lectura, verificación de saldo suficiente y descuento en una sola operación atómica. Después de la inferencia concilia el consumo real y degrada con elegancia cuando alcances tus límites SLO.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "atomic_budget_lock.py",
+          "badge": "THREAD-SAFE FINOPS",
+          "lines": [
+            {
+              "prompt": "1",
+              "text": "with lock: if balances.get(t, 0) < estimated_cost: return False",
+              "tone": "warn"
+            },
+            {
+              "prompt": "2",
+              "text": "balances[t] -= estimated_cost; return True",
+              "tone": "ok"
+            },
+            {
+              "prompt": "3",
+              "text": "Post-call: conciliar diferencia real -> devuelto al tenant",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Visión Senior",
+        "title": "¿Completar AI18 Conecta Todo El Ecosistema Desde Python Hasta FinOps?",
+        "speaker": "host",
+        "mascot": "celebrate",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Sí: desde validación fail-closed en AI01 hasta pgvector ACL, citas verificadas, DevSecOps y ledger FinOps en AI18.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "AI01..AI10",
+              "sub": "Python + ML + PyTorch",
+              "state": "ok"
+            },
+            {
+              "label": "AI11..AI17",
+              "sub": "RAG + Agentes + DevSecOps",
+              "state": "ok"
+            },
+            {
+              "label": "AI18 FinOps Lock",
+              "sub": "100% AI Academy Listo",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Ruta AI Academy Completa",
+          "metricBefore": "Scripts aislados",
+          "metricAfter": "18/18 Módulos Senior"
+        }
+      },
+      {
+        "chapter": "04 · Tu Graduación",
+        "title": "Completa reserve_budget y Desbloquea Tu Capstone",
+        "speaker": "axon",
+        "mascot": "graduate",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Excelente recorrido. Implementa reserve_budget dentro del lock en AI18 garantizando cero sobregiros y pasa directo al Capstone final.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "finops_guard.py",
+          "before": [
+            "if balances[tenant_id] >= cost: balances[tenant_id] -= cost"
+          ],
+          "after": [
+            "with lock:",
+            "    if balances.get(tenant_id, 0) < estimated_cost: return False",
+            "    balances[tenant_id] -= estimated_cost; return True"
+          ],
+          "callout": "¡18 de 18 lecciones de AI Academy completadas con video de estudio!"
+        }
+      }
+    ]
+  },
+  {
+    "id": "f01-2",
+    "aliases": [
+      "F01-2"
+    ],
+    "filename": "f01-2.mp3",
+    "kicker": "FRAMEWORK F01 · UNIDAD 2/5",
+    "heading": "LangGraph Reducers: Inmutabilidad de Estado para Checkpoints",
+    "scenes": [
+      {
+        "chapter": "01 · La Mutación In-Place",
+        "title": "Modificar state.steps Directamente Rompe Tu Historial De Grafo",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad dos de LangGraph vimos que mutar el objeto estado directamente corrompe los checkpoints anteriores: cuando quieres depurar o reanudar desde el paso previo, ya fue sobrescrito.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "mutable_state_bug.ts",
+          "badge": "CHECKPOINT CORRUPT",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "state.steps += 1; return state // muta referencia previa",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "Time-travel replay muestra step = 5 en snapshot viejo",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Diff entre nodos imposible de auditar",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Nuevo Objeto",
+        "title": "Devolver Siempre Un Estado Nuevo Derivado Del Anterior",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Cada nodo y reducer en LangGraph debe comportarse como una función pura inmutable. En vez de mutar state, retorna un objeto literal nuevo con steps igual a state punto steps más uno.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "IMMUTABLE STATEGRAPH CHECKPOINTS",
+          "laneA": {
+            "name": "Checkpoint t=1",
+            "steps": [
+              "{ steps: 1 }",
+              "Inmutable",
+              "Replay exacto"
+            ]
+          },
+          "laneB": {
+            "name": "Checkpoint t=2",
+            "steps": [
+              "{ steps: state.steps + 1 }",
+              "Nuevo objeto",
+              "Audit limpio"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Ventaja",
+        "title": "¿Eso Hace Seguro Reanudar Un Agente HITL Horas Después?",
+        "speaker": "host",
+        "mascot": "idea",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Sí: cada transición serializada en PostgreSQL conserva una foto limpia del grafo sin efectos secundarios compartidos.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Pure Reducer",
+              "sub": "Cero mutación in-place",
+              "state": "ok"
+            },
+            {
+              "label": "Snapshot t=N",
+              "sub": "Reproducible bit a bit",
+              "state": "ok"
+            },
+            {
+              "label": "Time-Travel Debug",
+              "sub": "Vuelve a cualquier paso",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Fiabilidad De StateGraph",
+          "metricBefore": "Referencias mutadas",
+          "metricAfter": "Checkpoints 100% deterministas"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Reducer Inmutable stepReducer",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exactísimo. Completa stepReducer en esta unidad retornando el objeto nuevo con el contador incrementado sin mutar la entrada.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_2.ts",
+          "before": [
+            "state.steps++; return state; // mutación prohibida"
+          ],
+          "after": [
+            "function stepReducer(state: { steps: number }) {",
+            "  return { steps: state.steps + 1 }; }"
+          ],
+          "callout": "Sin estado inmutable en reducers, tus checkpoints y replays de LangGraph mienten."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f01-3",
+    "aliases": [
+      "F01-3"
+    ],
+    "filename": "f01-3.mp3",
+    "kicker": "FRAMEWORK F01 · UNIDAD 3/5",
+    "heading": "Aristas Condicionales: Abstención Temprana Sin Chunks",
+    "scenes": [
+      {
+        "chapter": "01 · Bucle Inútil",
+        "title": "Mandar Chunks Vacíos Al Nodo Generador Dispara Alucinaciones",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad tres del grafo, cuando el retriever vuelve con cero documentos autorizados, nuestra arista sigue mandando al nodo generate. El LLM rellena el vacío inventando datos y cobrándonos tokens.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "CHUNKS = [] -> GENERATE HALLUCINATIONS",
+          "laneA": {
+            "name": "Retriever ACL",
+            "steps": [
+              "chunks.length === 0",
+              "Pasa a generate",
+              "Cero evidencia"
+            ]
+          },
+          "laneB": {
+            "name": "LLM Generator",
+            "steps": [
+              "Inventa respuesta",
+              "Quema $$$ tokens",
+              "Falla grounding"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Arista Guardiana",
+        "title": "Cortocircuito Condicional Hacia Abstain En Cero Milisegundos",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Tu router de arista condicional es un filtro económico y de seguridad. Si state punto chunks punto length es cero, redirige de inmediato a abstain antes de invocar al modelo generador.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "chunks.length === 0",
+              "sub": "Detectado en router O(1)",
+              "state": "ok"
+            },
+            {
+              "label": "Edge -> 'abstain'",
+              "sub": "0 llamadas al modelo",
+              "state": "ok"
+            },
+            {
+              "label": "Respuesta Segura",
+              "sub": "Sin evidencia suficiente",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Ahorro y Seguridad En Arista",
+          "metricBefore": "Genera sin contexto",
+          "metricAfter": "Abstención en 0ms y $0"
+        }
+      },
+      {
+        "chapter": "03 · La Integración",
+        "title": "¿También Corta Reintentos Innecesarios?",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Sí: si el usuario no tiene permiso para ningún documento sobre ese tema, reintentar sin evidencia solo quema presupuesto.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "conditional_edge.ts",
+          "badge": "FAIL-CLOSED ROUTE",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "state.chunks.length === 0 -> return 'abstain'",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "state.chunks.length > 0   -> return 'generate'",
+              "tone": "cmd"
+            },
+            {
+              "prompt": "$",
+              "text": "Costo de rutas bloqueadas: $0.000",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Router Condicional De Abstención Segura",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa la función route en esta unidad devolviendo exactamente abstain cuando el arreglo de chunks llegue vacío.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_3.ts",
+          "before": [
+            "if (state.chunks.length === 0) return 'retry'; // alucina o gira"
+          ],
+          "after": [
+            "if (state.chunks.length === 0) return 'abstain';",
+            "return 'generate';"
+          ],
+          "callout": "Una buena arista condicional en LangGraph evita el gasto y la alucinación antes de ocurrir."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f01-4",
+    "aliases": [
+      "F01-4"
+    ],
+    "filename": "f01-4.mp3",
+    "kicker": "FRAMEWORK F01 · UNIDAD 4/5",
+    "heading": "LangGraph Runtime: recursionLimit y thread_id por Checkpoint",
+    "scenes": [
+      {
+        "chapter": "01 · Bucle Desbocado",
+        "title": "Invocar Un Grafo Cíclico Sin Techo De Recursión",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad cuatro de LangGraph ejecutamos un grafo con ciclo entre búsqueda y reformulación sin configurar recursionLimit ni thread_id. Un caso ambiguo giró decenas de veces y quemó el presupuesto de la tarde.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "NO RECURSION LIMIT · COST BURN",
+          "laneA": {
+            "name": "Ciclo Libre",
+            "steps": [
+              "step = 15...",
+              "step = 32...",
+              "Sin freno duro"
+            ]
+          },
+          "laneB": {
+            "name": "Sin thread_id",
+            "steps": [
+              "No hay hilo en DB",
+              "Imposible auditar",
+              "Pérdida de trace"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Techo Y Sesión",
+        "title": "recursionLimit Acotado + configurable thread_id",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Nunca invoques graph punto invoke sin opciones de seguridad. Pasa siempre recursionLimit igual a seis y configura configurable punto thread_id para persistir y correlacionar cada paso del episodio.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "graph_invoke.ts",
+          "badge": "BOUNDED DEPTH = 6",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "recursionLimit: 6 (freno duro en runtime LangGraph)",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "configurable: { thread_id } -> checkpoints en DB",
+              "tone": "ok"
+            },
+            {
+              "prompt": "!",
+              "text": "Si alcanza límite -> GraphRecursionError controlado",
+              "tone": "cmd"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Diferencia",
+        "title": "¿El Conteo Del Grafo Reemplaza A recursionLimit?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "No se excluyen: el contador del negocio dirige hacia abstain, mientras recursionLimit actúa como fusible de emergencia del motor.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Business Cap",
+              "sub": "Arista a 'abstain' suave",
+              "state": "ok"
+            },
+            {
+              "label": "recursionLimit: 6",
+              "sub": "Fusible duro del grafo",
+              "state": "ok"
+            },
+            {
+              "label": "thread_id",
+              "sub": "Trazabilidad completa",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Seguridad En Ciclos",
+          "metricBefore": "Loop infinito sin registro",
+          "metricAfter": "Doble cinturón acotado"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Invocación Segura De graph.invoke",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa la invocación de la unidad cuatro pasando recursionLimit igual a seis y configurable con su thread_id.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_4.ts",
+          "before": [
+            "await graph.invoke({ query }); // sin límites ni checkpoint"
+          ],
+          "after": [
+            "await graph.invoke({ query },",
+            "  { recursionLimit: 6, configurable: { thread_id: threadId } });"
+          ],
+          "callout": "Sin recursionLimit, una sola arista mal escrita puede vaciar tu cuenta API."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f01-5",
+    "aliases": [
+      "F01-5"
+    ],
+    "filename": "f01-5.mp3",
+    "kicker": "FRAMEWORK F01 · UNIDAD 5/5",
+    "heading": "LangGraph HITL: Pausa Determinista con interrupt()",
+    "scenes": [
+      {
+        "chapter": "01 · Acción Sin Permiso",
+        "title": "Disparar Efectos Irreversibles En Automático",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Cerramos LangGraph en la unidad cinco. La acción requiere aprobación explícita, state.approved está en falso, pero el nodo igual ejecutó el reembolso bancario sin pausar.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "requiresApproval: true",
+              "sub": "Acción crítica externa",
+              "state": "normal"
+            },
+            {
+              "label": "approved: false",
+              "sub": "Sin firma humana aún",
+              "state": "hot"
+            },
+            {
+              "label": "Ejecutó Igual",
+              "sub": "Sin interrupt() ni checkpoint",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Control De Efectos Laterales",
+          "metricBefore": "Disparo autónomo riesgoso",
+          "metricAfter": "Pausa auditable con interrupt()"
+        }
+      },
+      {
+        "chapter": "02 · Human-In-The-Loop",
+        "title": "Suspender El Grafo Con interrupt({ action }) Hasta Confirmar",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "LangGraph ofrece interrupt para suspender la ejecución exactamente antes del efecto lateral, guardar el checkpoint y liberar el hilo del servidor hasta que un humano apruebe.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "CHECKPOINTED HITL PAUSE",
+          "laneA": {
+            "name": "Pre-Ejecución",
+            "steps": [
+              "requiresApproval?",
+              "!state.approved",
+              "interrupt({ action })"
+            ]
+          },
+          "laneB": {
+            "name": "Reanudación",
+            "steps": [
+              "Aprobador != Actor",
+              "Verifica idempotencia",
+              "Continúa en checkpoint"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Eficiencia",
+        "title": "¿El Servidor Se Queda Bloqueado Esperando Al Humano?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Para nada: el checkpoint queda guardado en base de datos y cero memoria RAM queda retenida mientras el humano revisa horas después.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "hitl_interrupt.ts",
+          "badge": "ZERO BLOCKING",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "if (action.requiresApproval && !state.approved) interrupt({ action });",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "Estado persistido por thread_id (0 workers colgados)",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "Resume solo con comando autorizado + payload hash",
+              "tone": "muted"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Guardia HITL Con interrupt() En La Unidad Final F01",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa el guardia llamando a interrupt con la acción pendiente cuando falte aprobación humana y cierra por todo lo alto LangGraph.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_5.ts",
+          "before": [
+            "if (action.requiresApproval && !state.approved) { /* TODO */ }"
+          ],
+          "after": [
+            "if (action.requiresApproval && !state.approved) {",
+            "  interrupt({ action }); }"
+          ],
+          "callout": "¡5/5 unidades de LangGraph completadas! Dominas adaptadores, reducers, ciclos e HITL."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f02-2",
+    "aliases": [
+      "F02-2"
+    ],
+    "filename": "f02-2.mp3",
+    "kicker": "FRAMEWORK F02 · UNIDAD 2/5",
+    "heading": "pgvector Seguro: Consultas Vectoriales Parametrizadas",
+    "scenes": [
+      {
+        "chapter": "01 · El String Concatenado",
+        "title": "Interpolar Vectores En SQL Rompe El Planificador Y Abre Inyecciones",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Pasamos a PostgreSQL más pgvector en F02 unidad dos. Un endpoint arma la query pegando el arreglo del vector como texto directo en el ORDER BY sin usar parámetros.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "sql_interpolation_bug.sql",
+          "badge": "BAD PLAN + SQLI",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "ORDER BY embedding <=> '[0.012,-0.88,...]' // text literal",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "Plan caché SQL desperdiciado en cada query nueva",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Falta usar parámetro posicional $2 para vector",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Operador Parametrizado",
+        "title": "ORDER BY embedding <=> $2 LIMIT 8 Con Prepared Statements",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Usa siempre parámetros vinculados: tenant_id en peso uno y el vector de consulta en peso dos con el operador distancia coseno <=>. Postgres reutiliza el plan preparado, aprovecha HNSW y bloquea cualquier SQL injection.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "PARAMETERIZED PGVECTOR QUERY",
+          "laneA": {
+            "name": "Seguridad",
+            "steps": [
+              "$1 = tenant_id",
+              "$2 = query_vector",
+              "0 string concat"
+            ]
+          },
+          "laneB": {
+            "name": "Rendimiento",
+            "steps": [
+              "Plan reutilizable",
+              "HNSW (<=>)",
+              "LIMIT 8 acotado"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Sintaxis",
+        "title": "¿Qué Significa Exactamente El Operador <=> En pgvector?",
+        "speaker": "host",
+        "mascot": "reading",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Mide distancia coseno ascendente: cuanto menor sea el valor cercano a cero, mayor es la similitud entre pregunta y fragmento.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "<-> L2",
+              "sub": "Distancia Euclidiana",
+              "state": "normal"
+            },
+            {
+              "label": "<=> Coseno",
+              "sub": "Ideal embeddings normalizados",
+              "state": "ok"
+            },
+            {
+              "label": "<#> Inner",
+              "sub": "Producto interno negativo",
+              "state": "normal"
+            }
+          ],
+          "metricLabel": "Consulta Vectorial Limpia",
+          "metricBefore": "Strings inline gigantes",
+          "metricAfter": "ORDER BY embedding <=> $2"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Consulta Parametrizada En document_chunks",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exactísimo. Completa la cláusula ORDER BY de la unidad dos usando embedding operador <=> peso dos limitado a ocho.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_2.ts",
+          "before": [
+            "ORDER BY '[0.1, 0.2]' LIMIT 8; // texto literal prohibido"
+          ],
+          "after": [
+            "SELECT id FROM document_chunks",
+            "WHERE tenant_id = $1 ORDER BY embedding <=> $2 LIMIT 8;"
+          ],
+          "callout": "Siempre parametriza tenant_id y vector de búsqueda con $1 y $2."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f02-3",
+    "aliases": [
+      "F02-3"
+    ],
+    "filename": "f02-3.mp3",
+    "kicker": "FRAMEWORK F02 · UNIDAD 3/5",
+    "heading": "pgvector ACL Granular: Tenant + Borrado + Principals",
+    "scenes": [
+      {
+        "chapter": "01 · Tenant Insuficiente",
+        "title": "Filtrar Solo tenant_id Expone Contratos Privados Entre Áreas",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad tres de pgvector ya filtramos por tenant_id y borrado lógico. Aun así un agente de soporte recuperó actas confidenciales de recursos humanos dentro de la misma empresa.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Agente Soporte",
+          "claims": [
+            {
+              "key": "tenant_id",
+              "value": "$1 = 't_acme' (match!)",
+              "valid": true
+            },
+            {
+              "key": "principal",
+              "value": "$2 = 'role:support' NO validado",
+              "valid": false
+            }
+          ],
+          "indexLabel": "Falta allowed_principals",
+          "chunks": [
+            {
+              "id": "HR-08",
+              "text": "Despidos y Nóminas",
+              "note": "✗ Solo ['role:hr'], se filtró igual",
+              "blocked": true
+            },
+            {
+              "id": "KB-14",
+              "text": "Guía de Tickets",
+              "note": "✓ Para ['role:support']"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Tres Candados SQL",
+        "title": "tenant_id + deleted_at IS NULL + ANY(allowed_principals)",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Dentro de una misma empresa conviven documentos públicos, de soporte, finanzas y RRHH. Agrega el tercer candado en SQL: peso dos igual a ANY de allowed_principals con un índice GIN en la columna de permisos.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "shielded",
+          "identityLabel": "Principal Verificado",
+          "claims": [
+            {
+              "key": "c.tenant_id",
+              "value": "$1 = 't_acme'",
+              "valid": true
+            },
+            {
+              "key": "$2 = ANY(...)",
+              "value": "d.allowed_principals",
+              "valid": true
+            }
+          ],
+          "indexLabel": "Pre-Filter Multi-Principal",
+          "chunks": [
+            {
+              "id": "KB-14",
+              "text": "Guía de Tickets",
+              "note": "✓ Contiene 'role:support'"
+            },
+            {
+              "id": "HR-08",
+              "text": "Nóminas Privadas",
+              "note": "🛡 Bloqueado antes de rankear",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Seguridad",
+        "title": "¿El Principal Viene De La Sesión Y Nunca Del Usuario?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Exacto: jamás aceptamos un rol enviado en el JSON de la petición; lo leemos directamente del token de sesión verificado.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "acl_principals.sql",
+          "badge": "ZERO INTRA-TENANT LEAK",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "WHERE c.tenant_id = $1 AND d.deleted_at IS NULL",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "  AND $2 = ANY(d.allowed_principals)",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "$2 extraído del JWT autenticado en backend",
+              "tone": "muted"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Filtro Granular Por Documento Y Principal",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Así se protege un RAG corporativo real. Completa la condición de la unidad tres comprobando peso dos igual ANY de allowed_principals.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_3.ts",
+          "before": [
+            "WHERE c.tenant_id = $1 AND d.deleted_at IS NULL // sin rol"
+          ],
+          "after": [
+            "WHERE c.tenant_id = $1 AND d.deleted_at IS NULL",
+            "  AND $2 = ANY(d.allowed_principals)"
+          ],
+          "callout": "Seguridad Multi-Tenant completa: tenant + borrado lógico + principal por documento."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f02-4",
+    "aliases": [
+      "F02-4"
+    ],
+    "filename": "f02-4.mp3",
+    "kicker": "FRAMEWORK F02 · UNIDAD 4/5",
+    "heading": "pgvector Híbrido: Full-Text Search con tsvector y @@",
+    "scenes": [
+      {
+        "chapter": "01 · El SKU Perdido",
+        "title": "Los Embeddings Semánticos Fallan En Pólizas Y Códigos Exactos",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad cuatro de pgvector un cliente busca su número de póliza POL-88412 o el error K8S-409. La búsqueda vectorial sola lo confunde con otros códigos similares.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "PURE VECTOR FAILS ON EXACT IDS",
+          "laneA": {
+            "name": "Query Exacta",
+            "steps": [
+              "POL-88412",
+              "Vector lo promedia",
+              "Top-1 = POL-10200"
+            ]
+          },
+          "laneB": {
+            "name": "FTS Nativo PG",
+            "steps": [
+              "search_tsv GIN",
+              "Match exacto lexema",
+              "Score léxico #1"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Rama Léxica",
+        "title": "Columna tsvector + Operador @@ + plainto_tsquery",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "PostgreSQL ya trae un motor de texto completo ultra rápido sin montar otro cluster. Usa el operador arroba-arroba sobre search_tsv y plainto_tsquery para combinarlo después con tus vectores vía RRF.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "fts_pgvector.sql",
+          "badge": "NATIVE HYBRID",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "search_tsv tsvector GENERATED ALWAYS AS (...) STORED",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "CREATE INDEX idx_tsv ON document_chunks USING GIN(search_tsv)",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "WHERE tenant_id = $1 AND search_tsv @@ plainto_tsquery('spanish', $2)",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Higiene",
+        "title": "¿Por Qué plainto_tsquery En Lugar De to_tsquery Crudo?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Porque to_tsquery falla con errores de sintaxis si el usuario escribe signos raros o paréntesis, mientras plainto_tsquery normaliza texto libre sin romper.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "plainto_tsquery()",
+              "sub": "Seguro con input humano",
+              "state": "ok"
+            },
+            {
+              "label": "Operador @@ + GIN",
+              "sub": "Milisegundos en Postgres",
+              "state": "ok"
+            },
+            {
+              "label": "RRF Blend",
+              "sub": "Une Vector + Léxico",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Cobertura De Consultas",
+          "metricBefore": "Solo vectores pierden SKUs",
+          "metricAfter": "Semántica + Coincidencia exacta"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Filtro Full-Text Parametrizado En PostgreSQL",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa la query de la unidad cuatro conectando search_tsv operador arroba-arroba plainto_tsquery en español con peso dos.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_4.ts",
+          "before": [
+            "SELECT id FROM document_chunks WHERE tenant_id = $1;"
+          ],
+          "after": [
+            "SELECT id FROM document_chunks WHERE tenant_id = $1",
+            "  AND search_tsv @@ plainto_tsquery('spanish', $2) LIMIT 10;"
+          ],
+          "callout": "Sin FTS léxico, tu RAG siempre sufrirá con códigos, SKUs y siglas exactas."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f02-5",
+    "aliases": [
+      "F02-5"
+    ],
+    "filename": "f02-5.mp3",
+    "kicker": "FRAMEWORK F02 · UNIDAD 5/5",
+    "heading": "pgvector HNSW Tuning: iterative_scan para Tenants Pequeños",
+    "scenes": [
+      {
+        "chapter": "01 · El Recall Cero",
+        "title": "Un Tenant Minoritario Desaparece Del Grafo HNSW",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Cerramos pgvector en F02 unidad cinco. Un cliente nuevo tiene solo doscientos documentos entre millones. HNSW explora ef_search vecinos globales y el filtro tenant_id los descarta todos devolviendo cero filas.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "leak",
+          "identityLabel": "Tenant Pequeño",
+          "claims": [
+            {
+              "key": "hnsw.ef_search",
+              "value": "100 vecinos globales",
+              "valid": true
+            },
+            {
+              "key": "rows_after_ACL",
+              "value": "0 filas (Recall collapse)",
+              "valid": false
+            }
+          ],
+          "indexLabel": "HNSW Post-Filter Estático",
+          "chunks": [
+            {
+              "id": "TOP-100",
+              "text": "Vecinos de otros tenants",
+              "note": "Descartados tras recorrer grafo",
+              "blocked": true
+            },
+            {
+              "id": "PROPIO",
+              "text": "200 docs reales del cliente",
+              "note": "✗ Nunca fue alcanzado"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Iterative Scan",
+        "title": "SET LOCAL hnsw.iterative_scan = relaxed_order",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Activa iterative_scan dentro de la transacción de búsqueda. Así pgvector continúa recorriendo el índice HNSW automáticamente más allá del lote inicial hasta recolectar los K candidatos que sí cumplen tu WHERE ACL.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "unit_5_hnsw.sql",
+          "badge": "ITERATIVE HNSW",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "BEGIN; SET LOCAL hnsw.ef_search = 100;",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "SET LOCAL hnsw.iterative_scan = relaxed_order;",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "SELECT ... WHERE tenant_id = $1 ORDER BY <=> $2 LIMIT 8;",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Seguridad",
+        "title": "¿Por Qué Usamos SET LOCAL En Vez De Cambiarlo Globalmente?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Porque SET LOCAL aplica solo a esa transacción y no contamina otras conexiones del pool compartidas.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "CONNECTION POOL SAFE",
+          "laneA": {
+            "name": "SET GLOBAL",
+            "steps": [
+              "Afecta otras queries",
+              "Contamina PgBouncer",
+              "Latencia impredecible"
+            ]
+          },
+          "laneB": {
+            "name": "SET LOCAL",
+            "steps": [
+              "Aislado en TX",
+              "Recall@K recuperado",
+              "Pool 100% limpio"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Cierre F02 Con Escaneo Iterativo En pgvector",
+        "speaker": "axon",
+        "mascot": "celebrate",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa la unidad cinco activando hnsw.iterative_scan igual a relaxed_order y termina el bloque de pgvector con nivel Senior.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_5.ts",
+          "before": [
+            "SET LOCAL hnsw.ef_search = 100; // cae recall si WHERE filtra mucho"
+          ],
+          "after": [
+            "SET LOCAL hnsw.ef_search = 100;",
+            "SET LOCAL hnsw.iterative_scan = relaxed_order;"
+          ],
+          "callout": "¡5/5 unidades de PostgreSQL + pgvector completadas!"
+        }
+      }
+    ]
+  },
+  {
+    "id": "f03-2",
+    "aliases": [
+      "F03-2"
+    ],
+    "filename": "f03-2.mp3",
+    "kicker": "FRAMEWORK F03 · UNIDAD 2/5",
+    "heading": "NestJS + Zod: Identidad JWT Server-Side (Cero IDOR)",
+    "scenes": [
+      {
+        "chapter": "01 · El IDOR Trivial",
+        "title": "Pasar body.tenantId Al Servicio Permite Espiar Otros Clientes",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Arrancamos NestJS y Zod en F03 unidad dos. Nuestro controller recibe el DTO validado con Zod y llama a service.answer pasando body.tenantId. Un atacante cambió ese campo y leyó datos ajenos.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "POST /ask Body",
+              "sub": "{ tenantId: 't_victima' }",
+              "state": "hot"
+            },
+            {
+              "label": "Controller",
+              "sub": "Usa body.tenantId sin check",
+              "state": "hot"
+            },
+            {
+              "label": "IDOR Cross-Tenant",
+              "sub": "Lee RAG de otro cliente",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Confianza En El Cliente",
+          "metricBefore": "tenantId en request body",
+          "metricAfter": "Acceso directo inseguro (IDOR)"
+        }
+      },
+      {
+        "chapter": "02 · Identidad Del Guard",
+        "title": "Extraer SIEMPRE actor.tenantId Desde La Sesión Autenticada",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Nunca aceptes tenant_id ni roles desde el cuerpo o query string del request HTTP. Tu AuthGuard verifica el JWT en backend y expone actor, de modo que el controller únicamente pasa actor punto tenantId.",
+        "visual": {
+          "kind": "rag-acl",
+          "mode": "shielded",
+          "identityLabel": "NestJS @CurrentActor()",
+          "claims": [
+            {
+              "key": "actor.tenantId",
+              "value": "desde JWT firmado",
+              "valid": true
+            },
+            {
+              "key": "body.tenantId",
+              "value": "ignorado / rechazado",
+              "valid": true
+            }
+          ],
+          "indexLabel": "Servicio Protegido",
+          "chunks": [
+            {
+              "id": "OK",
+              "text": "this.service.answer(actor.tenantId, ...)",
+              "note": "✓ Aislado al token real"
+            },
+            {
+              "id": "ATTACK",
+              "text": "Spoof en JSON body",
+              "note": "🛡 Neutralizado en controller",
+              "blocked": true
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · Schema Estricto",
+        "title": "¿El Schema Zod También Rechaza Campos Sorpresa?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Claro: combinando .strict() en Zod para permitir solo question y actor.tenantId del token, cerramos la puerta a inyección de contexto.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "ask.controller.ts",
+          "badge": "ZERO IDOR",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "@UseGuards(AuthGuard) // inyecta request.actor del JWT",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "AskSchema = z.object({ question: z.string().max(2000) }).strict()",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "return this.service.answer(actor.tenantId, dto.question);",
+              "tone": "cmd"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Controller Con Identidad Del Actor Autenticado",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa la llamada en la unidad dos pasando actor punto tenantId al servicio sin fiarte jamás del body.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_2.ts",
+          "before": [
+            "return this.service.answer(body.tenantId, dto.question);"
+          ],
+          "after": [
+            "return this.service.answer(actor.tenantId, dto.question);"
+          ],
+          "callout": "La identidad y el tenant nacen del AuthGuard verificado, nunca del body HTTP."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f03-3",
+    "aliases": [
+      "F03-3"
+    ],
+    "filename": "f03-3.mp3",
+    "kicker": "FRAMEWORK F03 · UNIDAD 3/5",
+    "heading": "NestJS Hexagonal: Puerto KnowledgeRetriever Desacoplado",
+    "scenes": [
+      {
+        "chapter": "01 · SQL En El Controller",
+        "title": "Importar pg O El ORM Directamente En La Capa HTTP",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad tres de NestJS, alguien inyectó el pool de Postgres directo dentro del controlador HTTP. Para testear un endpoint hay que levantar base de datos y cambiar de motor rompe todo el servicio.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "HTTP Controller",
+              "sub": "Importa pg.Pool directo",
+              "state": "hot"
+            },
+            {
+              "label": "Dominio Acoplado",
+              "sub": "SQL mezclado con negocio",
+              "state": "hot"
+            },
+            {
+              "label": "CI Lento",
+              "sub": "Imposible mockear puertos",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Deuda De Acoplamiento",
+          "metricBefore": "Controller + SQL directo",
+          "metricAfter": "Tests lentos y frágiles"
+        }
+      },
+      {
+        "chapter": "02 · Puerto Claro",
+        "title": "Definir El Contrato KnowledgeRetriever Con Tenant Y Roles",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Aplica arquitectura hexagonal en NestJS: define la interfaz KnowledgeRetriever con un método retrieve que reciba tenantId, roles y query, devolviendo una promesa de Chunks. Postgres o un fake de test la implementan aparte.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "NESTJS HEXAGONAL PORT",
+          "laneA": {
+            "name": "Dominio",
+            "steps": [
+              "KnowledgeRetriever",
+              "retrieve(tenantId, roles, q)",
+              "0 imports de pg"
+            ]
+          },
+          "laneB": {
+            "name": "Adaptadores",
+            "steps": [
+              "PgVectorRetriever",
+              "FakeInMemoryRetriever",
+              "Intercambiable DI"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Invariante",
+        "title": "¿Por Qué tenantId Y roles Van En La Firma Del Puerto?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Porque así el compilador TypeScript obliga a quien invoca retrieval a entregar contexto ACL; nadie puede buscar sin permisos.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "knowledge-retriever.port.ts",
+          "badge": "TYPE-SAFE ACL",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "export interface KnowledgeRetriever {",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "  retrieve(tenantId: string, roles: string[], query: string): Promise<Chunk[]>;",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "}",
+              "tone": "cmd"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Contrato De Dominio KnowledgeRetriever",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exactísimo. Escribe la firma de retrieve dentro de la interfaz KnowledgeRetriever incluyendo tenantId, roles y query.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_3.ts",
+          "before": [
+            "export class AskController { constructor(private pool: Pool) {} }"
+          ],
+          "after": [
+            "export interface KnowledgeRetriever {",
+            "  retrieve(tenantId: string, roles: string[], query: string): Promise<Chunk[]>; }"
+          ],
+          "callout": "Obliga por firma TypeScript a pasar tenant y roles en toda lectura RAG."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f03-4",
+    "aliases": [
+      "F03-4"
+    ],
+    "filename": "f03-4.mp3",
+    "kicker": "FRAMEWORK F03 · UNIDAD 4/5",
+    "heading": "NestJS FinOps: Reserva Previa de Presupuesto Antes del LLM",
+    "scenes": [
+      {
+        "chapter": "01 · Cobro Tardío",
+        "title": "Descontar Presupuesto Después De Responder Permite Sobregiros",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad cuatro de NestJS verificábamos el saldo y descontábamos recién al terminar la llamada al modelo. Con diez peticiones paralelas todas pasaron antes del primer cobro y dejaron saldo negativo.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "post_charge_race.log",
+          "badge": "BUDGET OVERDRAFT",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "10 requests leen balance=$0.05 simultáneamente",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "Todas llaman al LLM antes de restar $0.02",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Gasto real = $0.20 | Saldo final = -$0.15",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Reserve First",
+        "title": "await this.budget.reserve(tenantId, 0.02) Antes De Invocar",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Reserva atómicamente antes de tocar el proveedor externo. Llama a await this.budget.reserve con el tenantId y la estimación de techo; si falla por falta de cupo, rechaza al instante sin gastar tokens.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "RESERVE BEFORE INVOKE",
+          "laneA": {
+            "name": "1. Pre-Check",
+            "steps": [
+              "budget.reserve(tenant, 0.02)",
+              "Atómico SQL/Lua",
+              "429 si excede"
+            ]
+          },
+          "laneB": {
+            "name": "2. Post-Call",
+            "steps": [
+              "Llama LLM seguro",
+              "Reconcile usage real",
+              "Devuelve sobrante"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Consistencia",
+        "title": "¿Qué Pasa Si La Estimación Fue Mayor Que El Consumo Real?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Al terminar la inferencia reconciliamos la diferencia entre lo reservado y la factura exacta devuelta en usage.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Atomic Reserve",
+              "sub": "Descuento antes del fetch",
+              "state": "ok"
+            },
+            {
+              "label": "Bounded Call",
+              "sub": "Ejecución ya fondeada",
+              "state": "ok"
+            },
+            {
+              "label": "Reconcile / Release",
+              "sub": "Ajuste real en finally",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "FinOps En Backend NestJS",
+          "metricBefore": "Descuento tardío con race",
+          "metricAfter": "0 sobregiros concurrentes"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Reserva Obligatoria Antes De La Inferencia",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa execute llamando a await this.budget.reserve con tenantId y cero punto cero dos antes de lanzar la generación.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_4.ts",
+          "before": [
+            "// llama LLM primero y cobra después"
+          ],
+          "after": [
+            "async execute(tenantId: string) {",
+            "  await this.budget.reserve(tenantId, 0.02); }"
+          ],
+          "callout": "Jamás envíes un prompt de pago al LLM sin haber reservado presupuesto primero."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f03-5",
+    "aliases": [
+      "F03-5"
+    ],
+    "filename": "f03-5.mp3",
+    "kicker": "FRAMEWORK F03 · UNIDAD 5/5",
+    "heading": "NestJS SSE Streaming: Cancelar LLM al Cerrar Conexión",
+    "scenes": [
+      {
+        "chapter": "01 · Stream Huérfano",
+        "title": "El Cliente Cerró El Navegador Pero El Backend Sigue Pagando Tokens",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Cerramos NestJS y Zod en F03 unidad cinco. Un usuario canceló su búsqueda SSE cerrando la pestaña, pero nuestro servidor no propagó la desconexión y siguió pagando cientos de tokens al vacío.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "sse_orphan_stream.log",
+          "badge": "ZOMBIE TOKENS",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "Browser closed TCP socket at t=0.8s",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "LLM stream ran all 1,800 output tokens anyway",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Cero listeners leyendo + presupuesto quemado",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Propagar Abort",
+        "title": "req.on('close', () => controller.abort()) Enlazado Al SDK",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Crea un AbortController por petición SSE, pasa su signal al adaptador de streaming del LLM y registra el listener req.on close para ejecutar controller punto abort al instante en que el cliente se desconecte.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "SSE CANCEL PROPAGATION",
+          "laneA": {
+            "name": "Socket HTTP",
+            "steps": [
+              "req.on('close')",
+              "controller.abort()",
+              "Limpia timers"
+            ]
+          },
+          "laneB": {
+            "name": "LLM Adaptador",
+            "steps": [
+              "fetch({ signal })",
+              "Corta socket upstream",
+              "Para facturación"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Conciliación",
+        "title": "¿Y Esto Conecta Directo Con El Ledger De FinOps?",
+        "speaker": "host",
+        "mascot": "celebrate",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Sí: al abortarse el stream, el bloque finally concilia únicamente los tokens emitidos hasta el cierre real.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "req.on('close')",
+              "sub": "Detecta desconexión ms 0",
+              "state": "ok"
+            },
+            {
+              "label": "controller.abort()",
+              "sub": "Corta upstream fetch",
+              "state": "ok"
+            },
+            {
+              "label": "finally reconcile",
+              "sub": "Libera reserva no usada",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Ahorro En Streaming SSE",
+          "metricBefore": "Generación completa perdida",
+          "metricAfter": "Corte inmediato + Reconcile"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Hook De Cancelación SSE Y Cierre De F03",
+        "speaker": "axon",
+        "mascot": "graduate",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Brillante cierre de NestJS más Zod. Completa el listener req.on close ejecutando controller punto abort y consolida tu stack TypeScript de producción.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_5.ts",
+          "before": [
+            "// stream corre hasta acabar aunque cliente haya cerrado"
+          ],
+          "after": [
+            "const controller = new AbortController();",
+            "req.on('close', () => controller.abort());"
+          ],
+          "callout": "¡5/5 unidades de NestJS + Zod completadas! Backend delgado, seguro y cancelable."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f04-2",
+    "aliases": [
+      "F04-2"
+    ],
+    "filename": "f04-2.mp3",
+    "kicker": "FRAMEWORK F04 · UNIDAD 2/5",
+    "heading": "FastAPI Ingestion: Idempotencia con Hash SHA-256",
+    "scenes": [
+      {
+        "chapter": "01 · Doble Factura",
+        "title": "Re-Vectorizar Manuales Idénticos En Cada Despliegue",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Pasamos a FastAPI y PyTorch en F04 unidad dos. Cada vez que nuestro job nocturno vuelve a correr, re-procesa los mismos diez mil PDFs sin cambios y vuelve a pagar toda la factura de embeddings.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "REDUNDANT RE-EMBEDDING COST",
+          "laneA": {
+            "name": "Job Noche 1",
+            "steps": [
+              "Embed 10K docs",
+              "$140 USD",
+              "Sin guardar hash"
+            ]
+          },
+          "laneB": {
+            "name": "Job Noche 2",
+            "steps": [
+              "Mismos PDFs",
+              "Re-embed 10K",
+              "Otro $140 tirado"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Digest Determinista",
+        "title": "Comparar hashlib.sha256 Antes De Llamar Al Modelo",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Calcula siempre el digest SHA-256 del contenido normalizado en memoria. Si coincide con existing_hash en Postgres, retorna unchanged de inmediato con cero embeddings nuevos y cero reescrituras en pgvector.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "ingest_dedup.py",
+          "badge": "$0 ON UNCHANGED",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "digest = hashlib.sha256(content.encode()).hexdigest()",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "if digest == existing_hash: return {'status': 'unchanged'}",
+              "tone": "ok"
+            },
+            {
+              "prompt": "$",
+              "text": "Ahorro típico en re-ingestas nocturnas: 92%",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Invariante",
+        "title": "¿Qué Pasa Si Cambió Solo La Versión Del Chunker O Modelo?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Entonces incluimos embedding_model y pipeline_version dentro del hash compuesto para reindexar únicamente cuando realmente cambió la receta.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "SHA-256 Contenido",
+              "sub": "Detecta cambios reales",
+              "state": "ok"
+            },
+            {
+              "label": "+ Pipeline Version",
+              "sub": "Reindexa si cambia chunker",
+              "state": "ok"
+            },
+            {
+              "label": "Early Return",
+              "sub": "0 embeddings si unchanged",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Ingesta Idempotente FastAPI",
+          "metricBefore": "Reprocesar todo a ciegas",
+          "metricAfter": "Delta exacto por SHA-256"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Guardia Idempotente Con hashlib.sha256",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa el cálculo del digest con hashlib punto sha256 y hexdigest en la unidad dos de FastAPI.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_2.py",
+          "before": [
+            "await embed_all(content) # siempre paga aunque no cambie"
+          ],
+          "after": [
+            "digest = hashlib.sha256(content.encode()).hexdigest()",
+            "if digest == existing_hash: return {'status': 'unchanged'}"
+          ],
+          "callout": "Un SHA-256 en memoria cuesta microsegundos y ahorra miles en embeddings."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f04-3",
+    "aliases": [
+      "F04-3"
+    ],
+    "filename": "f04-3.mp3",
+    "kicker": "FRAMEWORK F04 · UNIDAD 3/5",
+    "heading": "FastAPI Event Loop: Nunca Bloquear async def con time.sleep",
+    "scenes": [
+      {
+        "chapter": "01 · Worker Congelado",
+        "title": "Llamar time.sleep() Dentro De async def Paraliza Toda La API",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad tres de FastAPI metimos un backoff de reintento dentro de una ruta asíncrona usando time punto sleep. Cuando entraron veinte usuarios a la vez, todo el worker Uvicorn se congeló por completo.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "blocked_uvicorn.log",
+          "badge": "EVENT LOOP FROZEN",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "async def wait_backoff(): time.sleep(0.2) # bloquea hilo!",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "100 corrutinas esperando en un solo event loop detenido",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Latencia P99 salta de 40ms a 8,500ms",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Ceder Control",
+        "title": "await asyncio.sleep() Para Esperas Y to_thread() Para CPU",
+        "speaker": "axon",
+        "mascot": "building",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Un event loop corre cientos de peticiones en un hilo cooperativo. Cualquier espera usa await asyncio punto sleep para ceder turno, y cualquier inferencia CPU síncrona debe ir en un threadpool con asyncio.to_thread.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "COOPERATIVE ASYNCIO EVENT LOOP",
+          "laneA": {
+            "name": "I/O & Backoff",
+            "steps": [
+              "await asyncio.sleep(0.2)",
+              "Cede event loop",
+              "Atiende otros reqs"
+            ]
+          },
+          "laneB": {
+            "name": "CPU Pesado",
+            "steps": [
+              "await to_thread(fn)",
+              "Worker pool aparte",
+              "Zero lag HTTP"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Regla Práctica",
+        "title": "¿También Aplica Al Tokenizador O Llamadas HTTP Síncronas?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Sí: usar requests síncrono en lugar de httpx async dentro de async def genera exactamente el mismo bloqueo global.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "await asyncio.sleep",
+              "sub": "Backoff no bloqueante",
+              "state": "ok"
+            },
+            {
+              "label": "httpx.AsyncClient",
+              "sub": "Red asíncrona real",
+              "state": "ok"
+            },
+            {
+              "label": "asyncio.to_thread",
+              "sub": "Aísla tokenizador / PyTorch",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Concurrencia FastAPI",
+          "metricBefore": "time.sleep bloquea 100% reqs",
+          "metricAfter": "Cientos de corridas paralelas"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Backoff Asíncrono Con await asyncio.sleep",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exactísimo. Reemplaza el bloqueo en la unidad tres usando await asyncio punto sleep de cero punto dos segundos.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_3.py",
+          "before": [
+            "time.sleep(0.2) # detiene todas las corrutinas del worker"
+          ],
+          "after": [
+            "async def wait_backoff():",
+            "    await asyncio.sleep(0.2)"
+          ],
+          "callout": "Regla de oro FastAPI: nunca bloquees el event loop dentro de un async def."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f04-4",
+    "aliases": [
+      "F04-4"
+    ],
+    "filename": "f04-4.mp3",
+    "kicker": "FRAMEWORK F04 · UNIDAD 4/5",
+    "heading": "Reranking en Producción: Acotar Top-N Antes del Cross-Encoder",
+    "scenes": [
+      {
+        "chapter": "01 · P95 Destrozado",
+        "title": "Pasar Doscientos Documentos Al Cross-Encoder Rompe Tu SLA",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad cuatro activamos nuestro reranker Cross-Encoder en Python para subir la precisión, pero le enviamos los doscientos resultados de Postgres y la latencia P95 subió a tres segundos.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "reranker_sla_breach.log",
+          "badge": "P95 = 3.1s FAIL",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "cross_encoder.predict(200 pares) -> 3,120 ms en GPU/CPU",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "Costo de cómputo x10 respecto al valor real",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Timeout 504 en Gateway cuando suben usuarios",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Embudo En Dos Fases",
+        "title": "pgvector Top-50 Rápido → Slice candidates[:20] Al Reranker",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "El reranker evalúa pares completos y escala linealmente en costo. Acota la piscina con slice a máximo veinte candidatos antes de puntuar: capturas prácticamente todo el beneficio en nDCG protegiendo tu SLA.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "TWO-STAGE BOUNDED RERANK",
+          "laneA": {
+            "name": "Etapa 1 (15ms)",
+            "steps": [
+              "Hybrid RRF",
+              "Saca candidatos",
+              "Slice [:20]"
+            ]
+          },
+          "laneB": {
+            "name": "Etapa 2 (65ms)",
+            "steps": [
+              "Cross-Encoder x20",
+              "nDCG +18%",
+              "Top-5 al LLM"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Medida",
+        "title": "¿Cómo Elegimos Entre Veinte O Treinta Candidatos?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Midiendo en el Golden Set la curva de nDCG frente a latencia P95; casi siempre entre quince y veinticinco está el punto dulce.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "candidates[:20]",
+              "sub": "Tope estricto pre-rerank",
+              "state": "ok"
+            },
+            {
+              "label": "Budget < 90ms",
+              "sub": "Cumple SLA en producción",
+              "state": "ok"
+            },
+            {
+              "label": "Fallback RRF",
+              "sub": "Si reranker da timeout",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Calidad vs Latencia",
+          "metricBefore": "200 docs -> 3.1s lento",
+          "metricAfter": "20 docs -> <90ms óptimo"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Poda Segura Con candidates[:20]",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa top_pool en la unidad cuatro recortando candidates hasta veinte elementos antes de invocar al Cross-Encoder.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_4.py",
+          "before": [
+            "top_pool = candidates # envía 200+ docs al cross-encoder"
+          ],
+          "after": [
+            "top_pool = candidates[:20]"
+          ],
+          "callout": "Un buen arquiteto acota siempre N antes del Cross-Encoder para proteger P95."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f04-5",
+    "aliases": [
+      "F04-5"
+    ],
+    "filename": "f04-5.mp3",
+    "kicker": "FRAMEWORK F04 · UNIDAD 5/5",
+    "heading": "PyTorch Carga Segura: weights_only=True Contra RCE",
+    "scenes": [
+      {
+        "chapter": "01 · Checkpoint Malicioso",
+        "title": "Cargar Un Modelo Con pickle Permite Ejecución Remota RCE",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Cerramos FastAPI y PyTorch en F04 unidad cinco. Al cargar un checkpoint descargado usando torch punto load sin restringir deserialización, pickle puede ejecutar comandos arbitrarios del sistema operativo.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "model.pt Externo",
+              "sub": "Contiene __reduce__ pickle",
+              "state": "hot"
+            },
+            {
+              "label": "weights_only=False",
+              "sub": "Deserializa código arbitrario",
+              "state": "hot"
+            },
+            {
+              "label": "Shell Reverse RCE",
+              "sub": "Compromete todo el servidor",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Riesgo OWASP ML06",
+          "metricBefore": "torch.load() abierto",
+          "metricAfter": "Ejecución remota de código"
+        }
+      },
+      {
+        "chapter": "02 · Solo Tensores",
+        "title": "Exigir weights_only=True (o Safetensors + SHA-256)",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Siempre que uses torch punto load pasa explícitamente weights_only igual a True para bloquear ejecución de bytecode pickle, o mejor aún adopta formato safetensors junto con digest SHA-256 verificado.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "safe_model_load.py",
+          "badge": "ZERO RCE LOAD",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "state = torch.load(path, map_location='cpu', weights_only=True)",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "Bloquea clases y objetos arbitrarios de pickle",
+              "tone": "ok"
+            },
+            {
+              "prompt": "+",
+              "text": "Recomendado adicional: preferir formato .safetensors",
+              "tone": "cmd"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Defensa Completa",
+        "title": "¿También Validamos El Hash Antes De Cargar El Archivo?",
+        "speaker": "host",
+        "mascot": "celebrate",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Sí: hash SHA-256 antes de abrir el archivo y weights_only igual a True al deserializar en memoria.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "SAFE PYTORCH ARTIFACT LOADING",
+          "laneA": {
+            "name": "Pre-Load",
+            "steps": [
+              "Digest SHA-256",
+              "Bucket privado",
+              "Permiso read-only"
+            ]
+          },
+          "laneB": {
+            "name": "Load Seguro",
+            "steps": [
+              "weights_only=True",
+              "o safetensors",
+              "0 eval / 0 pickle"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Carga Segura En PyTorch Y Cierre De F04",
+        "speaker": "axon",
+        "mascot": "graduate",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa torch punto load en la unidad cinco con weights_only igual a True y cierra todo el módulo FastAPI más PyTorch.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_5.py",
+          "before": [
+            "state = torch.load(path, map_location='cpu') # riesgo RCE"
+          ],
+          "after": [
+            "state = torch.load(path, map_location='cpu', weights_only=True)"
+          ],
+          "callout": "¡5/5 unidades de FastAPI + Rerank + PyTorch completadas!"
+        }
+      }
+    ]
+  },
+  {
+    "id": "f05-2",
+    "aliases": [
+      "F05-2"
+    ],
+    "filename": "f05-2.mp3",
+    "kicker": "FRAMEWORK F05 · UNIDAD 2/5",
+    "heading": "MCP Sandbox: Bloquear Path Traversal con resolve() y sep",
+    "scenes": [
+      {
+        "chapter": "01 · Escape De Carpeta",
+        "title": "Leer ../../.env Usando Rutas Relativas En Un Servidor MCP",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Pasamos al Model Context Protocol en F05 unidad dos. Nuestro servidor MCP expone una herramienta read_doc que une root con el parámetro del modelo. Al enviar punto-punto barra .env leyó secretos del servidor.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "reqPath: '../../.env'",
+              "sub": "Inyectado vía prompt",
+              "state": "hot"
+            },
+            {
+              "label": "join(root, reqPath)",
+              "sub": "Sin verificar frontera",
+              "state": "hot"
+            },
+            {
+              "label": "API Keys Robadas",
+              "sub": "Escape del sandbox MCP",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Path Traversal en MCP",
+          "metricBefore": "Unión cruda de strings",
+          "metricAfter": "Lectura de archivos privados"
+        }
+      },
+      {
+        "chapter": "02 · Frontera Canónica",
+        "title": "resolve(root, reqPath) + target.startsWith(root + sep)",
+        "speaker": "axon",
+        "mascot": "architecture",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Para blindar un sandbox de archivos en MCP resuelve primero la ruta canónica absoluta con resolve, y exige que target sea igual a root o empiece estrictamente con root más el separador del sistema.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "mcp_path_jail.ts",
+          "badge": "SANDBOX BOUNDARY",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "const target = resolve(root, reqPath);",
+              "tone": "cmd"
+            },
+            {
+              "prompt": "!",
+              "text": "Trampa: '/srv/docs_secret' empieza con '/srv/docs' sin sep!",
+              "tone": "warn"
+            },
+            {
+              "prompt": ">",
+              "text": "if (target !== root && !target.startsWith(root + sep)) throw",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · El Truco Del Prefijo",
+        "title": "¿Por Qué Sumamos sep Al Comparar startsWith?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "¡Qué buen detalle! Porque sin ese separador, una carpeta hermana llamada docs-privados pasaría el startsWith contra docs.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "CANONICAL PATH JAIL",
+          "laneA": {
+            "name": "Bloqueado",
+            "steps": [
+              "../../.env",
+              "../docs_secret",
+              "Throw ESCAPE 403"
+            ]
+          },
+          "laneB": {
+            "name": "Permitido",
+            "steps": [
+              "resolve() dentro",
+              "root + sep match",
+              "Read-only seguro"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Guardia Contra Path Traversal En MCP",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Justo eso distingue a un Senior. Completa el guardia de la unidad dos exigiendo target distinto de root y que no comience por root más sep antes de permitir la lectura.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_2.ts",
+          "before": [
+            "if (reqPath.includes('..')) throw new Error('ESCAPE');"
+          ],
+          "after": [
+            "const target = resolve(root, reqPath);",
+            "if (target !== root && !target.startsWith(root + sep)) throw new Error('ESCAPE');"
+          ],
+          "callout": "¡100 videos de estudio! Toda herramienta MCP de archivos necesita path jail estricto."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f05-3",
+    "aliases": [
+      "F05-3"
+    ],
+    "filename": "f05-3.mp3",
+    "kicker": "FRAMEWORK F05 · UNIDAD 3/5",
+    "heading": "MCP Scopes: Cero Tokens Admin Globales en el Servidor",
+    "scenes": [
+      {
+        "chapter": "01 · La Llave Maestra",
+        "title": "Usar Un Token Admin Único Para Todas Las Tools MCP",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad tres de MCP conectamos un servidor interno usando una clave de servicio con permisos de administrador global. Cuando un pasante preguntó al chat, el agente pudo borrar registros críticos.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "Usuario Básico",
+              "sub": "Solo lectura pública",
+              "state": "normal"
+            },
+            {
+              "label": "MCP Shared Admin Key",
+              "sub": "Escala privilegios x100",
+              "state": "hot"
+            },
+            {
+              "label": "Escritura / Borrado",
+              "sub": "Confused Deputy Attack",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Riesgo Confused Deputy",
+          "metricBefore": "Service token global",
+          "metricAfter": "Escalación de privilegios"
+        }
+      },
+      {
+        "chapter": "02 · Menor Privilegio",
+        "title": "Validar El Scope Exacto Del Actor Antes De Ejecutar",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "El servidor MCP jamás eleva permisos usando una cuenta maestra. Propaga la identidad del usuario autenticado y exige por código el scope específico de la acción, como mcp:docs:read, antes de ejecutar.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "MCP PER-TOOL SCOPE ENFORCEMENT",
+          "laneA": {
+            "name": "Verificación",
+            "steps": [
+              "actor.scopes del JWT",
+              "has('mcp:docs:read')?",
+              "Rechaza FORBIDDEN 403"
+            ]
+          },
+          "laneB": {
+            "name": "Ejecución",
+            "steps": [
+              "Token delegado corto",
+              "Menor privilegio",
+              "0 llaves admin globales"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Separación",
+        "title": "¿Lectura Y Escritura Tienen Scopes Distintos?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Sí: quien tiene mcp:docs:read jamás hereda mcp:tickets:write; cada herramienta declara su scope mínimo necesario.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "mcp_scope_guard.ts",
+          "badge": "LEAST PRIVILEGE",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "search_docs  -> requiere scope 'mcp:docs:read'",
+              "tone": "ok"
+            },
+            {
+              "prompt": ">",
+              "text": "delete_index -> requiere scope 'mcp:admin' + HITL",
+              "tone": "cmd"
+            },
+            {
+              "prompt": "!",
+              "text": "Si falta scope -> throw new Error('FORBIDDEN')",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Guardia De Scopes En MCP",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa la condición en la unidad tres verificando que actor.scopes incluya mcp:docs:read antes de continuar.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_3.ts",
+          "before": [
+            "runWithServiceAdminToken(req); // peligroso"
+          ],
+          "after": [
+            "if (!actor.scopes.includes('mcp:docs:read'))",
+            "  throw new Error('FORBIDDEN');"
+          ],
+          "callout": "Cada herramienta MCP opera únicamente con los scopes reales del actor."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f05-4",
+    "aliases": [
+      "F05-4"
+    ],
+    "filename": "f05-4.mp3",
+    "kicker": "FRAMEWORK F05 · UNIDAD 4/5",
+    "heading": "MCP Contratos: Validación Estricta Zod de Argumentos",
+    "scenes": [
+      {
+        "chapter": "01 · Argumentos Sucios",
+        "title": "Pasar rawArgs Sin Validar Abre Inyecciones Y Valores Negativos",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad cuatro de MCP recibimos argumentos generados por el modelo y los pasamos directo a nuestra consulta interna. Llegaron objetos con limit igual a un millón o campos sorpresa no esperados.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "unvalidated_mcp_args.log",
+          "badge": "SCHEMA BYPASS",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "rawArgs = { query: 'hola', limit: 999999, __proto__: {} }",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "Cast as MyDto en TypeScript desaparece en runtime!",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Tool ejecuta con valores absurdos o inyección",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Parseo En Runtime",
+        "title": "Validar Toda Entrada Del LLM Con ToolArgsSchema.parse(rawArgs)",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Las interfaces de TypeScript no existen cuando corre JavaScript en producción. Usa Zod o Pydantic en runtime con ToolArgsSchema.parse sobre rawArgs, aplicando rangos acotados, longitudes máximas y strict.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "RUNTIME ZOD TOOL VALIDATION",
+          "laneA": {
+            "name": "LLM / Indirect",
+            "steps": [
+              "JSON no confiable",
+              "Podría traer basura",
+              "Campos extra"
+            ]
+          },
+          "laneB": {
+            "name": "ToolArgsSchema",
+            "steps": [
+              ".strict().parse(rawArgs)",
+              "limit <= 20",
+              "Error claro al agente"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "03 · La Ventaja",
+        "title": "¿Qué Hacemos Con El Error Si Los Argumentos No Cumplen?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Devolvemos un error estructurado seguro indicando qué campo falló, sin exponer stacktraces ni rutas internas del servidor.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "ToolArgsSchema.parse",
+              "sub": "Valida tipos y rangos",
+              "state": "ok"
+            },
+            {
+              "label": ".strict()",
+              "sub": "Bloquea __proto__ y extras",
+              "state": "ok"
+            },
+            {
+              "label": "Tool Execution",
+              "sub": "Solo datos verificados",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Robustez MCP Runtime",
+          "metricBefore": "rawArgs as Type sin check",
+          "metricAfter": "Validación dura antes de correr"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Validación Runtime Con ToolArgsSchema.parse",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exactísimo. Invoca el método parse de ToolArgsSchema sobre rawArgs en la unidad cuatro antes de ejecutar la lógica de la herramienta.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_4.ts",
+          "before": [
+            "const parsed = rawArgs as ToolInput; // cero validación real"
+          ],
+          "after": [
+            "const parsed = ToolArgsSchema.parse(rawArgs);"
+          ],
+          "callout": "Nunca confíes en los tipos estáticos frente a argumentos generados por un LLM."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f05-5",
+    "aliases": [
+      "F05-5"
+    ],
+    "filename": "f05-5.mp3",
+    "kicker": "FRAMEWORK F05 · UNIDAD 5/5",
+    "heading": "MCP Audit Log: Trazabilidad Limpia sin Secretos ni Tokens",
+    "scenes": [
+      {
+        "chapter": "01 · Log De Credenciales",
+        "title": "Volcar Headers Authorization En El Audit Trail Expone Todo",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Cerramos MCP en F05 unidad cinco. Al auditar qué herramientas ejecutaba el agente, alguien serializó el objeto de petición completo incluyendo Authorization Bearer dentro de los logs.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "mcp_secret_leak.log",
+          "badge": "TOKEN LEAK IN LOGS",
+          "lines": [
+            {
+              "prompt": "!",
+              "text": "auditLog({ tool, headers: { Authorization: 'Bearer sk-...' } })",
+              "tone": "warn"
+            },
+            {
+              "prompt": "!",
+              "text": "Central de logs expone tokens activos de producción",
+              "tone": "warn"
+            },
+            {
+              "prompt": "x",
+              "text": "Cualquier persona con acceso a Grafana/Kibana es admin",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "02 · Auditoría Limpia",
+        "title": "Registrar Solo Tool, Actor Hasheado, Timestamp y Status",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Un buen audit log es forense pero estéril ante filtraciones. Registra únicamente el nombre de la herramienta, el actorId seudonimizado con hashId y el status ok o denied, jamás headers, contraseñas ni payloads sensibles.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "tool: name",
+              "sub": "Identifica la capacidad",
+              "state": "ok"
+            },
+            {
+              "label": "actorId: hashId(id)",
+              "sub": "Pseudonimización trazable",
+              "state": "ok"
+            },
+            {
+              "label": "status: 'ok' | 'denied'",
+              "sub": "0 Bearer, 0 passwords",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Higiene Audit Trail MCP",
+          "metricBefore": "Headers y secrets en texto",
+          "metricAfter": "Metadatos seguros + 0 secretos"
+        }
+      },
+      {
+        "chapter": "03 · La Auditoría",
+        "title": "¿Cómo Correlacionamos Varios Pasos De Un Mismo Incidente?",
+        "speaker": "host",
+        "mascot": "celebrate",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Combinando actorId hasheado con trace_id de OpenTelemetry, obtenemos la línea temporal exacta sin revelar credenciales ni PII.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "ZERO-SECRET MCP AUDIT TRAIL",
+          "laneA": {
+            "name": "Permitido",
+            "steps": [
+              "tool name",
+              "hashId(actor.id)",
+              "trace_id + status"
+            ]
+          },
+          "laneB": {
+            "name": "Prohibido",
+            "steps": [
+              "Authorization",
+              "API keys / secrets",
+              "Prompts con PII"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Registro De Auditoría Seguro En MCP Y Cierre F05",
+        "speaker": "axon",
+        "mascot": "graduate",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa auditLog en la unidad cinco registrando status ok sin incluir ningún token ni contraseña, y cierra el módulo MCP al cien por ciento.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_5.ts",
+          "before": [
+            "auditLog({ tool: name, bearerToken: req.token });"
+          ],
+          "after": [
+            "auditLog({ tool: name, actorId: hashId(actor.id), status: 'ok' });"
+          ],
+          "callout": "¡5/5 unidades de MCP completadas! Allowlist, path jail, scopes, Zod y audit limpio."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f06-2",
+    "aliases": [
+      "F06-2"
+    ],
+    "filename": "f06-2.mp3",
+    "kicker": "FRAMEWORK F06 · UNIDAD 2/5",
+    "heading": "Evals Ragas: Verificar Fidelidad Real de Citas Autorizadas",
+    "scenes": [
+      {
+        "chapter": "01 · El Espejismo",
+        "title": "Aceptar Citas Inventadas Que Suenan Bien Al Revisor",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "Arrancamos Evaluaciones Ragas en F06 unidad dos. Un nuevo modelo obtuvo elogios de fluidez al incluir corchetes con números de sección, pero al validar contra el set autorizado la mitad de las citas no existían.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "incident",
+          "nodes": [
+            {
+              "label": "LLM Responde",
+              "sub": "Cita [doc-404, sec-9]",
+              "state": "hot"
+            },
+            {
+              "label": "Revisor Humano",
+              "sub": "Lo lee fluido y aprueba",
+              "state": "hot"
+            },
+            {
+              "label": "Sin Check Set",
+              "sub": "Citas falsas en producción",
+              "state": "hot"
+            }
+          ],
+          "metricLabel": "Precisión De Citas (Evals)",
+          "metricBefore": "Fluidez visual subjetiva",
+          "metricAfter": "Citas fabricadas ocultas"
+        }
+      },
+      {
+        "chapter": "02 · Grounding Determinista",
+        "title": "Comprobar Cada ID Citado Contra authorizedRetrieved",
+        "speaker": "axon",
+        "mascot": "senior",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "En tu suite de evals automatizados, la precisión de citas no se evalúa a ojo. Construye un Set con los IDs realmente recuperados y autorizados para esa sesión, y exige que absolutamente todo ID citado exista dentro de ese conjunto.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "citation_eval.ts",
+          "badge": "GROUNDING ASSERT",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "authorizedRetrieved = new Set(chunks.map(c => c.id))",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "const valid = cited.every((id) => authorizedRetrieved.has(id));",
+              "tone": "ok"
+            },
+            {
+              "prompt": "!",
+              "text": "Si valid === false -> Faithfulness gate = FAIL",
+              "tone": "warn"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · La Doble Garantía",
+        "title": "¿También Detecta Si El Modelo Citó Un Chunk Prohibido Del Cache?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Sí: como authorizedRetrieved contiene solo chunks recuperados tras el filtro ACL, cualquier cita alucinada o no autorizada falla la aserción.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "bounded",
+          "statusBadge": "DETERMINISTIC CITATION VERIFIER",
+          "laneA": {
+            "name": "Recuperado ACL",
+            "steps": [
+              "chunks permitidos",
+              "Set authorizedRetrieved",
+              "Fuente verdad"
+            ]
+          },
+          "laneB": {
+            "name": "Eval Check",
+            "steps": [
+              "cited.every(...)",
+              "Detecta IDs falsos",
+              "Cero ilusión Ragas"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Aserción Determinista Con authorizedRetrieved.has(id)",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa valid en la unidad dos comprobando que cada identificador citado pertenezca a authorizedRetrieved.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_2.ts",
+          "before": [
+            "const valid = cited.length > 0; // solo mira si hay texto"
+          ],
+          "after": [
+            "const valid = cited.every((id) => authorizedRetrieved.has(id));"
+          ],
+          "callout": "Una evaluación seria comprueba en código que toda cita exista y esté autorizada."
+        }
+      }
+    ]
+  },
+  {
+    "id": "f06-3",
+    "aliases": [
+      "F06-3"
+    ],
+    "filename": "f06-3.mp3",
+    "kicker": "FRAMEWORK F06 · UNIDAD 3/5",
+    "heading": "Golden Sets Negativos: Evaluar Abstención Ante Falta de Evidencia",
+    "scenes": [
+      {
+        "chapter": "01 · El Golden Set Optimista",
+        "title": "Probar Solo Preguntas Con Respuesta Oculta Alucinaciones",
+        "speaker": "host",
+        "mascot": "debug",
+        "aura": "blue",
+        "durationSec": 9,
+        "speech": "En la unidad tres de Evals descubrimos que nuestras cien preguntas del Golden Set tenían respuesta exacta en la base. Al lanzar a producción, cuando un usuario preguntó algo que no existía, el sistema inventó políticas falsas.",
+        "visual": {
+          "kind": "agent-lanes",
+          "mode": "storm",
+          "statusBadge": "BLIND SPOT: ZERO NEGATIVE TESTS",
+          "laneA": {
+            "name": "Golden Actual",
+            "steps": [
+              "100% con respuesta",
+              "Score 95% bonito",
+              "No mide abstención"
+            ]
+          },
+          "laneB": {
+            "name": "En Producción",
+            "steps": [
+              "Falta evidencia",
+              "LLM improvisa datos",
+              "Daño legal / reputación"
+            ]
+          }
+        }
+      },
+      {
+        "chapter": "02 · Casos Negativos",
+        "title": "Incluir noEvidenceCases Exigiendo Status Abstained",
+        "speaker": "axon",
+        "mascot": "idea",
+        "aura": "gold",
+        "durationSec": 10,
+        "speech": "Todo Golden Set de calidad incluye al menos un veinte por ciento de casos sin evidencia o sin permiso para ese rol. Tu métrica mide explícitamente cuántos devuelven estado abstained en lugar de adivinar.",
+        "visual": {
+          "kind": "finops-terminal",
+          "title": "abstention_eval.ts",
+          "badge": "NEGATIVE GOLDEN SET",
+          "lines": [
+            {
+              "prompt": ">",
+              "text": "noEvidenceCases: consultas fuera de corpus o sin ACL",
+              "tone": "cmd"
+            },
+            {
+              "prompt": ">",
+              "text": "abstainedProperly = noEvidenceCases.filter(c => c.status === 'abstained')",
+              "tone": "ok"
+            },
+            {
+              "prompt": "!",
+              "text": "Target CI Gate: tasa de abstención correcta >= 95%",
+              "tone": "ok"
+            }
+          ]
+        }
+      },
+      {
+        "chapter": "03 · El Equilibrio",
+        "title": "¿Y Cómo Evitamos Que Se Abstenga Demasiado Cuando Sí Hay Datos?",
+        "speaker": "host",
+        "mascot": "question",
+        "aura": "violet",
+        "durationSec": 6,
+        "speech": "Midiendo ambos extremos a la vez: abstención correcta en casos negativos y Recall más Faithfulness en casos positivos.",
+        "visual": {
+          "kind": "prompt-shield",
+          "mode": "mitigated",
+          "nodes": [
+            {
+              "label": "Casos Positivos",
+              "sub": "Recall@K + Citas reales",
+              "state": "ok"
+            },
+            {
+              "label": "Casos Sin Evidencia",
+              "sub": "status === 'abstained'",
+              "state": "ok"
+            },
+            {
+              "label": "F1 Balanceado",
+              "sub": "Ni alucina ni rechaza todo",
+              "state": "ok"
+            }
+          ],
+          "metricLabel": "Cobertura Del Golden Set",
+          "metricBefore": "Solo casos felices",
+          "metricAfter": "Positivos + Negativos calibrados"
+        }
+      },
+      {
+        "chapter": "04 · Tu Código",
+        "title": "Contador De Abstención En Casos Negativos",
+        "speaker": "axon",
+        "mascot": "coding",
+        "aura": "emerald",
+        "durationSec": 10,
+        "speech": "Exacto. Completa el filtro en la unidad tres contando los casos de noEvidenceCases cuyo status sea exactamente abstained.",
+        "visual": {
+          "kind": "code-diff",
+          "file": "unit_3.ts",
+          "before": [
+            "const abstainedProperly = noEvidenceCases.length; // asume todo bien"
+          ],
+          "after": [
+            "const abstainedProperly = noEvidenceCases",
+            "  .filter((c) => c.status === 'abstained').length;"
+          ],
+          "callout": "Un Golden Set sin casos sin respuesta jamás probará si tu IA alucina."
+        }
+      }
+    ]
+  }
+]
