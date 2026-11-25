@@ -148,7 +148,13 @@ export function sanitizePrefs(v: unknown, banks: SeniorValidationBanks = EMPTY_B
     aiOperationsResults: sanitizeAiLabMap(a.aiOperationsResults, banks.aiOperations || [], 'operations'),
     certificateName:
       typeof a.certificateName === 'string'
-        ? a.certificateName.replace(/[\u0000-\u001f\u007f]/g, '').slice(0, 64)
+        ? Array.from(a.certificateName)
+            .filter((ch) => {
+              const code = ch.charCodeAt(0);
+              return code >= 32 && code !== 127;
+            })
+            .slice(0, 64)
+            .join('')
         : '',
     certificateTrack:
       typeof a.certificateTrack === 'string' &&
