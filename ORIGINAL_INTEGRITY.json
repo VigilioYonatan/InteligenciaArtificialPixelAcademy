@@ -566,6 +566,9 @@
     "public/assets/mascot/sleep.png",
     "public/assets/mascot/sprite-sheet-12-poses.png",
     "public/assets/mascot/welcome-128.png",
-    "public/assets/mascot/welcome.png"
+    "public/assets/mascot/welcome.png",
+    "src/features/progress/types/progress.types.ts",
+    "src/features/progress/constants/progress.constants.ts",
+    "src/features/progress/persistence/progress.repository.ts"
   ]
 }

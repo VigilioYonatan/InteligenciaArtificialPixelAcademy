@@ -87,4 +87,6 @@ export type Prefs = {
   aiEvidenceResults: Record<string, AILabRecord>;
   aiReviewResults: Record<string, AILabRecord>;
   aiOperationsResults: Record<string, AILabRecord>;
+  certificateName?: string;
+  certificateTrack?: string;
 };

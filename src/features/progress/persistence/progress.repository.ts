@@ -146,6 +146,15 @@ export function sanitizePrefs(v: unknown, banks: SeniorValidationBanks = EMPTY_B
     aiEvidenceResults: sanitizeAiLabMap(a.aiEvidenceResults, banks.aiEvidence || [], 'evidence'),
     aiReviewResults: sanitizeAiLabMap(a.aiReviewResults, banks.aiReviews || [], 'review'),
     aiOperationsResults: sanitizeAiLabMap(a.aiOperationsResults, banks.aiOperations || [], 'operations'),
+    certificateName:
+      typeof a.certificateName === 'string'
+        ? a.certificateName.replace(/[\u0000-\u001f\u007f]/g, '').slice(0, 64)
+        : '',
+    certificateTrack:
+      typeof a.certificateTrack === 'string' &&
+      ['core', 'rag', 'agents', 'llmops', 'ai'].includes(a.certificateTrack)
+        ? a.certificateTrack
+        : 'core',
   };
 }
 

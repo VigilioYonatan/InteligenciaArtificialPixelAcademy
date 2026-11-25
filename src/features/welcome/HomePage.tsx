@@ -3,6 +3,7 @@ import { routeTo } from '../../app/router';
 import { Button, Icon, Mascot } from '../../shared/ui/primitives';
 import { AxonPlayer } from '../cinema/AxonPlayer';
 import { HOME_INTRO_DECK } from '../cinema/data/storyboards';
+import { HomeCertificateSection } from '../certificate/components/HomeCertificateSection';
 import { tracks, trackStyles } from '../learning/constants/learning.constants';
 import type { RouteTrack } from '../learning/types/learning.types';
 
@@ -240,6 +241,8 @@ export function HomePage({ t, trackPcts }: { t: (k: string) => string; trackPcts
           ))}
         </div>
       </section>
+
+      <HomeCertificateSection />
 
       <section class="feature-banner">
         <div>

@@ -36,4 +36,6 @@ export const initialPrefs: Prefs = {
   aiEvidenceResults: {},
   aiReviewResults: {},
   aiOperationsResults: {},
+  certificateName: '',
+  certificateTrack: 'core',
 };
