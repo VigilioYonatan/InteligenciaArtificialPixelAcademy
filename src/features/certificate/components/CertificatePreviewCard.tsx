@@ -1,4 +1,5 @@
 import type { CertificateStatus } from '../engine/certificate';
+import { asset } from '../../../shared/ui/primitives';
 import {
   AntiCaptureWatermark,
   PixelCornerMarks,
@@ -29,9 +30,14 @@ export function CertificatePreviewCard({ status }: CertificatePreviewCardProps) 
 
         <header class="cert-diploma-top">
           <div class="cert-brand-lockup">
-            <span class="cert-brand-badge" aria-hidden="true">
-              AI
-            </span>
+            <img
+              src={asset('mascot/favicon.png')}
+              class="cert-brand-logo"
+              alt=""
+              aria-hidden="true"
+              width="38"
+              height="38"
+            />
             <div>
               <div class="cert-brand-title">AIPIXEL ARCHITECTURE</div>
               <div class="cert-brand-sub">ACADEMY · RAG · AGENTS · FINOPS</div>

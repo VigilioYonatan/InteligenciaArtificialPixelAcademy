@@ -31,10 +31,11 @@ export function AppShell({ page, prefs, t, onUpdatePrefs, children }: AppShellPr
       </a>
       <header class="site-header">
         <a class="brand" href="#/" aria-label="AIPixel Architecture Academy">
-          <img src={asset('mascot/favicon.png')} alt="" width="36" height="36" />
-          <span>
-            AI<span class="brand-cyan">Pixel</span>
-            <small>ARCHITECTURE</small>
+          <img src={asset('mascot/favicon.png')} alt="" width="40" height="40" class="brand-axon" />
+          <span class="brand-text">
+            <span class="brand-name">AI<span class="brand-cyan">Pixel</span></span>
+            <small class="brand-arch">ARCHITECTURE ACADEMY</small>
+            <small class="brand-byline">Por Vigilio Services</small>
           </span>
         </a>
         <nav class="primary-nav" aria-label="Main navigation">

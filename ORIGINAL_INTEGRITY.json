@@ -569,6 +569,7 @@
     "public/assets/mascot/welcome.png",
     "src/features/progress/types/progress.types.ts",
     "src/features/progress/constants/progress.constants.ts",
-    "src/features/progress/persistence/progress.repository.ts"
+    "src/features/progress/persistence/progress.repository.ts",
+    "src/app/AppShell.tsx"
   ]
 }
